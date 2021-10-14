@@ -2,20 +2,15 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
-import { FakeBackendProvider } from './shared/mocks/fake-backend-interceptor';
-
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { ConfigService } from './shared/config.service';
-
-import { AuthCallbackComponent } from './auth-callback/auth-callback.component';
-
+import { AuthCallbackComponent } from './authentication/auth-callback/auth-callback.component';
 
 import { CoreModule } from './core/core.module';
 import { HomeModule }  from './home/home.module';
-import { ShellModule } from './shell/shell.module';
 import { SharedModule }   from './shared/shared.module';
+import { AppRoutingModule } from './routing/app-routing.module';
+import { AuthenticationModule } from './authentication/authentication.module';
 
 @NgModule({
   declarations: [
@@ -27,13 +22,9 @@ import { SharedModule }   from './shared/shared.module';
     HttpClientModule, 
     CoreModule,
     HomeModule,
+    AuthenticationModule,
     AppRoutingModule,
-    ShellModule,   
     SharedModule    
-  ],
-  providers: [
-    ConfigService,
-    FakeBackendProvider
   ],
   bootstrap: [AppComponent]
 })

@@ -1,14 +1,11 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { IndexComponent } from './index/index.component';
-import { Shell } from './../shell/shell.service';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  Shell.childRoutes([
-    { path: '', redirectTo: '/home', pathMatch: 'full' },
-    { path: 'home', component: IndexComponent }
-  ])
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'home', component: HomeComponent }
 ];
 
 @NgModule({
