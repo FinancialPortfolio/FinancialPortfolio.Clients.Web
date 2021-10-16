@@ -1,7 +1,7 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthService } from '../../authentication/services/auth.service';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { NgxSpinnerService } from 'ngx-spinner';
+
+import { AuthService } from '../../../authentication/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -9,16 +9,15 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
+  @Output() sidebarOpened = new EventEmitter();
 
-  name: string = "";
   isAuthenticated: boolean = false;
   subscription:Subscription|undefined = undefined;
 
-  constructor(private authService:AuthService, private spinner: NgxSpinnerService) { }
+  constructor(private authService:AuthService) { }
 
   ngOnInit() {
     this.subscription = this.authService.authNavStatus$.subscribe(status => this.isAuthenticated = status);
-    this.name = this.authService.name;
   } 
 
   async login() {     
@@ -27,6 +26,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
    async signout() {
     await this.authService.signout();     
+  }
+
+  openSidebar() {
+    this.sidebarOpened.emit();
   }
 
   ngOnDestroy() {

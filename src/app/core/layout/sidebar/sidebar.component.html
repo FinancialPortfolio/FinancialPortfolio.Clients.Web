@@ -1,0 +1,43 @@
+<a class="closebtn" (click)="closeSidebar()">
+    <i class="fas fa-times"></i>
+</a>
+
+<div class="account-information">
+    <h4 class="name">Admiral markets</h4>
+    <p class="description">Account for long time investing</p>
+</div>
+
+<mat-divider></mat-divider>
+
+
+<mat-accordion>
+    <mat-expansion-panel class="mat-elevation-z" hideToggle>
+        <mat-expansion-panel-header>Assets</mat-expansion-panel-header>
+
+        <button mat-button class="menu-button">
+            <span>Assets</span>
+        </button>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="mat-elevation-z" hideToggle>
+        <mat-expansion-panel-header>Money</mat-expansion-panel-header>
+
+        <button mat-button class="menu-button">
+            <span>Funds</span>
+        </button>
+        <button mat-button class="menu-button">
+            <span>Equity</span>
+        </button>
+        <button mat-button class="menu-button">
+            <span>Dividends</span>
+        </button>
+    </mat-expansion-panel>
+
+    <mat-expansion-panel class="mat-elevation-z" hideToggle>
+        <mat-expansion-panel-header>Graphs</mat-expansion-panel-header>
+
+        <button mat-button class="menu-button">
+            <span>Graphs</span>
+        </button>
+    </mat-expansion-panel>
+</mat-accordion>

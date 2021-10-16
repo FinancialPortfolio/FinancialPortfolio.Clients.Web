@@ -8,7 +8,6 @@ import { AuthCallbackComponent } from './authentication/auth-callback/auth-callb
 
 import { CoreModule } from './core/core.module';
 import { HomeModule }  from './home/home.module';
-import { SharedModule }   from './shared/shared.module';
 import { AppRoutingModule } from './routing/app-routing.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 
@@ -23,8 +22,7 @@ import { AuthenticationModule } from './authentication/authentication.module';
     CoreModule,
     HomeModule,
     AuthenticationModule,
-    AppRoutingModule,
-    SharedModule    
+    AppRoutingModule
   ],
   bootstrap: [AppComponent]
 })

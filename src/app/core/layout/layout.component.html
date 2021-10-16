@@ -1,0 +1,15 @@
+<mat-sidenav-container>
+    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+        <app-sidebar (sidebarClosed)="closeSidebar()"></app-sidebar>
+    </mat-sidenav>
+
+    <mat-sidenav-content>
+        <div class="sidenav-content mat-elevation-z8">
+            <app-header *ngIf="!sidenav.opened" class="header" (sidebarOpened)="openSidebar()"></app-header>
+
+            <div class="content">
+                <ng-content></ng-content>
+            </div>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>

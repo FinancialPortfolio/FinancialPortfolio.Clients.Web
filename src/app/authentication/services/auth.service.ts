@@ -37,8 +37,8 @@ export class AuthService {
     return `${this.user?.token_type} ${this.user?.access_token}`;
   }
 
-  get name(): string {
-    return this.user?.profile?.name != null ? this.user.profile.name : '';
+  get email(): string {
+    return this.user?.profile?.Email != null ? this.user.profile.Email : '';
   }
 
   async signout() {

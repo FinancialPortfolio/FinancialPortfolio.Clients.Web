@@ -1,0 +1,31 @@
+.toolbar {
+    .toolbar-toggler {
+        font-size: 24px;
+        margin-right: 12px;
+        cursor: pointer;
+        color: rgba(0, 0, 0, 0.55);
+        border: none;
+        background: none;
+
+        &:focus {
+            box-shadow: none;
+        }
+
+        &:hover {
+            color: rgba(0, 0, 0, 0.7);
+        }
+    }
+
+    .toolbar-brand {
+        text-align: center;
+        font-size: 30px;
+    }
+
+    .toolbar-buttons {
+        margin-left: auto;
+
+        button {
+            font-size: 24px;
+        }
+    }
+}
