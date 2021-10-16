@@ -6,7 +6,8 @@
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "generate-services": "swagger-gen.bat && ng-openapi-gen"
   },
   "private": true,
   "dependencies": {
@@ -23,6 +24,7 @@
     "@fortawesome/fontawesome-free": "^5.15.4",
     "bootstrap": "^5.1.1",
     "font-awesome": "^4.7.0",
+    "ng-openapi-gen": "^0.19.1",
     "ngx-spinner": "^12.0.0",
     "oidc-client": "^1.11.5",
     "rxjs": "~6.6.0",
