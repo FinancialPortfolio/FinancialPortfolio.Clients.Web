@@ -11,6 +11,7 @@ import {MatExpansionModule} from '@angular/material/expansion';
 import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { LayoutComponent } from './layout/layout.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { LayoutComponent } from './layout/layout.component';
   ],
   imports: [
     CommonModule,
+    RouterModule,
     BrowserAnimationsModule,
     MatToolbarModule,
     MatSidenavModule,

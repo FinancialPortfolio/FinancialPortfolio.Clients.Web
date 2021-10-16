@@ -31,6 +31,10 @@ mat-expansion-panel {
 
     mat-expansion-panel-header {
         font-size: 24px;
+
+        ::ng-deep span {
+            overflow: initial;
+        }
     }
 
     .menu-button {
