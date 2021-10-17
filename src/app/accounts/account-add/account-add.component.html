@@ -1,16 +1,18 @@
-<div class="form-wrapper">
-    <form (ngSubmit)="onSave()" class="add-form" #form="ngForm">
+<h2 mat-dialog-title>Add account</h2>
+
+<mat-dialog-content class="mat-typography">
+    <form (ngSubmit)="onSave()" [formGroup]="accountForm">
         <mat-form-field>
-            <input matInput placeholder="Name" ngModel name="name" required>
+            <input matInput placeholder="Name" formControlName="name" required>
         </mat-form-field>
     
         <mat-form-field>
-            <input matInput placeholder="Description" ngModel name="description" required>
+            <input matInput placeholder="Description" formControlName="description" required>
         </mat-form-field>
-    
-        <div class="d-flex justify-content-end accounts-edit-buttons">
-            <button mat-raised-button routerLink="/accounts" type="button">Close</button>
-            <button mat-raised-button type="submit" [disabled]="form.invalid">Save</button>
-        </div>
     </form>
-</div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button type="submit" (click)="onSave()" [disabled]="accountForm.invalid">Save</button>
+  </mat-dialog-actions>

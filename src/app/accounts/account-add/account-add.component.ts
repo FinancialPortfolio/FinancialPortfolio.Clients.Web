@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { MatDialogRef } from '@angular/material/dialog';
+import { AccountsService } from 'src/app/api/services';
 
 @Component({
   selector: 'app-account-add',
@@ -7,14 +9,35 @@ import { NgForm } from '@angular/forms';
   styleUrls: ['./account-add.component.scss']
 })
 export class AccountAddComponent implements OnInit {
-  @ViewChild('form') form!: NgForm;
+  accountForm!: FormGroup;
 
-  constructor() { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private accountsService: AccountsService,
+    private dialogRef: MatDialogRef<AccountAddComponent>) { }
 
   ngOnInit(): void {
+    this.accountForm = this.formBuilder.group({
+      name: ['', [Validators.required, Validators.maxLength(25)]],
+      description: ['', [Validators.required, Validators.maxLength(50)]]
+    });
   }
 
   onSave(): void {
+    if (!this.accountForm.valid)
+      return;
 
+    this.accountsService.apiAccountsPost({ body: this.accountForm.value })
+      .subscribe(
+        () => {
+          // TODO: add to store
+          // TODO: add toastr
+          this.dialogRef.close();
+        }, (error) => {
+          console.log(error);
+          // TODO: add toastr
+          this.dialogRef.close();
+        },
+      );
   }
 }

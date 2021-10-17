@@ -6,7 +6,7 @@ import { AccountsRoutingModule } from './accounts-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { AccountAddComponent } from './account-add/account-add.component';
 import { AccountEditComponent } from './account-edit/account-edit.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,7 +18,8 @@ import { FormsModule } from '@angular/forms';
     CommonModule,
     AccountsRoutingModule,
     SharedModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ]
 })
 export class AccountsModule { }

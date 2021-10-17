@@ -5,8 +5,16 @@ table {
         cursor: pointer;
     }
     
+    .edit-header-cell {
+        text-align: center;
+    }
+
     .edit-cell {
         width: 100px;
+
+        button {
+            width: 100%;
+        }
     }
 }
 

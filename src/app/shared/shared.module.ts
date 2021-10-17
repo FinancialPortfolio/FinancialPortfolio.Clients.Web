@@ -5,6 +5,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   imports: [
@@ -13,14 +14,16 @@ import { MatInputModule } from '@angular/material/input';
     MatTableModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule
   ],
   exports: [
     NgxSpinnerModule,
     MatTableModule,
     MatButtonModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatDialogModule
   ],
   providers: []
 })
