@@ -1,0 +1,16 @@
+<div class="form-wrapper">
+    <form (ngSubmit)="onSave()" class="add-form" #form="ngForm">
+        <mat-form-field>
+            <input matInput placeholder="Name" ngModel name="name" required>
+        </mat-form-field>
+    
+        <mat-form-field>
+            <input matInput placeholder="Description" ngModel name="description" required>
+        </mat-form-field>
+    
+        <div class="d-flex justify-content-end accounts-edit-buttons">
+            <button mat-raised-button routerLink="/accounts" type="button">Close</button>
+            <button mat-raised-button type="submit" [disabled]="form.invalid">Save</button>
+        </div>
+    </form>
+</div>

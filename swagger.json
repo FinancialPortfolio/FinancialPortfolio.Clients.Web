@@ -12,7 +12,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/AccountApi.AccountResponse"
+                  }
+                }
+              }
+            }
           },
           "500": {
             "description": "Server Error"
@@ -27,17 +37,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAccountRequest"
+                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAccountRequest"
+                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateAccountRequest"
+                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest"
               }
             }
           }
@@ -59,7 +69,17 @@
         ],
         "responses": {
           "200": {
-            "description": "Success"
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/TransferApi.TransferResponse"
+                  }
+                }
+              }
+            }
           },
           "500": {
             "description": "Server Error"
@@ -74,17 +94,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTransferRequest"
+                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTransferRequest"
+                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateTransferRequest"
+                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest"
               }
             }
           }
@@ -102,7 +122,29 @@
   },
   "components": {
     "schemas": {
-      "CreateAccountRequest": {
+      "AccountApi.AccountResponse": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdDateTime": {
+            "type": "string",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest": {
         "type": "object",
         "properties": {
           "name": {
@@ -116,7 +158,15 @@
         },
         "additionalProperties": false
       },
-      "CreateTransferRequest": {
+      "FinancialPortfolio.APIGateway.Contracts.Equity.Enums.TransferType": {
+        "enum": [
+          0,
+          1
+        ],
+        "type": "integer",
+        "format": "int32"
+      },
+      "FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest": {
         "type": "object",
         "properties": {
           "amount": {
@@ -124,7 +174,7 @@
             "format": "double"
           },
           "type": {
-            "$ref": "#/components/schemas/TransferType"
+            "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Enums.TransferType"
           },
           "dateTime": {
             "type": "string",
@@ -134,7 +184,24 @@
         },
         "additionalProperties": false
       },
-      "TransferType": {
+      "TransferApi.TransferResponse": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "type": {
+            "$ref": "#/components/schemas/TransferApi.TransferType"
+          },
+          "dateTime": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransferApi.TransferType": {
         "enum": [
           0,
           1

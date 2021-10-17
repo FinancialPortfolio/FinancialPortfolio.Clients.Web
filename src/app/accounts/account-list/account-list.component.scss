@@ -1,3 +1,19 @@
 table {
     width: 100%;
+
+    .mat-row {
+        cursor: pointer;
+    }
+    
+    .edit-cell {
+        width: 100px;
+    }
+}
+
+.accounts-edit-buttons {
+    width: 100%;
+
+    button {
+        margin: 15px 10px;
+    }
 }
