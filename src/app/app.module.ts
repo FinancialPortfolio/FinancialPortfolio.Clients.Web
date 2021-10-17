@@ -14,6 +14,8 @@ import { AuthenticationModule } from './authentication/authentication.module';
 import { ApiModule } from './api/api.module';
 import { AuthenticationInterceptor } from './authentication/interceptors/authentication-interceptor';
 import { AppReducers } from './reducers/app.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { AccountsEffects } from './accounts/store/accounts.effects';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,8 @@ import { AppReducers } from './reducers/app.reducers';
     AuthenticationModule,
     AppRoutingModule,
     ApiModule.forRoot({ rootUrl: 'https://localhost:5001' }),
-    StoreModule.forRoot(AppReducers)
+    StoreModule.forRoot(AppReducers),
+    EffectsModule.forRoot([AccountsEffects])
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
