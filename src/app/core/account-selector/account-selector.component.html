@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>Select account</h2>
+
+<mat-dialog-content class="mat-typography">
+    <mat-form-field appearance="fill" class="select-accounts">
+        <mat-label>Accounts</mat-label>
+        <mat-select [(ngModel)]="selectedAccount" (selectionChange)="accountSelected()">
+          <mat-option *ngFor="let account of accounts" [value]="account">{{ account.name }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+  </mat-dialog-actions>

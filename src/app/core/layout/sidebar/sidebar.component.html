@@ -3,8 +3,11 @@
 </a>
 
 <div class="account-information">
-    <h4 class="name">Admiral markets</h4>
-    <p class="description">Account for long time investing</p>
+    <div class="name-block" (click)="selectAccount()">
+        <i class="far fa-user-circle select-account"></i>
+        <h4 class="name">{{ selectedAccount.name }}</h4>
+    </div>
+    <p class="description">{{ selectedAccount.description }}</p>
 </div>
 
 <mat-divider></mat-divider>
