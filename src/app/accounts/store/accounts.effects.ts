@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map, withLatestFrom, filter, switchMap } from 'rxjs/operators';
+import { withLatestFrom, filter, switchMap, mergeMap } from 'rxjs/operators';
 import { AccountResponse } from 'src/app/api/models/AccountApi/account-response';
 
 import { AccountsService } from "src/app/api/services";
-import { LOAD_ACCOUNTS, SetAccountsAction } from './accounts.actions';
+import { LOAD_ACCOUNTS, SelectAccountAction, SetAccountsAction } from './accounts.actions';
 import { AccountsState } from './accounts.reducers';
 
 @Injectable()
@@ -22,7 +22,14 @@ export class AccountsEffects {
         filter(([_, state]) => !state.hasLoaded),
         switchMap(() => 
             this.accountsService.apiAccountsGet().pipe(
-                map((accounts: AccountResponse[]) => SetAccountsAction({ accounts }))
+                mergeMap((accounts: AccountResponse[]) => {
+                    let actions: any[] = [SetAccountsAction({ accounts })];
+                    
+                    if (accounts && accounts.length > 0)
+                        actions.push(SelectAccountAction({ account: accounts[0] }))
+                    
+                    return actions;
+                })
             )
         )
         // TODO: add error handling here
