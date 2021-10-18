@@ -7,17 +7,20 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatDividerModule } from '@angular/material/divider';
 import {MatExpansionModule} from '@angular/material/expansion';
+import { MatDialogModule } from '@angular/material/dialog';
+import { RouterModule } from '@angular/router';
 
 import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { LayoutComponent } from './layout/layout.component';
-import { RouterModule } from '@angular/router';
+import { AccountSelectorComponent } from './account-selector/account-selector.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
     SidebarComponent,
-    LayoutComponent
+    LayoutComponent,
+    AccountSelectorComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +31,8 @@ import { RouterModule } from '@angular/router';
     MatButtonModule,
     MatIconModule,
     MatDividerModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatDialogModule
   ],
   exports: [
     LayoutComponent
