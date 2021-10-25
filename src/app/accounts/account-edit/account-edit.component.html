@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>Edit account</h2>
 
-<mat-dialog-content class="mat-typography">
+<mat-dialog-content class="mat-typography edit-form">
     <form (ngSubmit)="onSave()" [formGroup]="accountForm">
         <mat-form-field>
             <input matInput placeholder="Name" formControlName="name" required>

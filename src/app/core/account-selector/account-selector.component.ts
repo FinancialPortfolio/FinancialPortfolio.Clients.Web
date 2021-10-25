@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { select, Store } from '@ngrx/store';
-import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
+import { take, takeUntil } from 'rxjs/operators';
 
 import { LoadAccountsAction, SelectAccountAction } from 'src/app/accounts/store/accounts.actions';
 import { AccountResponse } from 'src/app/api/models/AccountApi/account-response';
-import { AppState } from 'src/app/reducers/app.reducers';
+import { AppState } from 'src/app/store/app.reducers';
 
 @Component({
   selector: 'app-account-selector',
@@ -17,19 +17,18 @@ export class AccountSelectorComponent implements OnInit, OnDestroy {
   selectedAccount: AccountResponse = { name: '' };
   accounts: AccountResponse[] = [];
 
-  accountsSubscription!: Subscription;
-  hasLoadedSubscription!: Subscription;
+  private readonly unsubscribe: Subject<void> = new Subject();
 
   constructor(private store: Store<AppState>, private dialogRef: MatDialogRef<AccountResponse>) { }
   
   ngOnInit(): void {
-    this.hasLoadedSubscription = this.store.select(state => state.accounts.hasLoaded).pipe(take(1)).subscribe(
+    this.store.select(state => state.accounts.hasLoaded).pipe(take(1)).subscribe(
       (hasLoaded: boolean) => {
         if (!hasLoaded)
           this.store.dispatch(LoadAccountsAction());
       }
     );
-    this.accountsSubscription = this.store.subscribe(
+    this.store.pipe(takeUntil(this.unsubscribe)).subscribe(
       (state: AppState) => {
         this.accounts = state.accounts.accounts;
         this.selectedAccount = state.accounts.selectedAccount ?? this.selectedAccount;
@@ -38,8 +37,8 @@ export class AccountSelectorComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.accountsSubscription.unsubscribe();
-    this.hasLoadedSubscription.unsubscribe();
+    this.unsubscribe.next();
+    this.unsubscribe.complete();
   }
 
   accountSelected() {

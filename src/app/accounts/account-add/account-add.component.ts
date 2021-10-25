@@ -27,10 +27,11 @@ export class AccountAddComponent implements OnInit {
     if (!this.accountForm.valid)
       return;
 
-    this.accountsService.apiAccountsPost({ body: this.accountForm.value })
+    this.accountsService.apiAccountsPost$Response({ body: this.accountForm.value })
       .subscribe(
-        () => {
-          // TODO: add to store
+        (result) => {
+          console.log(result);
+          // TODO: add to store on saved event
           // TODO: add toastr
           this.dialogRef.close();
         }, (error) => {

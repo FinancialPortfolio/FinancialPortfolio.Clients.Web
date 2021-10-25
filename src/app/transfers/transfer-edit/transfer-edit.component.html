@@ -1,0 +1,19 @@
+<h2 mat-dialog-title>Edit transfer</h2>
+
+<mat-dialog-content class="mat-typography edit-form">
+    <form (ngSubmit)="onSave()" [formGroup]="transferForm">
+        <mat-radio-group formControlName="type">
+            <mat-radio-button value="Deposit">Deposit</mat-radio-button>
+            <mat-radio-button value="Withdrawal">Withdrawal</mat-radio-button>
+        </mat-radio-group>
+
+        <mat-form-field>
+            <input matInput placeholder="Amount" formControlName="amount" required>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button type="submit" (click)="onSave()" [disabled]="transferForm.invalid">Save</button>
+</mat-dialog-actions>

@@ -125,6 +125,10 @@
       "AccountApi.AccountResponse": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
           "name": {
             "type": "string",
             "nullable": true
@@ -160,11 +164,10 @@
       },
       "FinancialPortfolio.APIGateway.Contracts.Equity.Enums.TransferType": {
         "enum": [
-          0,
-          1
+          "Deposit",
+          "Withdrawal"
         ],
-        "type": "integer",
-        "format": "int32"
+        "type": "string"
       },
       "FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest": {
         "type": "object",
@@ -180,6 +183,10 @@
             "type": "string",
             "format": "date-time",
             "nullable": true
+          },
+          "accountId": {
+            "type": "string",
+            "format": "uuid"
           }
         },
         "additionalProperties": false
@@ -187,6 +194,10 @@
       "TransferApi.TransferResponse": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
           "amount": {
             "type": "number",
             "format": "double"
@@ -197,17 +208,20 @@
           "dateTime": {
             "type": "string",
             "nullable": true
+          },
+          "accountId": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
       "TransferApi.TransferType": {
         "enum": [
-          0,
-          1
+          "Deposit",
+          "Withdrawal"
         ],
-        "type": "integer",
-        "format": "int32"
+        "type": "string"
       }
     },
     "securitySchemes": {
