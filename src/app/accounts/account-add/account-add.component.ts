@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AccountsService } from 'src/app/api/services';
 
@@ -9,10 +9,10 @@ import { AccountsService } from 'src/app/api/services';
   styleUrls: ['./account-add.component.scss']
 })
 export class AccountAddComponent implements OnInit {
-  accountForm!: FormGroup;
+  accountForm!: UntypedFormGroup;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private accountsService: AccountsService,
     private dialogRef: MatDialogRef<AccountAddComponent>) { }
 

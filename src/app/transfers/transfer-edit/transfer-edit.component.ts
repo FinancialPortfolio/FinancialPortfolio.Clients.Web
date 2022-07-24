@@ -1,5 +1,5 @@
 import { Component, OnInit, Inject } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 
 import { TransferResponse } from "src/app/api/models/TransferApi/transfer-response";
@@ -10,10 +10,10 @@ import { TransferResponse } from "src/app/api/models/TransferApi/transfer-respon
   styleUrls: ['./transfer-edit.component.scss']
 })
 export class TransferEditComponent implements OnInit {
-  transferForm!: FormGroup;
+  transferForm!: UntypedFormGroup;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: {item: TransferResponse}) { }
 
   ngOnInit(): void {

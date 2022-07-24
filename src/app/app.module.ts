@@ -18,6 +18,7 @@ import { AppReducers } from './store/app.reducers';
 import { EffectsModule } from '@ngrx/effects';
 import { AccountsEffects } from './accounts/store/accounts.effects';
 import { TransfersEffects } from './transfers/store/transfers.effects';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -26,18 +27,18 @@ import { TransfersEffects } from './transfers/store/transfers.effects';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
+    HttpClientModule, // TODO: move to core
     CoreModule,
     HomeModule,
-    AuthenticationModule,
-    AppRoutingModule,
-    ApiModule.forRoot({ rootUrl: 'https://localhost:5001' }),
+    AuthenticationModule, 
+    AppRoutingModule, // TODO: move to core
+    ApiModule.forRoot({ rootUrl: environment.gatewayUrl }),
     StoreModule.forRoot(AppReducers),
     EffectsModule.forRoot([AccountsEffects, TransfersEffects])
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true },
-    { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true }, // TODO: move to core?
+    { provide: MAT_RADIO_DEFAULT_OPTIONS, useValue: { color: 'primary' } } // // TODO: move to core?
   ],
   bootstrap: [AppComponent]
 })

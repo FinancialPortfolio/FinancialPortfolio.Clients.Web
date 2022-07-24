@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -16,13 +16,13 @@ import { AppState } from 'src/app/store/app.reducers';
   styleUrls: ['./transfer-add.component.scss']
 })
 export class TransferAddComponent implements OnInit, OnDestroy {
-  transferForm!: FormGroup;
+  transferForm!: UntypedFormGroup;
   accountId: string | undefined | null;
   
   private readonly unsubscribe: Subject<void> = new Subject();
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     private transfersService: TransfersService,
     private dialogRef: MatDialogRef<TransferAddComponent>,
     private store: Store<AppState>) { }

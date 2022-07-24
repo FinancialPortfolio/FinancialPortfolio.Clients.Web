@@ -29,7 +29,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
           this.store.dispatch(LoadAccountsAction());
       }
     );
-    this.store.pipe(takeUntil(this.unsubscribe)).subscribe(
+    this.store.pipe(takeUntil(this.unsubscribe)).subscribe( // TODO: try to use this.store.select('Accounts')
       (state: AppState) => {
         this.accounts = state.accounts.accounts;
       }

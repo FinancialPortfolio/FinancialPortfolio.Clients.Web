@@ -20,6 +20,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     FormsModule,
     ReactiveFormsModule
+    // TODO: add store for feature
   ]
 })
 export class AccountsModule { }

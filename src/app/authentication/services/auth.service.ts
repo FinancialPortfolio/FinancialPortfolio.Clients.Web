@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { UserManager, UserManagerSettings, User } from 'oidc-client';
 import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -48,15 +49,15 @@ export class AuthService {
 
 export function getClientSettings(): UserManagerSettings {
   return {
-    authority: 'https://localhost:5003',
+    authority: environment.authority,
     client_id: 'FP_web_client',
-    redirect_uri: 'http://localhost:4200/auth-callback',
-    post_logout_redirect_uri: 'http://localhost:4200/',
+    redirect_uri: `${environment.clientUrl}/auth-callback`,
+    post_logout_redirect_uri: `${environment.clientUrl}`,
     response_type: "code",
     scope: "openid profile FPGateway",
     filterProtocolClaims: true,
     loadUserInfo: true,
     automaticSilentRenew: true,
-    silent_redirect_uri: 'http://localhost:4200/silent-refresh.html'
+    silent_redirect_uri: `${environment.clientUrl}/silent-refresh.html`
   };
 }

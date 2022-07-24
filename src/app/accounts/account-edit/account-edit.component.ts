@@ -1,5 +1,5 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AccountResponse } from 'src/app/api/models/AccountApi/account-response';
 
@@ -9,10 +9,10 @@ import { AccountResponse } from 'src/app/api/models/AccountApi/account-response'
   styleUrls: ['./account-edit.component.scss']
 })
 export class AccountEditComponent implements OnInit {
-  accountForm!: FormGroup;
+  accountForm!: UntypedFormGroup;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: UntypedFormBuilder,
     @Inject(MAT_DIALOG_DATA) public data: {item: AccountResponse}) { }
 
   ngOnInit(): void {
