@@ -7,5 +7,6 @@ COPY . .
 RUN npm run build
 
 FROM nginx:alpine
-EXPOSE 80
+EXPOSE 4200
+COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist/fp-client-web /usr/share/nginx/html
