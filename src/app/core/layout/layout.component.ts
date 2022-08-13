@@ -34,9 +34,9 @@ export class LayoutComponent {
       .pipe(delay(1))
       .subscribe((res) => {
         if (res.matches) {
-          this.closeSidebar();
-        } else {
           this.openSidebar();
+        } else {
+          this.closeSidebar();
         }
       });
   }
