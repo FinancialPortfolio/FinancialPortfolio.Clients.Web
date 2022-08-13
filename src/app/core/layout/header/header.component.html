@@ -1,5 +1,5 @@
 <mat-toolbar class="toolbar">
-  <button class="toolbar-toggler" type="button" (click)="openSidebar()">
+  <button class="toolbar-toggler" type="button" *ngIf="isAuthenticated" (click)="openSidebar()">
     <i class="fas fa-align-justify"></i>
   </button>
   <span class="toolbar-brand">Financial portfolio</span>
