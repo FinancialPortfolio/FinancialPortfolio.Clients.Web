@@ -51,13 +51,13 @@ abstract class Parameter {
     if (value === null || value === undefined) {
       return '';
     } else if (value instanceof Array) {
-      return value.map(v => this.serializeValue(v)?.split(separator).join(encodeURIComponent(separator))).join(separator);
+      return value.map(v => this.serializeValue(v).split(separator).join(encodeURIComponent(separator))).join(separator);
     } else if (typeof value === 'object') {
       const array: string[] = [];
       for (const key of Object.keys(value)) {
         let propVal = value[key];
         if (propVal !== null && propVal !== undefined) {
-          propVal = this.serializeValue(propVal)?.split(separator).join(encodeURIComponent(separator));
+          propVal = this.serializeValue(propVal).split(separator).join(encodeURIComponent(separator));
           if (this.options.explode) {
             array.push(`${key}=${propVal}`);
           } else {
@@ -113,6 +113,7 @@ class PathParameter extends Parameter {
     return path;
   }
 
+  // @ts-ignore
   serializeValue(value: any, separator = ','): string {
     var result = typeof value === 'string' ? encodeURIComponent(value) : super.serializeValue(value, separator);
     result = result.replace('%3D', '=');

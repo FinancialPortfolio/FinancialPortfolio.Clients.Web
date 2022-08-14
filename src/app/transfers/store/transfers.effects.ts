@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { withLatestFrom, filter, switchMap, map } from 'rxjs/operators';
+import { WebApiResponse } from 'src/app/api/models/FinancialPortfolio/Infrastructure/WebApi/Models/Response/web-api-response';
 import { TransferResponse } from 'src/app/api/models/TransferApi/transfer-response';
 
 import { TransfersService } from "src/app/api/services";
@@ -22,7 +23,7 @@ export class TransfersEffects {
         filter(([_, state]) => !state.hasLoaded),
         switchMap(() => 
             this.transfersService.apiTransfersGet().pipe(
-                map((transfers: TransferResponse[]) => SetTransfersAction({ transfers }))
+                map((response: any) => SetTransfersAction({ transfers: response.response }))
             )
         )
         // TODO: add error handling here

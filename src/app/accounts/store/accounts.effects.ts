@@ -22,7 +22,8 @@ export class AccountsEffects {
         filter(([_, state]) => !state.hasLoaded),
         switchMap(() => 
             this.accountsService.apiAccountsGet().pipe(
-                mergeMap((accounts: AccountResponse[]) => {
+                mergeMap((response: any) => {
+                    let accounts = response.response;
                     let actions: any[] = [SetAccountsAction({ accounts })];
                     
                     if (accounts && accounts.length > 0)

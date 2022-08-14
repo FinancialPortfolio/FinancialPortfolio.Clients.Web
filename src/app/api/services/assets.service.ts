@@ -9,13 +9,13 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
-import { CreateTransferRequest as FinancialPortfolioApiGatewayContractsEquityRequestsCreateTransferRequest } from '../models/FinancialPortfolio/APIGateway/Contracts/Equity/Requests/create-transfer-request';
+import { CreateAssetRequest as FinancialPortfolioApiGatewayContractsAssetsRequestsCreateAssetRequest } from '../models/FinancialPortfolio/APIGateway/Contracts/Assets/Requests/create-asset-request';
 import { WebApiResponse as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse } from '../models/FinancialPortfolio/Infrastructure/WebApi/Models/Response/web-api-response';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TransfersService extends BaseService {
+export class AssetsService extends BaseService {
   constructor(
     config: ApiConfiguration,
     http: HttpClient
@@ -24,20 +24,20 @@ export class TransfersService extends BaseService {
   }
 
   /**
-   * Path part for operation apiTransfersGet
+   * Path part for operation apiAssetsGet
    */
-  static readonly ApiTransfersGetPath = '/api/transfers';
+  static readonly ApiAssetsGetPath = '/api/assets';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiTransfersGet()` instead.
+   * To access only the response body, use `apiAssetsGet()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiTransfersGet$Response(params?: {
+  apiAssetsGet$Response(params?: {
   }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TransfersService.ApiTransfersGetPath, 'get');
+    const rb = new RequestBuilder(this.rootUrl, AssetsService.ApiAssetsGetPath, 'get');
     if (params) {
     }
 
@@ -54,34 +54,34 @@ export class TransfersService extends BaseService {
 
   /**
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiTransfersGet$Response()` instead.
+   * To access the full response (for headers, for example), `apiAssetsGet$Response()` instead.
    *
    * This method doesn't expect any request body.
    */
-  apiTransfersGet(params?: {
+  apiAssetsGet(params?: {
   }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
 
-    return this.apiTransfersGet$Response(params).pipe(
+    return this.apiAssetsGet$Response(params).pipe(
       map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
     );
   }
 
   /**
-   * Path part for operation apiTransfersPost
+   * Path part for operation apiAssetsPost
    */
-  static readonly ApiTransfersPostPath = '/api/transfers';
+  static readonly ApiAssetsPostPath = '/api/assets';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiTransfersPost()` instead.
+   * To access only the response body, use `apiAssetsPost()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiTransfersPost$Response(params?: {
-    body?: FinancialPortfolioApiGatewayContractsEquityRequestsCreateTransferRequest
+  apiAssetsPost$Response(params?: {
+    body?: FinancialPortfolioApiGatewayContractsAssetsRequestsCreateAssetRequest
   }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
 
-    const rb = new RequestBuilder(this.rootUrl, TransfersService.ApiTransfersPostPath, 'post');
+    const rb = new RequestBuilder(this.rootUrl, AssetsService.ApiAssetsPostPath, 'post');
     if (params) {
       rb.body(params.body, 'application/*+json');
     }
@@ -99,15 +99,15 @@ export class TransfersService extends BaseService {
 
   /**
    * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiTransfersPost$Response()` instead.
+   * To access the full response (for headers, for example), `apiAssetsPost$Response()` instead.
    *
    * This method sends `application/*+json` and handles request body of type `application/*+json`.
    */
-  apiTransfersPost(params?: {
-    body?: FinancialPortfolioApiGatewayContractsEquityRequestsCreateTransferRequest
+  apiAssetsPost(params?: {
+    body?: FinancialPortfolioApiGatewayContractsAssetsRequestsCreateAssetRequest
   }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
 
-    return this.apiTransfersPost$Response(params).pipe(
+    return this.apiAssetsPost$Response(params).pipe(
       map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
     );
   }

@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { AccountsService } from './services/accounts.service';
+import { AssetsService } from './services/assets.service';
 import { TransfersService } from './services/transfers.service';
 
 /**
@@ -16,6 +17,7 @@ import { TransfersService } from './services/transfers.service';
   declarations: [],
   providers: [
     AccountsService,
+    AssetsService,
     TransfersService,
     ApiConfiguration
   ],
