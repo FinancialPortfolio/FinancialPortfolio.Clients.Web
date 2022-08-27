@@ -9,17 +9,17 @@ import { TransferListComponent } from './transfer-list/transfer-list.component';
 import { TransfersRoutingModule } from './transfer-routing.module';
 
 @NgModule({
-  declarations: [
-    TransferAddComponent,
-    TransferEditComponent,
-    TransferListComponent
-  ],
-  imports: [
-    CommonModule,
-    TransfersRoutingModule,
-    SharedModule,
-    FormsModule,
-    ReactiveFormsModule
-  ]
+    declarations: [
+        TransferAddComponent,
+        TransferEditComponent,
+        TransferListComponent
+    ],
+    imports: [
+        CommonModule,
+        TransfersRoutingModule,
+        SharedModule,
+        FormsModule,
+        ReactiveFormsModule
+    ]
 })
 export class TransfersModule { }

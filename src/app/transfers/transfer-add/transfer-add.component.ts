@@ -11,60 +11,60 @@ import { TransfersService } from 'src/app/api/services';
 import { AppState } from 'src/app/store/app.reducers';
 
 @Component({
-  selector: 'app-transfer-add',
-  templateUrl: './transfer-add.component.html',
-  styleUrls: ['./transfer-add.component.scss']
+    selector: 'app-transfer-add',
+    templateUrl: './transfer-add.component.html',
+    styleUrls: ['./transfer-add.component.scss']
 })
 export class TransferAddComponent implements OnInit, OnDestroy {
-  transferForm!: UntypedFormGroup;
-  accountId: string | undefined | null;
-  
-  private readonly unsubscribe: Subject<void> = new Subject();
+    transferForm!: UntypedFormGroup;
+    accountId: string | undefined | null;
 
-  constructor(
-    private formBuilder: UntypedFormBuilder,
-    private transfersService: TransfersService,
-    private dialogRef: MatDialogRef<TransferAddComponent>,
-    private store: Store<AppState>) { }
+    private readonly unsubscribe: Subject<void> = new Subject();
 
-  ngOnInit(): void {
-    this.transferForm = this.formBuilder.group({
-      amount: [0, [Validators.required]],
-      type: ['Deposit', [Validators.required]]
-    });
+    constructor(
+        private formBuilder: UntypedFormBuilder,
+        private transfersService: TransfersService,
+        private dialogRef: MatDialogRef<TransferAddComponent>,
+        private store: Store<AppState>) { }
 
-    this.store.select(selectSelectedAccount).pipe(takeUntil(this.unsubscribe)).subscribe(
-      (selectedAccount) => {
-        this.accountId = selectedAccount?.id;
-      }
-    );
-  }
+    ngOnInit(): void {
+        this.transferForm = this.formBuilder.group({
+            amount: [0, [Validators.required]],
+            type: ['Deposit', [Validators.required]]
+        });
 
-  ngOnDestroy(): void {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
+        this.store.select(selectSelectedAccount).pipe(takeUntil(this.unsubscribe)).subscribe(
+            (selectedAccount) => {
+                this.accountId = selectedAccount?.id;
+            }
+        );
+    }
 
-  onSave(): void {
-    if (!this.transferForm.valid)
-      return;
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    }
 
-    let body: CreateTransferRequest = {
-      ...this.transferForm.value,
-      accountId: this.accountId
-    };
-    this.transfersService.apiTransfersPost$Response({ body })
-      .subscribe(
-        (result) => {
-          console.log(result);
-          // TODO: add to store on saved event
-          // TODO: add toastr
-          this.dialogRef.close();
-        }, (error) => {
-          console.log(error);
-          // TODO: add toastr
-          this.dialogRef.close();
-        },
-      );
-  }
+    onSave(): void {
+        if (!this.transferForm.valid)
+            return;
+
+        let body: CreateTransferRequest = {
+            ...this.transferForm.value,
+            accountId: this.accountId
+        };
+        this.transfersService.apiTransfersPost$Response({ body })
+            .subscribe(
+                (result) => {
+                    console.log(result);
+                    // TODO: add to store on saved event
+                    // TODO: add toastr
+                    this.dialogRef.close();
+                }, (error) => {
+                    console.log(error);
+                    // TODO: add toastr
+                    this.dialogRef.close();
+                },
+            );
+    }
 }

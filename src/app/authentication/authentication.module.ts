@@ -6,14 +6,14 @@ import { AuthGuard } from './guards/auth.guard';
 import { AuthenticationRoutingModule } from './authentication-routing.module';
 
 @NgModule({
-  declarations: [],
-  providers: [
-    AuthService,
-    AuthGuard
-  ],
-  imports: [
-    CommonModule,
-    AuthenticationRoutingModule
-  ]
+    declarations: [],
+    providers: [
+        AuthService,
+        AuthGuard
+    ],
+    imports: [
+        CommonModule,
+        AuthenticationRoutingModule
+    ]
 })
 export class AuthenticationModule { }

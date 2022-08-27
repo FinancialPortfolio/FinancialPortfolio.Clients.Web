@@ -12,48 +12,48 @@ import { TransferAddComponent } from '../transfer-add/transfer-add.component';
 import { TransferEditComponent } from '../transfer-edit/transfer-edit.component';
 
 @Component({
-  selector: 'app-transfer-list',
-  templateUrl: './transfer-list.component.html',
-  styleUrls: ['./transfer-list.component.scss']
+    selector: 'app-transfer-list',
+    templateUrl: './transfer-list.component.html',
+    styleUrls: ['./transfer-list.component.scss']
 })
 export class TransferListComponent implements OnInit {
-  transfers: TransferResponse[] = [];
-  displayedColumns: string[] = ['amount', 'dateTime', 'type', 'actions'];
-  TransferType = TransferType;
+    transfers: TransferResponse[] = [];
+    displayedColumns: string[] = ['amount', 'dateTime', 'type', 'actions'];
+    TransferType = TransferType;
 
-  private readonly unsubscribe: Subject<void> = new Subject();
+    private readonly unsubscribe: Subject<void> = new Subject();
 
-  constructor(private dialog: MatDialog, private store: Store<AppState>) { }
+    constructor(private dialog: MatDialog, private store: Store<AppState>) { }
 
-  ngOnInit(): void {
-    this.store.select(state => state.transfers.hasLoaded).pipe(take(1)).subscribe(
-      (hasLoaded: boolean) => {
-        if (!hasLoaded)
-          this.store.dispatch(LoadTransfersAction());
-      }
-    );
-    this.store.pipe(takeUntil(this.unsubscribe)).subscribe(
-      (state: AppState) => {
-        this.transfers = state.transfers.transfers;
-      }
-    );
-  }
+    ngOnInit(): void {
+        this.store.select(state => state.transfers.hasLoaded).pipe(take(1)).subscribe(
+            (hasLoaded: boolean) => {
+                if (!hasLoaded)
+                    this.store.dispatch(LoadTransfersAction());
+            }
+        );
+        this.store.pipe(takeUntil(this.unsubscribe)).subscribe(
+            (state: AppState) => {
+                this.transfers = state.transfers.transfers;
+            }
+        );
+    }
 
-  ngOnDestroy(): void {
-    this.unsubscribe.next();
-    this.unsubscribe.complete();
-  }
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
+    }
 
-  add(): void {
-    this.dialog.open(TransferAddComponent, {
-      width: '500px'
-    });
-  }
+    add(): void {
+        this.dialog.open(TransferAddComponent, {
+            width: '500px'
+        });
+    }
 
-  edit(element: TransferResponse): void {
-    this.dialog.open(TransferEditComponent, {
-      width: '500px',
-      data: { item: element }
-    });
-  }
+    edit(element: TransferResponse): void {
+        this.dialog.open(TransferEditComponent, {
+            width: '500px',
+            data: { item: element }
+        });
+    }
 }

@@ -21,7 +21,7 @@ export class TransfersEffects {
         ofType(LOAD_TRANSFERS),
         withLatestFrom(this.store),
         filter(([_, state]) => !state.hasLoaded),
-        switchMap(() => 
+        switchMap(() =>
             this.transfersService.apiTransfersGet().pipe(
                 map((response: any) => SetTransfersAction({ transfers: response.response }))
             )

@@ -5,7 +5,8 @@
 
     <mat-sidenav-content>
         <div class="sidenav-content mat-elevation-z8">
-            <app-header *ngIf="!sidenav.opened" class="header" (sidebarOpened)="openSidebar()" [@headerAnimation]></app-header>
+            <app-header *ngIf="!sidenav.opened" class="header" (sidebarOpened)="openSidebar()" [@headerAnimation]>
+            </app-header>
 
             <div class="content">
                 <ng-content></ng-content>

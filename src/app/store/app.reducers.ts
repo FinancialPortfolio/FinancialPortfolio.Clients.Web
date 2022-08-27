@@ -4,11 +4,11 @@ import { AccountsReducer, AccountsState } from '../accounts/store/accounts.reduc
 import { TransfersReducer, TransfersState } from '../transfers/store/transfers.reducers';
 
 export interface AppState {
-  accounts: AccountsState;
-  transfers: TransfersState;
+    accounts: AccountsState;
+    transfers: TransfersState;
 }
 
 export const AppReducers: ActionReducerMap<AppState> = {
-  accounts: AccountsReducer,
-  transfers: TransfersReducer
+    accounts: AccountsReducer,
+    transfers: TransfersReducer
 };

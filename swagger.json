@@ -1,995 +1,995 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "API",
-    "version": "v1"
-  },
-  "paths": {
-    "/api/accounts": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.Search.SearchOptions"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.Search.SearchOptions"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.Search.SearchOptions"
-              }
-            }
-          }
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Accounts"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "202": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
-                }
-              }
-            }
-          }
-        }
-      }
+    "openapi": "3.0.1",
+    "info": {
+        "title": "API",
+        "version": "v1"
     },
-    "/api/accounts/{id}": {
-      "get": {
-        "tags": [
-          "Accounts"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+    "paths": {
+        "/api/accounts": {
+            "get": {
+                "tags": [
+                    "Accounts"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.Search.SearchOptions"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.Search.SearchOptions"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.Search.SearchOptions"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse`1[AccountApi.AccountResponse]"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "Not Found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Accounts"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.UpdateAccountRequest"
-              }
             },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.UpdateAccountRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.UpdateAccountRequest"
-              }
+            "post": {
+                "tags": [
+                    "Accounts"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "202": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
             }
-          }
         },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+        "/api/accounts/{id}": {
+            "get": {
+                "tags": [
+                    "Accounts"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse`1[AccountApi.AccountResponse]"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+            },
+            "put": {
+                "tags": [
+                    "Accounts"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.UpdateAccountRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.UpdateAccountRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.UpdateAccountRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "202": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+            },
+            "delete": {
+                "tags": [
+                    "Accounts"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "202": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+        },
+        "/api/assets": {
+            "get": {
+                "tags": [
+                    "Assets"
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
-            }
-          },
-          "202": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
+            },
+            "post": {
+                "tags": [
+                    "Assets"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Assets.Requests.CreateAssetRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Assets.Requests.CreateAssetRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Assets.Requests.CreateAssetRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "202": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
+                                }
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
+        },
+        "/api/transfers": {
+            "get": {
+                "tags": [
+                    "Transfers"
+                ],
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Transfers"
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest"
+                            }
+                        },
+                        "text/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest"
+                            }
+                        },
+                        "application/*+json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
+                                }
+                            }
+                        }
+                    },
+                    "202": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-      },
-      "delete": {
-        "tags": [
-          "Accounts"
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "format": "uuid"
-            }
-          }
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "202": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
-                }
-              }
-            }
-          }
-        }
-      }
     },
-    "/api/assets": {
-      "get": {
-        "tags": [
-          "Assets"
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Assets"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Assets.Requests.CreateAssetRequest"
-              }
+    "components": {
+        "schemas": {
+            "AccountApi.AccountResponse": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "createdDateTime": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "userId": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
             },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Assets.Requests.CreateAssetRequest"
-              }
+            "FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
             },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Assets.Requests.CreateAssetRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "202": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/transfers": {
-      "get": {
-        "tags": [
-          "Transfers"
-        ],
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Transfers"
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest"
-              }
+            "FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.UpdateAccountRequest": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "description": {
+                        "type": "string",
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
             },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "500": {
-            "description": "Server Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails"
-                }
-              }
-            }
-          },
-          "202": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse"
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "AccountApi.AccountResponse": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          },
-          "createdDateTime": {
-            "type": "string",
-            "nullable": true
-          },
-          "userId": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.CreateAccountRequest": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.APIGateway.Contracts.Accounts.Requests.UpdateAccountRequest": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "description": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.APIGateway.Contracts.Assets.Enums.AssetType": {
-        "enum": [
-          "Stock"
-        ],
-        "type": "string"
-      },
-      "FinancialPortfolio.APIGateway.Contracts.Assets.Requests.CreateAssetRequest": {
-        "type": "object",
-        "properties": {
-          "symbol": {
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          },
-          "type": {
-            "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Assets.Enums.AssetType"
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.APIGateway.Contracts.Equity.Enums.TransferType": {
-        "enum": [
-          "Deposit",
-          "Withdrawal"
-        ],
-        "type": "string"
-      },
-      "FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest": {
-        "type": "object",
-        "properties": {
-          "amount": {
-            "type": "number",
-            "format": "double"
-          },
-          "type": {
-            "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Enums.TransferType"
-          },
-          "dateTime": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
-          },
-          "accountId": {
-            "type": "string",
-            "format": "uuid"
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse`1[AccountApi.AccountResponse]": {
-        "type": "object",
-        "properties": {
-          "statusCode": {
-            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
-          },
-          "response": {
-            "$ref": "#/components/schemas/AccountApi.AccountResponse"
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails": {
-        "type": "object",
-        "properties": {
-          "title": {
-            "type": "string",
-            "nullable": true
-          },
-          "detail": {
-            "type": "string",
-            "nullable": true
-          },
-          "errors": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "array",
-              "items": {
+            "FinancialPortfolio.APIGateway.Contracts.Assets.Enums.AssetType": {
+                "enum": [
+                    "Stock"
+                ],
                 "type": "string"
-              }
             },
-            "nullable": true
-          },
-          "statusCode": {
-            "$ref": "#/components/schemas/System.Net.HttpStatusCode"
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.Search.Filtering.FilterCriteria": {
-        "type": "object",
-        "properties": {
-          "field": {
-            "type": "string",
-            "nullable": true
-          },
-          "value": {
-            "type": "string",
-            "nullable": true
-          },
-          "operator": {
-            "$ref": "#/components/schemas/FinancialPortfolio.Search.Filtering.FilterOperator"
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.Search.Filtering.FilteringOptions": {
-        "type": "object",
-        "properties": {
-          "criteria": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/FinancialPortfolio.Search.Filtering.FilterCriteria"
+            "FinancialPortfolio.APIGateway.Contracts.Assets.Requests.CreateAssetRequest": {
+                "type": "object",
+                "properties": {
+                    "symbol": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "name": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Assets.Enums.AssetType"
+                    }
+                },
+                "additionalProperties": false
             },
-            "nullable": true
-          }
+            "FinancialPortfolio.APIGateway.Contracts.Equity.Enums.TransferType": {
+                "enum": [
+                    "Deposit",
+                    "Withdrawal"
+                ],
+                "type": "string"
+            },
+            "FinancialPortfolio.APIGateway.Contracts.Equity.Requests.CreateTransferRequest": {
+                "type": "object",
+                "properties": {
+                    "amount": {
+                        "type": "number",
+                        "format": "double"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/FinancialPortfolio.APIGateway.Contracts.Equity.Enums.TransferType"
+                    },
+                    "dateTime": {
+                        "type": "string",
+                        "format": "date-time",
+                        "nullable": true
+                    },
+                    "accountId": {
+                        "type": "string",
+                        "format": "uuid"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse": {
+                "type": "object",
+                "properties": {
+                    "statusCode": {
+                        "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FinancialPortfolio.Infrastructure.WebApi.Models.Response.WebApiResponse`1[AccountApi.AccountResponse]": {
+                "type": "object",
+                "properties": {
+                    "statusCode": {
+                        "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+                    },
+                    "response": {
+                        "$ref": "#/components/schemas/AccountApi.AccountResponse"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FinancialPortfolio.ProblemDetails.WebApi.Models.WebApiProblemDetails": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "detail": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "errors": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        },
+                        "nullable": true
+                    },
+                    "statusCode": {
+                        "$ref": "#/components/schemas/System.Net.HttpStatusCode"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FinancialPortfolio.Search.Filtering.FilterCriteria": {
+                "type": "object",
+                "properties": {
+                    "field": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "value": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "operator": {
+                        "$ref": "#/components/schemas/FinancialPortfolio.Search.Filtering.FilterOperator"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FinancialPortfolio.Search.Filtering.FilteringOptions": {
+                "type": "object",
+                "properties": {
+                    "criteria": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/FinancialPortfolio.Search.Filtering.FilterCriteria"
+                        },
+                        "nullable": true
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FinancialPortfolio.Search.Filtering.FilterOperator": {
+                "enum": [
+                    "Equals",
+                    "LessThan",
+                    "LessThanOrEqual",
+                    "GreaterThan",
+                    "GreaterThanOrEqual",
+                    "NotEquals"
+                ],
+                "type": "string"
+            },
+            "FinancialPortfolio.Search.Pagination.PaginationOptions": {
+                "type": "object",
+                "properties": {
+                    "pageNumber": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "pageSize": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FinancialPortfolio.Search.SearchOptions": {
+                "type": "object",
+                "properties": {
+                    "filteringOptions": {
+                        "$ref": "#/components/schemas/FinancialPortfolio.Search.Filtering.FilteringOptions"
+                    },
+                    "sortingOptions": {
+                        "$ref": "#/components/schemas/FinancialPortfolio.Search.Sorting.SortingOptions"
+                    },
+                    "paginationOptions": {
+                        "$ref": "#/components/schemas/FinancialPortfolio.Search.Pagination.PaginationOptions"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FinancialPortfolio.Search.Sorting.SortingOptions": {
+                "type": "object",
+                "properties": {
+                    "field": {
+                        "type": "string",
+                        "nullable": true
+                    },
+                    "order": {
+                        "$ref": "#/components/schemas/FinancialPortfolio.Search.Sorting.SortOrder"
+                    }
+                },
+                "additionalProperties": false
+            },
+            "FinancialPortfolio.Search.Sorting.SortOrder": {
+                "enum": [
+                    "Asc",
+                    "Desc"
+                ],
+                "type": "string"
+            },
+            "System.Net.HttpStatusCode": {
+                "enum": [
+                    "Continue",
+                    "SwitchingProtocols",
+                    "Processing",
+                    "EarlyHints",
+                    "OK",
+                    "Created",
+                    "Accepted",
+                    "NonAuthoritativeInformation",
+                    "NoContent",
+                    "ResetContent",
+                    "PartialContent",
+                    "MultiStatus",
+                    "AlreadyReported",
+                    "IMUsed",
+                    "MultipleChoices",
+                    "MovedPermanently",
+                    "Found",
+                    "SeeOther",
+                    "NotModified",
+                    "UseProxy",
+                    "Unused",
+                    "TemporaryRedirect",
+                    "PermanentRedirect",
+                    "BadRequest",
+                    "Unauthorized",
+                    "PaymentRequired",
+                    "Forbidden",
+                    "NotFound",
+                    "MethodNotAllowed",
+                    "NotAcceptable",
+                    "ProxyAuthenticationRequired",
+                    "RequestTimeout",
+                    "Conflict",
+                    "Gone",
+                    "LengthRequired",
+                    "PreconditionFailed",
+                    "RequestEntityTooLarge",
+                    "RequestUriTooLong",
+                    "UnsupportedMediaType",
+                    "RequestedRangeNotSatisfiable",
+                    "ExpectationFailed",
+                    "MisdirectedRequest",
+                    "UnprocessableEntity",
+                    "Locked",
+                    "FailedDependency",
+                    "UpgradeRequired",
+                    "PreconditionRequired",
+                    "TooManyRequests",
+                    "RequestHeaderFieldsTooLarge",
+                    "UnavailableForLegalReasons",
+                    "InternalServerError",
+                    "NotImplemented",
+                    "BadGateway",
+                    "ServiceUnavailable",
+                    "GatewayTimeout",
+                    "HttpVersionNotSupported",
+                    "VariantAlsoNegotiates",
+                    "InsufficientStorage",
+                    "LoopDetected",
+                    "NotExtended",
+                    "NetworkAuthenticationRequired"
+                ],
+                "type": "string"
+            }
         },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.Search.Filtering.FilterOperator": {
-        "enum": [
-          "Equals",
-          "LessThan",
-          "LessThanOrEqual",
-          "GreaterThan",
-          "GreaterThanOrEqual",
-          "NotEquals"
-        ],
-        "type": "string"
-      },
-      "FinancialPortfolio.Search.Pagination.PaginationOptions": {
-        "type": "object",
-        "properties": {
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.Search.SearchOptions": {
-        "type": "object",
-        "properties": {
-          "filteringOptions": {
-            "$ref": "#/components/schemas/FinancialPortfolio.Search.Filtering.FilteringOptions"
-          },
-          "sortingOptions": {
-            "$ref": "#/components/schemas/FinancialPortfolio.Search.Sorting.SortingOptions"
-          },
-          "paginationOptions": {
-            "$ref": "#/components/schemas/FinancialPortfolio.Search.Pagination.PaginationOptions"
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.Search.Sorting.SortingOptions": {
-        "type": "object",
-        "properties": {
-          "field": {
-            "type": "string",
-            "nullable": true
-          },
-          "order": {
-            "$ref": "#/components/schemas/FinancialPortfolio.Search.Sorting.SortOrder"
-          }
-        },
-        "additionalProperties": false
-      },
-      "FinancialPortfolio.Search.Sorting.SortOrder": {
-        "enum": [
-          "Asc",
-          "Desc"
-        ],
-        "type": "string"
-      },
-      "System.Net.HttpStatusCode": {
-        "enum": [
-          "Continue",
-          "SwitchingProtocols",
-          "Processing",
-          "EarlyHints",
-          "OK",
-          "Created",
-          "Accepted",
-          "NonAuthoritativeInformation",
-          "NoContent",
-          "ResetContent",
-          "PartialContent",
-          "MultiStatus",
-          "AlreadyReported",
-          "IMUsed",
-          "MultipleChoices",
-          "MovedPermanently",
-          "Found",
-          "SeeOther",
-          "NotModified",
-          "UseProxy",
-          "Unused",
-          "TemporaryRedirect",
-          "PermanentRedirect",
-          "BadRequest",
-          "Unauthorized",
-          "PaymentRequired",
-          "Forbidden",
-          "NotFound",
-          "MethodNotAllowed",
-          "NotAcceptable",
-          "ProxyAuthenticationRequired",
-          "RequestTimeout",
-          "Conflict",
-          "Gone",
-          "LengthRequired",
-          "PreconditionFailed",
-          "RequestEntityTooLarge",
-          "RequestUriTooLong",
-          "UnsupportedMediaType",
-          "RequestedRangeNotSatisfiable",
-          "ExpectationFailed",
-          "MisdirectedRequest",
-          "UnprocessableEntity",
-          "Locked",
-          "FailedDependency",
-          "UpgradeRequired",
-          "PreconditionRequired",
-          "TooManyRequests",
-          "RequestHeaderFieldsTooLarge",
-          "UnavailableForLegalReasons",
-          "InternalServerError",
-          "NotImplemented",
-          "BadGateway",
-          "ServiceUnavailable",
-          "GatewayTimeout",
-          "HttpVersionNotSupported",
-          "VariantAlsoNegotiates",
-          "InsufficientStorage",
-          "LoopDetected",
-          "NotExtended",
-          "NetworkAuthenticationRequired"
-        ],
-        "type": "string"
-      }
+        "securitySchemes": {
+            "Bearer": {
+                "type": "apiKey",
+                "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
     },
-    "securitySchemes": {
-      "Bearer": {
-        "type": "apiKey",
-        "description": "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-        "name": "Authorization",
-        "in": "header"
-      }
-    }
-  },
-  "security": [
-    {
-      "Bearer": [ ]
-    }
-  ]
+    "security": [
+        {
+            "Bearer": []
+        }
+    ]
 }

@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
 export enum TransferType {
-  Deposit = 'Deposit',
-  Withdrawal = 'Withdrawal'
+    Deposit = 'Deposit',
+    Withdrawal = 'Withdrawal'
 }

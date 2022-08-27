@@ -5,10 +5,10 @@
   <span class="toolbar-brand">Financial portfolio</span>
 
   <div class="toolbar-buttons">
-    <button mat-button *ngIf="!isAuthenticated"  (click)="login()">
+    <button mat-button *ngIf="!isAuthenticated" (click)="login()">
       Login
     </button>
-    <button mat-button *ngIf="isAuthenticated"  (click)="signout()">
+    <button mat-button *ngIf="isAuthenticated" (click)="signout()">
       Signout
     </button>
   </div>

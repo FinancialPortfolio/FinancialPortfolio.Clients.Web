@@ -15,247 +15,247 @@ import { WebApiResponse as FinancialPortfolioInfrastructureWebApiModelsResponseW
 import { SearchOptions as FinancialPortfolioSearchSearchOptions } from '../models/FinancialPortfolio/Search/search-options';
 
 @Injectable({
-  providedIn: 'root',
+    providedIn: 'root',
 })
 export class AccountsService extends BaseService {
-  constructor(
-    config: ApiConfiguration,
-    http: HttpClient
-  ) {
-    super(config, http);
-  }
-
-  /**
-   * Path part for operation apiAccountsGet
-   */
-  static readonly ApiAccountsGetPath = '/api/accounts';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiAccountsGet()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiAccountsGet$Response(params?: {
-    body?: FinancialPortfolioSearchSearchOptions
-  }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AccountsService.ApiAccountsGetPath, 'get');
-    if (params) {
-      rb.body(params.body, 'application/*+json');
+    constructor(
+        config: ApiConfiguration,
+        http: HttpClient
+    ) {
+        super(config, http);
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>;
-      })
-    );
-  }
+    /**
+     * Path part for operation apiAccountsGet
+     */
+    static readonly ApiAccountsGetPath = '/api/accounts';
 
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiAccountsGet$Response()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiAccountsGet(params?: {
-    body?: FinancialPortfolioSearchSearchOptions
-  }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
+    /**
+     * This method provides access to the full `HttpResponse`, allowing access to response headers.
+     * To access only the response body, use `apiAccountsGet()` instead.
+     *
+     * This method sends `application/*+json` and handles request body of type `application/*+json`.
+     */
+    apiAccountsGet$Response(params?: {
+        body?: FinancialPortfolioSearchSearchOptions
+    }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
 
-    return this.apiAccountsGet$Response(params).pipe(
-      map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
-    );
-  }
+        const rb = new RequestBuilder(this.rootUrl, AccountsService.ApiAccountsGetPath, 'get');
+        if (params) {
+            rb.body(params.body, 'application/*+json');
+        }
 
-  /**
-   * Path part for operation apiAccountsPost
-   */
-  static readonly ApiAccountsPostPath = '/api/accounts';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiAccountsPost()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiAccountsPost$Response(params?: {
-    body?: FinancialPortfolioApiGatewayContractsAccountsRequestsCreateAccountRequest
-  }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AccountsService.ApiAccountsPostPath, 'post');
-    if (params) {
-      rb.body(params.body, 'application/*+json');
+        return this.http.request(rb.build({
+            responseType: 'json',
+            accept: 'application/json'
+        })).pipe(
+            filter((r: any) => r instanceof HttpResponse),
+            map((r: HttpResponse<any>) => {
+                return r as StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>;
+            })
+        );
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>;
-      })
-    );
-  }
+    /**
+     * This method provides access to only to the response body.
+     * To access the full response (for headers, for example), `apiAccountsGet$Response()` instead.
+     *
+     * This method sends `application/*+json` and handles request body of type `application/*+json`.
+     */
+    apiAccountsGet(params?: {
+        body?: FinancialPortfolioSearchSearchOptions
+    }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
 
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiAccountsPost$Response()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiAccountsPost(params?: {
-    body?: FinancialPortfolioApiGatewayContractsAccountsRequestsCreateAccountRequest
-  }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
-
-    return this.apiAccountsPost$Response(params).pipe(
-      map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
-    );
-  }
-
-  /**
-   * Path part for operation apiAccountsIdGet
-   */
-  static readonly ApiAccountsIdGetPath = '/api/accounts/{id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiAccountsIdGet()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiAccountsIdGet$Response(params: {
-    id: string;
-  }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AccountsService.ApiAccountsIdGetPath, 'get');
-    if (params) {
-      rb.path('id', params.id, {});
+        return this.apiAccountsGet$Response(params).pipe(
+            map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
+        );
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>;
-      })
-    );
-  }
+    /**
+     * Path part for operation apiAccountsPost
+     */
+    static readonly ApiAccountsPostPath = '/api/accounts';
 
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiAccountsIdGet$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiAccountsIdGet(params: {
-    id: string;
-  }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
+    /**
+     * This method provides access to the full `HttpResponse`, allowing access to response headers.
+     * To access only the response body, use `apiAccountsPost()` instead.
+     *
+     * This method sends `application/*+json` and handles request body of type `application/*+json`.
+     */
+    apiAccountsPost$Response(params?: {
+        body?: FinancialPortfolioApiGatewayContractsAccountsRequestsCreateAccountRequest
+    }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
 
-    return this.apiAccountsIdGet$Response(params).pipe(
-      map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
-    );
-  }
+        const rb = new RequestBuilder(this.rootUrl, AccountsService.ApiAccountsPostPath, 'post');
+        if (params) {
+            rb.body(params.body, 'application/*+json');
+        }
 
-  /**
-   * Path part for operation apiAccountsIdPut
-   */
-  static readonly ApiAccountsIdPutPath = '/api/accounts/{id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiAccountsIdPut()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiAccountsIdPut$Response(params: {
-    id: string;
-    body?: FinancialPortfolioApiGatewayContractsAccountsRequestsUpdateAccountRequest
-  }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AccountsService.ApiAccountsIdPutPath, 'put');
-    if (params) {
-      rb.path('id', params.id, {});
-      rb.body(params.body, 'application/*+json');
+        return this.http.request(rb.build({
+            responseType: 'json',
+            accept: 'application/json'
+        })).pipe(
+            filter((r: any) => r instanceof HttpResponse),
+            map((r: HttpResponse<any>) => {
+                return r as StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>;
+            })
+        );
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>;
-      })
-    );
-  }
+    /**
+     * This method provides access to only to the response body.
+     * To access the full response (for headers, for example), `apiAccountsPost$Response()` instead.
+     *
+     * This method sends `application/*+json` and handles request body of type `application/*+json`.
+     */
+    apiAccountsPost(params?: {
+        body?: FinancialPortfolioApiGatewayContractsAccountsRequestsCreateAccountRequest
+    }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
 
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiAccountsIdPut$Response()` instead.
-   *
-   * This method sends `application/*+json` and handles request body of type `application/*+json`.
-   */
-  apiAccountsIdPut(params: {
-    id: string;
-    body?: FinancialPortfolioApiGatewayContractsAccountsRequestsUpdateAccountRequest
-  }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
-
-    return this.apiAccountsIdPut$Response(params).pipe(
-      map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
-    );
-  }
-
-  /**
-   * Path part for operation apiAccountsIdDelete
-   */
-  static readonly ApiAccountsIdDeletePath = '/api/accounts/{id}';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `apiAccountsIdDelete()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiAccountsIdDelete$Response(params: {
-    id: string;
-  }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
-
-    const rb = new RequestBuilder(this.rootUrl, AccountsService.ApiAccountsIdDeletePath, 'delete');
-    if (params) {
-      rb.path('id', params.id, {});
+        return this.apiAccountsPost$Response(params).pipe(
+            map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
+        );
     }
 
-    return this.http.request(rb.build({
-      responseType: 'json',
-      accept: 'application/json'
-    })).pipe(
-      filter((r: any) => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>;
-      })
-    );
-  }
+    /**
+     * Path part for operation apiAccountsIdGet
+     */
+    static readonly ApiAccountsIdGetPath = '/api/accounts/{id}';
 
-  /**
-   * This method provides access to only to the response body.
-   * To access the full response (for headers, for example), `apiAccountsIdDelete$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  apiAccountsIdDelete(params: {
-    id: string;
-  }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
+    /**
+     * This method provides access to the full `HttpResponse`, allowing access to response headers.
+     * To access only the response body, use `apiAccountsIdGet()` instead.
+     *
+     * This method doesn't expect any request body.
+     */
+    apiAccountsIdGet$Response(params: {
+        id: string;
+    }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
 
-    return this.apiAccountsIdDelete$Response(params).pipe(
-      map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
-    );
-  }
+        const rb = new RequestBuilder(this.rootUrl, AccountsService.ApiAccountsIdGetPath, 'get');
+        if (params) {
+            rb.path('id', params.id, {});
+        }
+
+        return this.http.request(rb.build({
+            responseType: 'json',
+            accept: 'application/json'
+        })).pipe(
+            filter((r: any) => r instanceof HttpResponse),
+            map((r: HttpResponse<any>) => {
+                return r as StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>;
+            })
+        );
+    }
+
+    /**
+     * This method provides access to only to the response body.
+     * To access the full response (for headers, for example), `apiAccountsIdGet$Response()` instead.
+     *
+     * This method doesn't expect any request body.
+     */
+    apiAccountsIdGet(params: {
+        id: string;
+    }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
+
+        return this.apiAccountsIdGet$Response(params).pipe(
+            map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
+        );
+    }
+
+    /**
+     * Path part for operation apiAccountsIdPut
+     */
+    static readonly ApiAccountsIdPutPath = '/api/accounts/{id}';
+
+    /**
+     * This method provides access to the full `HttpResponse`, allowing access to response headers.
+     * To access only the response body, use `apiAccountsIdPut()` instead.
+     *
+     * This method sends `application/*+json` and handles request body of type `application/*+json`.
+     */
+    apiAccountsIdPut$Response(params: {
+        id: string;
+        body?: FinancialPortfolioApiGatewayContractsAccountsRequestsUpdateAccountRequest
+    }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
+
+        const rb = new RequestBuilder(this.rootUrl, AccountsService.ApiAccountsIdPutPath, 'put');
+        if (params) {
+            rb.path('id', params.id, {});
+            rb.body(params.body, 'application/*+json');
+        }
+
+        return this.http.request(rb.build({
+            responseType: 'json',
+            accept: 'application/json'
+        })).pipe(
+            filter((r: any) => r instanceof HttpResponse),
+            map((r: HttpResponse<any>) => {
+                return r as StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>;
+            })
+        );
+    }
+
+    /**
+     * This method provides access to only to the response body.
+     * To access the full response (for headers, for example), `apiAccountsIdPut$Response()` instead.
+     *
+     * This method sends `application/*+json` and handles request body of type `application/*+json`.
+     */
+    apiAccountsIdPut(params: {
+        id: string;
+        body?: FinancialPortfolioApiGatewayContractsAccountsRequestsUpdateAccountRequest
+    }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
+
+        return this.apiAccountsIdPut$Response(params).pipe(
+            map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
+        );
+    }
+
+    /**
+     * Path part for operation apiAccountsIdDelete
+     */
+    static readonly ApiAccountsIdDeletePath = '/api/accounts/{id}';
+
+    /**
+     * This method provides access to the full `HttpResponse`, allowing access to response headers.
+     * To access only the response body, use `apiAccountsIdDelete()` instead.
+     *
+     * This method doesn't expect any request body.
+     */
+    apiAccountsIdDelete$Response(params: {
+        id: string;
+    }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
+
+        const rb = new RequestBuilder(this.rootUrl, AccountsService.ApiAccountsIdDeletePath, 'delete');
+        if (params) {
+            rb.path('id', params.id, {});
+        }
+
+        return this.http.request(rb.build({
+            responseType: 'json',
+            accept: 'application/json'
+        })).pipe(
+            filter((r: any) => r instanceof HttpResponse),
+            map((r: HttpResponse<any>) => {
+                return r as StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>;
+            })
+        );
+    }
+
+    /**
+     * This method provides access to only to the response body.
+     * To access the full response (for headers, for example), `apiAccountsIdDelete$Response()` instead.
+     *
+     * This method doesn't expect any request body.
+     */
+    apiAccountsIdDelete(params: {
+        id: string;
+    }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
+
+        return this.apiAccountsIdDelete$Response(params).pipe(
+            map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
+        );
+    }
 
 }

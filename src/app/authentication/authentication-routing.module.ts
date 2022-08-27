@@ -12,5 +12,5 @@ export const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule],
     providers: []
-  })
-  export class AuthenticationRoutingModule { }
+})
+export class AuthenticationRoutingModule { }

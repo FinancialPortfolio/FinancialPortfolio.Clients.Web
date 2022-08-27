@@ -20,15 +20,15 @@ export class AccountsEffects {
         ofType(LOAD_ACCOUNTS),
         withLatestFrom(this.store),
         filter(([_, state]) => !state.hasLoaded),
-        switchMap(() => 
+        switchMap(() =>
             this.accountsService.apiAccountsGet().pipe(
                 mergeMap((response: any) => {
                     let accounts = response.response;
                     let actions: any[] = [SetAccountsAction({ accounts })];
-                    
+
                     if (accounts && accounts.length > 0)
                         actions.push(SelectAccountAction({ account: accounts[0] }))
-                    
+
                     return actions;
                 })
             )

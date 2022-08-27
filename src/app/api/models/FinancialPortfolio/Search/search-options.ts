@@ -4,7 +4,7 @@ import { FilteringOptions as FinancialPortfolioSearchFilteringFilteringOptions }
 import { PaginationOptions as FinancialPortfolioSearchPaginationPaginationOptions } from '../../FinancialPortfolio/Search/Pagination/pagination-options';
 import { SortingOptions as FinancialPortfolioSearchSortingSortingOptions } from '../../FinancialPortfolio/Search/Sorting/sorting-options';
 export interface SearchOptions {
-  filteringOptions?: FinancialPortfolioSearchFilteringFilteringOptions;
-  paginationOptions?: FinancialPortfolioSearchPaginationPaginationOptions;
-  sortingOptions?: FinancialPortfolioSearchSortingSortingOptions;
+    filteringOptions?: FinancialPortfolioSearchFilteringFilteringOptions;
+    paginationOptions?: FinancialPortfolioSearchPaginationPaginationOptions;
+    sortingOptions?: FinancialPortfolioSearchSortingSortingOptions;
 }

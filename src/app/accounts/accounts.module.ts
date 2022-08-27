@@ -9,18 +9,18 @@ import { AccountEditComponent } from './account-edit/account-edit.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-  declarations: [
-    AccountListComponent,
-    AccountAddComponent,
-    AccountEditComponent
-  ],
-  imports: [
-    CommonModule,
-    AccountsRoutingModule,
-    SharedModule,
-    FormsModule,
-    ReactiveFormsModule
-    // TODO: add store for feature
-  ]
+    declarations: [
+        AccountListComponent,
+        AccountAddComponent,
+        AccountEditComponent
+    ],
+    imports: [
+        CommonModule,
+        AccountsRoutingModule,
+        SharedModule,
+        FormsModule,
+        ReactiveFormsModule
+        // TODO: add store for feature
+    ]
 })
 export class AccountsModule { }
