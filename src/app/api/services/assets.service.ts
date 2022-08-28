@@ -9,8 +9,10 @@ import { RequestBuilder } from '../request-builder';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 
+import { AssetResponse as AssetApiAssetResponse } from '../models/AssetApi/asset-response';
 import { CreateAssetRequest as FinancialPortfolioApiGatewayContractsAssetsRequestsCreateAssetRequest } from '../models/FinancialPortfolio/APIGateway/Contracts/Assets/Requests/create-asset-request';
 import { WebApiResponse as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse } from '../models/FinancialPortfolio/Infrastructure/WebApi/Models/Response/web-api-response';
+import { SearchOptions as FinancialPortfolioSearchSearchOptions } from '../models/FinancialPortfolio/Search/search-options';
 
 @Injectable({
     providedIn: 'root',
@@ -24,21 +26,23 @@ export class AssetsService extends BaseService {
     }
 
     /**
-     * Path part for operation apiAssetsGet
+     * Path part for operation apiAssetsFindPost
      */
-    static readonly ApiAssetsGetPath = '/api/assets';
+    static readonly ApiAssetsFindPostPath = '/api/assets/find';
 
     /**
      * This method provides access to the full `HttpResponse`, allowing access to response headers.
-     * To access only the response body, use `apiAssetsGet()` instead.
+     * To access only the response body, use `apiAssetsFindPost()` instead.
      *
-     * This method doesn't expect any request body.
+     * This method sends `application/*+json` and handles request body of type `application/*+json`.
      */
-    apiAssetsGet$Response(params?: {
-    }): Observable<StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>> {
+    apiAssetsFindPost$Response(params?: {
+        body?: FinancialPortfolioSearchSearchOptions
+    }): Observable<StrictHttpResponse<Array<AssetApiAssetResponse>>> {
 
-        const rb = new RequestBuilder(this.rootUrl, AssetsService.ApiAssetsGetPath, 'get');
+        const rb = new RequestBuilder(this.rootUrl, AssetsService.ApiAssetsFindPostPath, 'post');
         if (params) {
+            rb.body(params.body, 'application/*+json');
         }
 
         return this.http.request(rb.build({
@@ -47,22 +51,69 @@ export class AssetsService extends BaseService {
         })).pipe(
             filter((r: any) => r instanceof HttpResponse),
             map((r: HttpResponse<any>) => {
-                return r as StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>;
+                return r as StrictHttpResponse<Array<AssetApiAssetResponse>>;
             })
         );
     }
 
     /**
      * This method provides access to only to the response body.
-     * To access the full response (for headers, for example), `apiAssetsGet$Response()` instead.
+     * To access the full response (for headers, for example), `apiAssetsFindPost$Response()` instead.
+     *
+     * This method sends `application/*+json` and handles request body of type `application/*+json`.
+     */
+    apiAssetsFindPost(params?: {
+        body?: FinancialPortfolioSearchSearchOptions
+    }): Observable<Array<AssetApiAssetResponse>> {
+
+        return this.apiAssetsFindPost$Response(params).pipe(
+            map((r: StrictHttpResponse<Array<AssetApiAssetResponse>>) => r.body as Array<AssetApiAssetResponse>)
+        );
+    }
+
+    /**
+     * Path part for operation apiAssetsIdGet
+     */
+    static readonly ApiAssetsIdGetPath = '/api/assets/{id}';
+
+    /**
+     * This method provides access to the full `HttpResponse`, allowing access to response headers.
+     * To access only the response body, use `apiAssetsIdGet()` instead.
      *
      * This method doesn't expect any request body.
      */
-    apiAssetsGet(params?: {
-    }): Observable<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse> {
+    apiAssetsIdGet$Response(params: {
+        id: string;
+    }): Observable<StrictHttpResponse<AssetApiAssetResponse>> {
 
-        return this.apiAssetsGet$Response(params).pipe(
-            map((r: StrictHttpResponse<FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse>) => r.body as FinancialPortfolioInfrastructureWebApiModelsResponseWebApiResponse)
+        const rb = new RequestBuilder(this.rootUrl, AssetsService.ApiAssetsIdGetPath, 'get');
+        if (params) {
+            rb.path('id', params.id, {});
+        }
+
+        return this.http.request(rb.build({
+            responseType: 'json',
+            accept: 'application/json'
+        })).pipe(
+            filter((r: any) => r instanceof HttpResponse),
+            map((r: HttpResponse<any>) => {
+                return r as StrictHttpResponse<AssetApiAssetResponse>;
+            })
+        );
+    }
+
+    /**
+     * This method provides access to only to the response body.
+     * To access the full response (for headers, for example), `apiAssetsIdGet$Response()` instead.
+     *
+     * This method doesn't expect any request body.
+     */
+    apiAssetsIdGet(params: {
+        id: string;
+    }): Observable<AssetApiAssetResponse> {
+
+        return this.apiAssetsIdGet$Response(params).pipe(
+            map((r: StrictHttpResponse<AssetApiAssetResponse>) => r.body as AssetApiAssetResponse)
         );
     }
 

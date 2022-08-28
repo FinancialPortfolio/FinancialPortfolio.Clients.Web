@@ -21,7 +21,7 @@ export class AccountsEffects {
         withLatestFrom(this.store),
         filter(([_, state]) => !state.hasLoaded),
         switchMap(() =>
-            this.accountsService.apiAccountsGet().pipe(
+            this.accountsService.apiAccountsFindPost({ body: { filteringOptions: {} } }).pipe(
                 mergeMap((response: any) => {
                     let accounts = response.response;
                     let actions: any[] = [SetAccountsAction({ accounts })];

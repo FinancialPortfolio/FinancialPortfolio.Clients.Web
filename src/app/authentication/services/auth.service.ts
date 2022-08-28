@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { UserManager, UserManagerSettings, User } from 'oidc-client';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -8,15 +7,15 @@ import { environment } from 'src/environments/environment';
     providedIn: 'root'
 })
 export class AuthService {
-    private authenticatedSubject = new BehaviorSubject<boolean>(false);
+    public isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
 
     private manager = new UserManager(getClientSettings());
     private user: User | null = null;
 
-    constructor(private http: HttpClient) {
+    constructor() {
         this.manager.getUser().then((user: any) => {
             this.user = user;
-            this.authenticatedSubject.next(this.isAuthenticated());
+            this.isAuthenticatedSubject.next(this.isAuthenticated());
         });
     }
 
@@ -26,7 +25,7 @@ export class AuthService {
 
     async completeAuthentication() {
         this.user = await this.manager.signinRedirectCallback();
-        this.authenticatedSubject.next(this.isAuthenticated());
+        this.isAuthenticatedSubject.next(this.isAuthenticated());
     }
 
     isAuthenticated(): boolean {
@@ -51,7 +50,7 @@ export function getClientSettings(): UserManagerSettings {
         authority: environment.authority,
         client_id: 'FP_web_client',
         redirect_uri: `${environment.clientUrl}/auth-callback`,
-        post_logout_redirect_uri: `${environment.clientUrl}`,
+        post_logout_redirect_uri: `${environment.clientUrl}/`,
         response_type: "code",
         scope: "openid profile FPGateway",
         filterProtocolClaims: true,

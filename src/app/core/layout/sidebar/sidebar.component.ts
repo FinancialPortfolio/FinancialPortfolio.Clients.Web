@@ -8,6 +8,7 @@ import { AccountResponse } from 'src/app/api/models/AccountApi/account-response'
 import { AuthService } from 'src/app/authentication/services/auth.service';
 import { AppState } from 'src/app/store/app.reducers';
 import { AccountSelectorComponent } from '../../account-selector/account-selector.component';
+import { LoadingService } from '../../services/LoadingService';
 
 @Component({
     selector: 'app-sidebar',
@@ -20,18 +21,12 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private authService: AuthService, private dialog: MatDialog, private store: Store<AppState>) {
+    constructor(private dialog: MatDialog, private store: Store<AppState>, private LoadingService: LoadingService) {
     }
 
     ngOnInit(): void {
-        this.store.select(state => state.accounts.hasLoaded).pipe(first(() => this.authService.isAuthenticated())).subscribe(
-            (hasLoaded: boolean) => {
-                if (!hasLoaded) {
-                    alert('load on sidebar')
-                    this.store.dispatch(LoadAccountsAction());
-                }
-            }
-        );
+        this.LoadingService.loadAccounts();
+
         this.store.pipe(takeUntil(this.unsubscribe)).subscribe(
             (state: AppState) => {
                 this.selectedAccount = state.accounts.selectedAccount ?? this.selectedAccount;

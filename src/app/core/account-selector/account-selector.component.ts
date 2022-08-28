@@ -2,12 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
-import { LoadAccountsAction, SelectAccountAction } from 'src/app/accounts/store/accounts.actions';
+import { SelectAccountAction } from 'src/app/accounts/store/accounts.actions';
 import { AccountResponse } from 'src/app/api/models/AccountApi/account-response';
-import { AuthService } from 'src/app/authentication/services/auth.service';
 import { AppState } from 'src/app/store/app.reducers';
+import { LoadingService } from '../services/LoadingService';
 
 @Component({
     selector: 'app-account-selector',
@@ -20,17 +20,11 @@ export class AccountSelectorComponent implements OnInit, OnDestroy {
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private store: Store<AppState>, private authService: AuthService, private dialogRef: MatDialogRef<AccountResponse>) { }
+    constructor(private store: Store<AppState>, private LoadingService: LoadingService, private dialogRef: MatDialogRef<AccountResponse>) { }
 
     ngOnInit(): void {
-        this.store.select(state => state.accounts.hasLoaded).pipe(take(1)).subscribe(
-            (hasLoaded: boolean) => {
-                if (!hasLoaded && this.authService.isAuthenticated()) {
-                    alert('load')
-                    this.store.dispatch(LoadAccountsAction());
-                }
-            }
-        );
+        this.LoadingService.loadAccounts();
+
         this.store.pipe(takeUntil(this.unsubscribe)).subscribe(
             (state: AppState) => {
                 this.accounts = state.accounts.accounts;

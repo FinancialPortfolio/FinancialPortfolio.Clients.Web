@@ -4,6 +4,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { StoreModule } from '@ngrx/store';
 import { MAT_RADIO_DEFAULT_OPTIONS } from '@angular/material/radio';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
 import { AuthCallbackComponent } from './authentication/auth-callback/auth-callback.component';
@@ -32,6 +33,9 @@ import { environment } from 'src/environments/environment';
         AppRoutingModule, // TODO: move to core
         ApiModule.forRoot({ rootUrl: environment.gatewayUrl }),
         StoreModule.forRoot(AppReducers),
+        StoreDevtoolsModule.instrument({
+            maxAge: 25
+        }),
         EffectsModule.forRoot([AccountsEffects, TransfersEffects])
     ],
     providers: [

@@ -1,15 +1,15 @@
 <mat-toolbar class="toolbar">
-  <button class="toolbar-toggler" type="button" *ngIf="isAuthenticated" (click)="openSidebar()">
-    <i class="fas fa-align-justify"></i>
-  </button>
-  <span class="toolbar-brand">Financial portfolio</span>
+    <button class="toolbar-toggler" type="button" *ngIf="isAuthenticated" (click)="openSidebar()">
+        <i class="fas fa-align-justify"></i>
+    </button>
+    <span class="toolbar-brand">Financial portfolio</span>
 
-  <div class="toolbar-buttons">
-    <button mat-button *ngIf="!isAuthenticated" (click)="login()">
-      Login
-    </button>
-    <button mat-button *ngIf="isAuthenticated" (click)="signout()">
-      Signout
-    </button>
-  </div>
+    <div class="toolbar-buttons">
+        <button mat-button *ngIf="!isAuthenticated" (click)="login()">
+            Login
+        </button>
+        <button mat-button *ngIf="isAuthenticated" (click)="signout()">
+            Signout
+        </button>
+    </div>
 </mat-toolbar>

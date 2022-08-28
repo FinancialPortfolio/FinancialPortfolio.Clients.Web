@@ -22,7 +22,7 @@ export class TransfersEffects {
         withLatestFrom(this.store),
         filter(([_, state]) => !state.hasLoaded),
         switchMap(() =>
-            this.transfersService.apiTransfersGet().pipe(
+            this.transfersService.apiTransfersFindPost({ body: { filteringOptions: {} } }).pipe(
                 map((response: any) => SetTransfersAction({ transfers: response.response }))
             )
         )

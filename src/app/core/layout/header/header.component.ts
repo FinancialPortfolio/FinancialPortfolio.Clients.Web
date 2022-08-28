@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { AuthService } from '../../../authentication/services/auth.service';
 
@@ -12,12 +13,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
     @Output() sidebarOpened = new EventEmitter();
 
     isAuthenticated: boolean = false;
-    subscription: Subscription | undefined = undefined;
+    private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(private authService: AuthService) { }
 
     ngOnInit() {
-        this.subscription = this.authService.authNavStatus$.subscribe(status => this.isAuthenticated = status);
+        this.authService.isAuthenticatedSubject.pipe(takeUntil(this.unsubscribe)).subscribe(isAuthenticated => this.isAuthenticated = isAuthenticated);
     }
 
     async login() {
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.subscription?.unsubscribe();
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 }
