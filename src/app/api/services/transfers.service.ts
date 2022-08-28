@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiServiceBase } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { BaseWebApiResponse } from '../models/Shared/base-web-api-response';
 import { WebApiResponse } from '../models/Shared/web-api-response';
 import { CreateTransferRequest } from '../models/Transfers/create-transfer-request';
 import { TransferResponse } from '../models/Transfers/transfer-response';
+import { ApiServiceBase } from '../api-base-service';
 
 @Injectable()
 export class TransfersService extends ApiServiceBase {
-
     constructor(config: ApiConfiguration, http: HttpClient) {
         super(config, http, '/transfers');
     }

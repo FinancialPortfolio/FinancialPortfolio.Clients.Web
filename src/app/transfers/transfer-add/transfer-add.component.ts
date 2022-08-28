@@ -58,12 +58,10 @@ export class TransferAddComponent implements OnInit, OnDestroy {
         this.transfersService.Create(body)
             .subscribe(
                 (result: BaseWebApiResponse) => {
-                    console.log(result);
                     // TODO: add to store on saved event
                     // TODO: add toastr
                     this.dialogRef.close();
                 }, (error: WebApiProblemDetails) => {
-                    console.log(error);
                     // TODO: add toastr
                     this.dialogRef.close();
                 },

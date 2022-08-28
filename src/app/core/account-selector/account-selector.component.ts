@@ -15,7 +15,7 @@ import { LoadingService } from '../services/LoadingService';
     styleUrls: ['./account-selector.component.scss']
 })
 export class AccountSelectorComponent implements OnInit, OnDestroy {
-    selectedAccount: AccountResponse = { name: "", description: "", id: "", createdDateTime: "", userId: "" };
+    selectedAccount: AccountResponse = { name: "", description: "", id: "", createdDateTime: new Date(), userId: "" };
     accounts: AccountResponse[] = [];
 
     private readonly unsubscribe: Subject<void> = new Subject();

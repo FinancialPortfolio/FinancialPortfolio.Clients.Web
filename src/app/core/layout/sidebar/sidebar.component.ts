@@ -15,7 +15,7 @@ import { LoadingService } from '../../services/LoadingService';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
     @Output() sidebarClosed = new EventEmitter();
-    selectedAccount: AccountResponse = { name: "", description: "", id: "", createdDateTime: "", userId: "" };
+    selectedAccount: AccountResponse = { name: "", description: "", id: "", createdDateTime: new Date(), userId: "" };
 
     private readonly unsubscribe: Subject<void> = new Subject();
 

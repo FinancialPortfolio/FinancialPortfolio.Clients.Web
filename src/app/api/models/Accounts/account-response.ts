@@ -1,7 +1,7 @@
 export interface AccountResponse {
     id: string;
-    description: string;
     name: string;
-    createdDateTime: string;
+    description: string;
+    createdDateTime: Date;
     userId: string;
 }

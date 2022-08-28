@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AccountsService } from 'src/app/api/services/accounts.service';
 
@@ -29,14 +30,11 @@ export class AccountAddComponent implements OnInit {
 
         this.accountsService.Create(this.accountForm.value)
             .subscribe(
-                (result) => {
-                    console.log(result);
+                (response) => {
                     // TODO: add to store on saved event
                     // TODO: add toastr
                     this.dialogRef.close();
-                }, (error) => {
-                    console.log(error);
-                    // TODO: add toastr
+                }, (response: HttpErrorResponse) => {
                     this.dialogRef.close();
                 },
             );

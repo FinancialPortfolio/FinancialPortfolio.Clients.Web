@@ -3,17 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { ApiServiceBase } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { AccountResponse } from '../models/Accounts/account-response';
 import { CreateAccountRequest } from '../models/Accounts/create-account-request';
 import { UpdateAccountRequest } from '../models/Accounts/update-account-request';
 import { WebApiResponse } from '../models/Shared/web-api-response';
 import { BaseWebApiResponse } from '../models/Shared/base-web-api-response';
+import { ApiServiceBase } from '../api-base-service';
 
 @Injectable()
 export class AccountsService extends ApiServiceBase {
-
     constructor(config: ApiConfiguration, http: HttpClient) {
         super(config, http, '/accounts');
     }

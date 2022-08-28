@@ -1,6 +1,4 @@
 mat-sidenav-container {
-    height: calc(100vh);
-
     mat-sidenav {
         width: 250px;
         border-right: none;
@@ -9,7 +7,7 @@ mat-sidenav-container {
     }
 
     mat-sidenav-content .sidenav-content {
-        height: calc(100vh);
+        min-height: calc(100vh);
         font-size: 2rem;
 
         app-header {

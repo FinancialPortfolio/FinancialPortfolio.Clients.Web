@@ -1,10 +1,11 @@
 import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
+import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
+import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { AccountsService } from './services/accounts.service';
 import { AssetsService } from './services/assets.service';
 import { TransfersService } from './services/transfers.service';
+import { HttpErrorInterceptor } from './interceptors/HttpErrorInterceptor';
 
 @NgModule({
     imports: [],
@@ -14,7 +15,12 @@ import { TransfersService } from './services/transfers.service';
         AccountsService,
         AssetsService,
         TransfersService,
-        ApiConfiguration
+        ApiConfiguration,
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: HttpErrorInterceptor,
+            multi: true
+        }
     ],
 })
 export class ApiModule {
