@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { SelectAccountAction } from 'src/app/accounts/store/accounts.actions';
-import { AccountResponse } from 'src/app/api/models/AccountApi/account-response';
+import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AppState } from 'src/app/store/app.reducers';
 import { LoadingService } from '../services/LoadingService';
 
@@ -15,7 +15,7 @@ import { LoadingService } from '../services/LoadingService';
     styleUrls: ['./account-selector.component.scss']
 })
 export class AccountSelectorComponent implements OnInit, OnDestroy {
-    selectedAccount: AccountResponse = { name: '' };
+    selectedAccount: AccountResponse = { name: "", description: "", id: "", createdDateTime: "", userId: "" };
     accounts: AccountResponse[] = [];
 
     private readonly unsubscribe: Subject<void> = new Subject();

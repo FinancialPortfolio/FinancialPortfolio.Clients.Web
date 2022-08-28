@@ -2,10 +2,8 @@ import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/cor
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { first, skipUntil, skipWhile, take, takeUntil, takeWhile } from 'rxjs/operators';
-import { LoadAccountsAction } from 'src/app/accounts/store/accounts.actions';
-import { AccountResponse } from 'src/app/api/models/AccountApi/account-response';
-import { AuthService } from 'src/app/authentication/services/auth.service';
+import { takeUntil } from 'rxjs/operators';
+import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AppState } from 'src/app/store/app.reducers';
 import { AccountSelectorComponent } from '../../account-selector/account-selector.component';
 import { LoadingService } from '../../services/LoadingService';
@@ -17,7 +15,7 @@ import { LoadingService } from '../../services/LoadingService';
 })
 export class SidebarComponent implements OnInit, OnDestroy {
     @Output() sidebarClosed = new EventEmitter();
-    selectedAccount: AccountResponse = { name: '' };
+    selectedAccount: AccountResponse = { name: "", description: "", id: "", createdDateTime: "", userId: "" };
 
     private readonly unsubscribe: Subject<void> = new Subject();
 

@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 
-import { TransferResponse } from "src/app/api/models/TransferApi/transfer-response";
+import { TransferResponse } from "src/app/api/models/Transfers/transfer-response";
 
 export const ADD_TRANSFER = 'ADD_TRANSFER';
 export const LOAD_TRANSFERS = 'LOAD_TRANSFERS';

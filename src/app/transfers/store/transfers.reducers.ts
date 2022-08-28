@@ -1,6 +1,6 @@
 import { createReducer, on } from "@ngrx/store";
 
-import { TransferResponse } from "src/app/api/models/TransferApi/transfer-response";
+import { TransferResponse } from "src/app/api/models/Transfers/transfer-response";
 import { AddTransferAction, SetTransfersAction } from "./transfers.actions";
 
 export interface TransfersState {

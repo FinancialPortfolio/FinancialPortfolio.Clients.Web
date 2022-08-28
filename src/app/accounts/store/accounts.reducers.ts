@@ -1,5 +1,5 @@
 import { createReducer, on } from "@ngrx/store";
-import { AccountResponse } from "src/app/api/models/AccountApi/account-response";
+import { AccountResponse } from "src/app/api/models/Accounts/account-response";
 import { AddAccountAction, SelectAccountAction, SetAccountsAction } from "./accounts.actions";
 
 export interface AccountsState {

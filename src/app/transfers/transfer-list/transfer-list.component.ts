@@ -4,8 +4,8 @@ import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { take, takeUntil } from 'rxjs/operators';
 
-import { TransferResponse } from 'src/app/api/models/TransferApi/transfer-response';
-import { TransferType } from 'src/app/api/models/TransferApi/transfer-type';
+import { TransferResponse } from 'src/app/api/models/Transfers/transfer-response';
+import { TransferType } from 'src/app/api/models/Transfers/transfer-type';
 import { AppState } from 'src/app/store/app.reducers';
 import { LoadTransfersAction } from '../store/transfers.actions';
 import { TransferAddComponent } from '../transfer-add/transfer-add.component';

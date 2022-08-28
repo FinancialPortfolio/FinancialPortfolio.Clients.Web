@@ -1,5 +1,3 @@
-/* tslint:disable */
-/* eslint-disable */
 import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
@@ -8,9 +6,6 @@ import { AccountsService } from './services/accounts.service';
 import { AssetsService } from './services/assets.service';
 import { TransfersService } from './services/transfers.service';
 
-/**
- * Module that provides all services and configuration.
- */
 @NgModule({
     imports: [],
     exports: [],

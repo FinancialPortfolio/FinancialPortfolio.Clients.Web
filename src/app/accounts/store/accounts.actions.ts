@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 
-import { AccountResponse } from "src/app/api/models/AccountApi/account-response";
+import { AccountResponse } from "src/app/api/models/Accounts/account-response";
 
 export const ADD_ACCOUNT = 'ADD_ACCOUNT';
 export const LOAD_ACCOUNTS = 'LOAD_ACCOUNTS';

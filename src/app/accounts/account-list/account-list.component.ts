@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { AccountResponse } from 'src/app/api/models/AccountApi/account-response';
+import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { LoadingService } from 'src/app/core/services/LoadingService';
 import { AppState } from 'src/app/store/app.reducers';
 import { AccountAddComponent } from '../account-add/account-add.component';

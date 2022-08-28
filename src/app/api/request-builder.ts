@@ -1,11 +1,5 @@
-/* tslint:disable */
-/* eslint-disable */
 import { HttpRequest, HttpParameterCodec, HttpParams, HttpHeaders } from '@angular/common/http';
 
-/**
- * Custom parameter codec to correctly handle the plus sign in parameter
- * values. See https://github.com/angular/angular/issues/18261
- */
 class ParameterCodec implements HttpParameterCodec {
     encodeKey(key: string): string {
         return encodeURIComponent(key);
@@ -73,9 +67,6 @@ abstract class Parameter {
     }
 }
 
-/**
- * A parameter in the operation path
- */
 class PathParameter extends Parameter {
     constructor(name: string, value: any, options: ParameterOptions) {
         super(name, value, options, 'simple', false);
@@ -123,9 +114,6 @@ class PathParameter extends Parameter {
     }
 }
 
-/**
- * A parameter in the query
- */
 class QueryParameter extends Parameter {
     constructor(name: string, value: any, options: ParameterOptions) {
         super(name, value, options, 'form', true);

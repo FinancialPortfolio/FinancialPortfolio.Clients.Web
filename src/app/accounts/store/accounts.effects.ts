@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { withLatestFrom, filter, switchMap, mergeMap } from 'rxjs/operators';
-import { AccountResponse } from 'src/app/api/models/AccountApi/account-response';
 
-import { AccountsService } from "src/app/api/services";
+import { AccountsService } from 'src/app/api/services/accounts.service';
 import { LOAD_ACCOUNTS, SelectAccountAction, SetAccountsAction } from './accounts.actions';
 import { AccountsState } from './accounts.reducers';
 
@@ -21,7 +20,7 @@ export class AccountsEffects {
         withLatestFrom(this.store),
         filter(([_, state]) => !state.hasLoaded),
         switchMap(() =>
-            this.accountsService.apiAccountsFindPost({ body: { filteringOptions: {} } }).pipe(
+            this.accountsService.GetAll().pipe(
                 mergeMap((response: any) => {
                     let accounts = response.response;
                     let actions: any[] = [SetAccountsAction({ accounts })];

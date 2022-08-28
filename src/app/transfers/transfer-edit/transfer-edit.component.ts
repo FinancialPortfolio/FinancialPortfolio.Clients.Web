@@ -2,7 +2,7 @@ import { Component, OnInit, Inject } from "@angular/core";
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MAT_DIALOG_DATA } from "@angular/material/dialog";
 
-import { TransferResponse } from "src/app/api/models/TransferApi/transfer-response";
+import { TransferResponse } from "src/app/api/models/Transfers/transfer-response";
 
 @Component({
     selector: 'app-transfer-edit',

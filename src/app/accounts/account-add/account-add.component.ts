@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, NgForm, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { AccountsService } from 'src/app/api/services';
+import { AccountsService } from 'src/app/api/services/accounts.service';
 
 @Component({
     selector: 'app-account-add',
@@ -27,7 +27,7 @@ export class AccountAddComponent implements OnInit {
         if (!this.accountForm.valid)
             return;
 
-        this.accountsService.apiAccountsPost$Response({ body: this.accountForm.value })
+        this.accountsService.Create(this.accountForm.value)
             .subscribe(
                 (result) => {
                     console.log(result);

@@ -6,8 +6,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { selectSelectedAccount } from 'src/app/accounts/store/accounts.selectors';
-import { CreateTransferRequest } from 'src/app/api/models/FinancialPortfolio/APIGateway/Contracts/Equity/Requests/create-transfer-request';
-import { TransfersService } from 'src/app/api/services';
+import { BaseWebApiResponse } from 'src/app/api/models/Shared/base-web-api-response';
+import { WebApiProblemDetails } from 'src/app/api/models/Shared/web-api-problem-details';
+import { CreateTransferRequest } from 'src/app/api/models/Transfers/create-transfer-request';
+import { TransfersService } from 'src/app/api/services/transfers.service';
 import { AppState } from 'src/app/store/app.reducers';
 
 @Component({
@@ -53,14 +55,14 @@ export class TransferAddComponent implements OnInit, OnDestroy {
             ...this.transferForm.value,
             accountId: this.accountId
         };
-        this.transfersService.apiTransfersPost$Response({ body })
+        this.transfersService.Create(body)
             .subscribe(
-                (result) => {
+                (result: BaseWebApiResponse) => {
                     console.log(result);
                     // TODO: add to store on saved event
                     // TODO: add toastr
                     this.dialogRef.close();
-                }, (error) => {
+                }, (error: WebApiProblemDetails) => {
                     console.log(error);
                     // TODO: add toastr
                     this.dialogRef.close();

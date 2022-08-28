@@ -1,7 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { AccountResponse } from 'src/app/api/models/AccountApi/account-response';
+import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 
 @Component({
     selector: 'app-account-edit',
