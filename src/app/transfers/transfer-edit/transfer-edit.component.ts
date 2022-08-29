@@ -14,7 +14,7 @@ export class TransferEditComponent implements OnInit {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        @Inject(MAT_DIALOG_DATA) public data: { item: TransferResponse }) { }
+        @Inject(MAT_DIALOG_DATA) public data: { item: TransferResponse, accountId: string }) { }
 
     ngOnInit(): void {
         this.transferForm = this.formBuilder.group({

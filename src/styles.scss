@@ -34,16 +34,21 @@
          cursor: pointer;
      }
 
-     .edit-header-cell {
+     .actions-header-cell {
          text-align: center;
+         width: 250px;
      }
 
-     .edit-cell {
-         width: 100px;
+     td.mat-cell.action-cell {
+        display: flex;
+        padding: 6px 12px 6px 0;
+        width: 250px;
 
-         button {
-             width: 100%;
-         }
+        button {
+            width: 100%;
+            margin-right: 8px;
+            display: inline-block;
+        }
      }
  }
 

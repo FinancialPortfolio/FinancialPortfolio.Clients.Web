@@ -1,16 +1,19 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Sort } from '@angular/material/sort';
+import { PageEvent } from '@angular/material/paginator';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
 
 import { TransferResponse } from 'src/app/api/models/Transfers/transfer-response';
 import { TransfersService } from 'src/app/api/services/transfers.service';
 import { TransferAddComponent } from '../transfer-add/transfer-add.component';
 import { TransferEditComponent } from '../transfer-edit/transfer-edit.component';
 import { GetTransfersRequest } from 'src/app/api/models/Transfers/get-transfers-request';
-import { Sort } from '@angular/material/sort';
 import { SortOrder } from 'src/app/api/models/Shared/Search/Sorting/sort-order';
-import { PageEvent } from '@angular/material/paginator';
+import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
+import { AppState } from 'src/app/store/app.reducers';
 
 @Component({
     selector: 'app-transfer-list',
@@ -28,12 +31,23 @@ export class TransferListComponent implements OnInit {
     sortField = "dateTime";
     sortOrder = SortOrder.Desc;
 
+    selectedAccount: AccountResponse | undefined;
+
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private dialog: MatDialog, private transfersService: TransfersService) { }
+    constructor(
+        private dialog: MatDialog,
+        private store: Store<AppState>,
+        private transfersService: TransfersService) { }
 
     ngOnInit(): void {
-        this.loadTransfers();
+        this.store.pipe(takeUntil(this.unsubscribe)).subscribe(
+            (state: AppState) => {
+                this.selectedAccount = state.accounts.selectedAccount;
+
+                this.loadTransfers();
+            }
+        );
     }
 
     ngOnDestroy(): void {
@@ -42,6 +56,9 @@ export class TransferListComponent implements OnInit {
     }
 
     loadTransfers(): void {
+        if (!this.selectedAccount)
+            return;
+
         var request: GetTransfersRequest = {
             pagination: {
                 pageSize: this.pageSize,
@@ -52,7 +69,7 @@ export class TransferListComponent implements OnInit {
                 order: this.sortOrder
             }
         };
-        this.transfersService.GetAll(request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
+        this.transfersService.GetAll(this.selectedAccount.id, request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.totalSize = result.totalCount;
             this.transfers = result.response;
         });
@@ -60,14 +77,15 @@ export class TransferListComponent implements OnInit {
 
     add(): void {
         this.dialog.open(TransferAddComponent, {
-            width: '500px'
+            width: '500px',
+            data: { accountId: this.selectedAccount?.id }
         });
     }
 
     edit(element: TransferResponse): void {
         this.dialog.open(TransferEditComponent, {
             width: '500px',
-            data: { item: element }
+            data: { item: element, accountId: this.selectedAccount?.id }
         });
     }
 
@@ -79,7 +97,6 @@ export class TransferListComponent implements OnInit {
     }
 
     sort(sort: Sort) {
-        console.log(sort);
        this.sortField = sort.active;
        this.sortOrder = sort.direction == "asc" ? SortOrder.Asc : SortOrder.Desc;
 

@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
+import { AccountsService } from 'src/app/api/services/accounts.service';
 import { LoadingService } from 'src/app/core/services/LoadingService';
 import { AppState } from 'src/app/store/app.reducers';
 import { AccountAddComponent } from '../account-add/account-add.component';
@@ -21,10 +22,14 @@ export class AccountListComponent implements OnInit, OnDestroy {
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private dialog: MatDialog, private store: Store<AppState>, private LoadingService: LoadingService) { }
+    constructor(
+        private dialog: MatDialog,
+        private store: Store<AppState>,
+        private loadingService: LoadingService,
+        private accountsService: AccountsService) { }
 
     ngOnInit(): void {
-        this.LoadingService.loadAccounts();
+        this.loadingService.loadAccounts();
 
         this.store.pipe(takeUntil(this.unsubscribe)).subscribe( // TODO: try to use this.store.select('Accounts')
             (state: AppState) => {
@@ -49,5 +54,15 @@ export class AccountListComponent implements OnInit, OnDestroy {
             width: '500px',
             data: { item: element }
         });
+    }
+
+    delete(element: AccountResponse): void {
+        this.accountsService.Delete(element.id)
+            .subscribe(
+                (response) => {
+                    // TODO: add toastr
+                    alert('Accepted');
+                }
+            );
     }
 }

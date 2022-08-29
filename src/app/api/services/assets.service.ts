@@ -27,7 +27,7 @@ export class AssetsService extends ApiServiceBase {
     }
 
     Create(request: CreateAssetRequest): Observable<BaseWebApiResponse> {
-        return this.http.post(`${this.apiEndpoint}`, request)
+        return this.http.post(this.apiEndpoint, request)
             .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 }

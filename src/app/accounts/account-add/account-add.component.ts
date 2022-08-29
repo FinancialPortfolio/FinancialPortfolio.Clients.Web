@@ -31,7 +31,6 @@ export class AccountAddComponent implements OnInit {
         this.accountsService.Create(this.accountForm.value)
             .subscribe(
                 (response) => {
-                    // TODO: add to store on saved event
                     // TODO: add toastr
                     this.dialogRef.close();
                 }, (response: HttpErrorResponse) => {

@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -27,7 +27,8 @@ export class TransferAddComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private transfersService: TransfersService,
         private dialogRef: MatDialogRef<TransferAddComponent>,
-        private store: Store<AppState>) { }
+        private store: Store<AppState>,
+        @Inject(MAT_DIALOG_DATA) public data: { accountId: string }) { }
 
     ngOnInit(): void {
         this.transferForm = this.formBuilder.group({
@@ -55,14 +56,12 @@ export class TransferAddComponent implements OnInit, OnDestroy {
             ...this.transferForm.value,
             accountId: this.accountId
         };
-        this.transfersService.Create(body)
+        this.transfersService.Create(this.data.accountId, body)
             .subscribe(
                 (result: BaseWebApiResponse) => {
-                    // TODO: add to store on saved event
                     // TODO: add toastr
                     this.dialogRef.close();
                 }, (error: WebApiProblemDetails) => {
-                    // TODO: add toastr
                     this.dialogRef.close();
                 },
             );

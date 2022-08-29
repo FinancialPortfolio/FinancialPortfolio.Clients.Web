@@ -1,7 +1,10 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Inject, OnInit } from '@angular/core';
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
-import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+
 import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
+import { AccountsService } from 'src/app/api/services/accounts.service';
 
 @Component({
     selector: 'app-account-edit',
@@ -10,10 +13,15 @@ import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 })
 export class AccountEditComponent implements OnInit {
     accountForm!: UntypedFormGroup;
+    account: AccountResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        @Inject(MAT_DIALOG_DATA) public data: { item: AccountResponse }) { }
+        private accountsService: AccountsService,
+        private dialogRef: MatDialogRef<AccountEditComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: { item: AccountResponse }) {
+        this.account = data.item;
+    }
 
     ngOnInit(): void {
         this.accountForm = this.formBuilder.group({
@@ -21,13 +29,21 @@ export class AccountEditComponent implements OnInit {
             description: ['', [Validators.required, Validators.maxLength(50)]]
         });
 
-        this.accountForm.patchValue(this.data.item);
+        this.accountForm.patchValue(this.account);
     }
 
     onSave(): void {
         if (!this.accountForm.valid)
             return;
 
-        alert("Add after implementing on back end");
+        this.accountsService.Update(this.account.id, this.accountForm.value)
+            .subscribe(
+                (response) => {
+                    // TODO: add toastr
+                    this.dialogRef.close();
+                }, (response: HttpErrorResponse) => {
+                    this.dialogRef.close();
+                },
+            );
     }
 }

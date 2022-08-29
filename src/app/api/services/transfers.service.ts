@@ -15,30 +15,36 @@ import { GetTransfersRequest } from '../models/Transfers/get-transfers-request';
 @Injectable()
 export class TransfersService extends ApiServiceBase {
     constructor(config: ApiConfiguration, http: HttpClient) {
-        super(config, http, '/transfers');
+        super(config, http, '');
     }
 
-    GetAll(request: GetTransfersRequest): Observable<PaginationWebApiResponse<Array<TransferResponse>>> {
-        let params = new HttpParams();
+    GetAll(accountId: string, request: GetTransfersRequest): Observable<PaginationWebApiResponse<Array<TransferResponse>>> {
+        var baseUrl = this.Endpoint(accountId);
 
         // TODO: move to shared place
+        let params = new HttpParams();
         params = params.append('pagination.pageNumber', request.pagination.pageNumber);
         params = params.append('pagination.pageSize', request.pagination.pageSize);
-
         params = params.append('sorting.field', request.sorting.field);
         params = params.append('sorting.order', request.sorting.order);
 
-        return this.http.get(this.apiEndpoint, { params })
+        return this.http.get(baseUrl, { params })
             .pipe(map((response: any) => response as PaginationWebApiResponse<Array<TransferResponse>>));
     }
 
-    GetById(id: string): Observable<WebApiResponse<TransferResponse>> {
-        return this.http.get(`${this.apiEndpoint}/${id}`)
+    GetById(accountId: string, id: string): Observable<WebApiResponse<TransferResponse>> {
+        var baseUrl = this.Endpoint(accountId);
+        return this.http.get(`${baseUrl}/${id}`)
             .pipe(map((response: any) => response as WebApiResponse<TransferResponse>));
     }
 
-    Create(request: CreateTransferRequest): Observable<BaseWebApiResponse> {
-        return this.http.post(`${this.apiEndpoint}`, request)
+    Create(accountId: string, request: CreateTransferRequest): Observable<BaseWebApiResponse> {
+        var baseUrl = this.Endpoint(accountId);
+        return this.http.post(baseUrl, request)
             .pipe(map((response: any) => response as BaseWebApiResponse));
+    }
+
+    Endpoint(accountId: string): string {
+        return `${this.apiEndpoint}/accounts/${accountId}/transfers`;
     }
 }
