@@ -1,4 +1,5 @@
-import { FilterCriteria as FinancialPortfolioSearchFilteringFilterCriteria } from './filter-criteria';
+import { FilterCriteria } from './filter-criteria';
+
 export interface FilteringOptions {
-    criteria?: null | Array<FinancialPortfolioSearchFilteringFilterCriteria>;
+    criteria: Array<FilterCriteria>;
 }

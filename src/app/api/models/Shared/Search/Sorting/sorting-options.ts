@@ -1,5 +1,6 @@
-import { SortOrder as FinancialPortfolioSearchSortingSortOrder } from './sort-order';
+import { SortOrder } from './sort-order';
+
 export interface SortingOptions {
-    field?: null | string;
-    order?: FinancialPortfolioSearchSortingSortOrder;
+    field: string;
+    order: SortOrder;
 }

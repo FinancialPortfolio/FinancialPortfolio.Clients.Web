@@ -1,6 +1,7 @@
-import { FilterOperator as FinancialPortfolioSearchFilteringFilterOperator } from './filter-operator';
+import { FilterOperator } from './filter-operator';
+
 export interface FilterCriteria {
-    field?: null | string;
-    operator?: FinancialPortfolioSearchFilteringFilterOperator;
-    value?: null | string;
+    field: string;
+    operator: FilterOperator;
+    value: string;
 }

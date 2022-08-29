@@ -16,7 +16,6 @@ import { ApiModule } from './api/api.module';
 import { AuthenticationInterceptor } from './authentication/interceptors/authentication-interceptor';
 import { AppReducers } from './store/app.reducers';
 import { AccountsEffects } from './accounts/store/accounts.effects';
-import { TransfersEffects } from './transfers/store/transfers.effects';
 import { environment } from 'src/environments/environment';
 
 @NgModule({
@@ -36,7 +35,7 @@ import { environment } from 'src/environments/environment';
         StoreDevtoolsModule.instrument({
             maxAge: 25
         }),
-        EffectsModule.forRoot([AccountsEffects, TransfersEffects])
+        EffectsModule.forRoot([AccountsEffects])
     ],
     providers: [
         { provide: HTTP_INTERCEPTORS, useClass: AuthenticationInterceptor, multi: true }, // TODO: move to core?

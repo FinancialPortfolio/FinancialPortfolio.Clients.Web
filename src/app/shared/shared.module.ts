@@ -7,12 +7,16 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
 
 @NgModule({
     imports: [
         CommonModule,
         NgxSpinnerModule,
         MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,
@@ -22,6 +26,8 @@ import { MatRadioModule } from '@angular/material/radio';
     exports: [
         NgxSpinnerModule,
         MatTableModule,
+        MatPaginatorModule,
+        MatSortModule,
         MatButtonModule,
         MatFormFieldModule,
         MatInputModule,

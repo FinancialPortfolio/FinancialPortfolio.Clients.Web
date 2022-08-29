@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { take, takeUntil } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 
 import { TransferResponse } from 'src/app/api/models/Transfers/transfer-response';
-import { TransferType } from 'src/app/api/models/Transfers/transfer-type';
-import { AppState } from 'src/app/store/app.reducers';
-import { LoadTransfersAction } from '../store/transfers.actions';
+import { TransfersService } from 'src/app/api/services/transfers.service';
 import { TransferAddComponent } from '../transfer-add/transfer-add.component';
 import { TransferEditComponent } from '../transfer-edit/transfer-edit.component';
+import { GetTransfersRequest } from 'src/app/api/models/Transfers/get-transfers-request';
+import { Sort } from '@angular/material/sort';
+import { SortOrder } from 'src/app/api/models/Shared/Search/Sorting/sort-order';
+import { PageEvent } from '@angular/material/paginator';
 
 @Component({
     selector: 'app-transfer-list',
@@ -19,29 +20,42 @@ import { TransferEditComponent } from '../transfer-edit/transfer-edit.component'
 export class TransferListComponent implements OnInit {
     transfers: TransferResponse[] = [];
     displayedColumns: string[] = ['amount', 'dateTime', 'type', 'actions'];
-    TransferType = TransferType;
+    totalSize = 0;
+
+    pageNumber = 0;
+    pageSize = 10;
+
+    sortField = "dateTime";
+    sortOrder = SortOrder.Desc;
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private dialog: MatDialog, private store: Store<AppState>) { }
+    constructor(private dialog: MatDialog, private transfersService: TransfersService) { }
 
     ngOnInit(): void {
-        this.store.select(state => state.transfers.hasLoaded).pipe(take(1)).subscribe(
-            (hasLoaded: boolean) => {
-                if (!hasLoaded)
-                    this.store.dispatch(LoadTransfersAction());
-            }
-        );
-        this.store.pipe(takeUntil(this.unsubscribe)).subscribe(
-            (state: AppState) => {
-                this.transfers = state.transfers.transfers;
-            }
-        );
+        this.loadTransfers();
     }
 
     ngOnDestroy(): void {
         this.unsubscribe.next();
         this.unsubscribe.complete();
+    }
+
+    loadTransfers(): void {
+        var request: GetTransfersRequest = {
+            pagination: {
+                pageSize: this.pageSize,
+                pageNumber: this.pageNumber + 1
+            },
+            sorting: {
+                field: this.sortField,
+                order: this.sortOrder
+            }
+        };
+        this.transfersService.GetAll(request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
+            this.totalSize = result.totalCount;
+            this.transfers = result.response;
+        });
     }
 
     add(): void {
@@ -55,5 +69,20 @@ export class TransferListComponent implements OnInit {
             width: '500px',
             data: { item: element }
         });
+    }
+
+    paginate(paginate: PageEvent) {
+        this.pageNumber = paginate.pageIndex;
+        this.pageSize = paginate.pageSize;
+
+        this.loadTransfers();
+    }
+
+    sort(sort: Sort) {
+        console.log(sort);
+       this.sortField = sort.active;
+       this.sortOrder = sort.direction == "asc" ? SortOrder.Asc : SortOrder.Desc;
+
+       this.loadTransfers();
     }
 }

@@ -32,6 +32,5 @@ export class AccountsEffects {
                 })
             )
         )
-        // TODO: add error handling here
     ));
 }
