@@ -13,14 +13,12 @@ import { AccountsService } from 'src/app/api/services/accounts.service';
 })
 export class AccountEditComponent implements OnInit {
     accountForm!: UntypedFormGroup;
-    account: AccountResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private accountsService: AccountsService,
         private dialogRef: MatDialogRef<AccountEditComponent>,
         @Inject(MAT_DIALOG_DATA) public data: { item: AccountResponse }) {
-        this.account = data.item;
     }
 
     ngOnInit(): void {
@@ -29,14 +27,14 @@ export class AccountEditComponent implements OnInit {
             description: ['', [Validators.required, Validators.maxLength(50)]]
         });
 
-        this.accountForm.patchValue(this.account);
+        this.accountForm.patchValue(this.data.item);
     }
 
     onSave(): void {
         if (!this.accountForm.valid)
             return;
 
-        this.accountsService.Update(this.account.id, this.accountForm.value)
+        this.accountsService.Update(this.data.item.id, this.accountForm.value)
             .subscribe(
                 (response) => {
                     // TODO: add toastr

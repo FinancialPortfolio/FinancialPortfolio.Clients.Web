@@ -33,7 +33,8 @@ export class TransferAddComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.transferForm = this.formBuilder.group({
             amount: [0, [Validators.required]],
-            type: ['Deposit', [Validators.required]]
+            type: ['Deposit', [Validators.required]],
+            dateTime: [new Date().toISOString().slice(0, 16), [Validators.required]]
         });
 
         this.store.select(selectSelectedAccount).pipe(takeUntil(this.unsubscribe)).subscribe(

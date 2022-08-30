@@ -89,6 +89,19 @@ export class TransferListComponent implements OnInit {
         });
     }
 
+    delete(element: TransferResponse): void {
+        if (!this.selectedAccount)
+            return;
+
+        this.transfersService.Delete(this.selectedAccount.id, element.id)
+            .subscribe(
+                (response) => {
+                    // TODO: add toastr
+                    alert('Accepted');
+                }
+            );
+    }
+
     paginate(paginate: PageEvent) {
         this.pageNumber = paginate.pageIndex;
         this.pageSize = paginate.pageSize;
@@ -97,9 +110,9 @@ export class TransferListComponent implements OnInit {
     }
 
     sort(sort: Sort) {
-       this.sortField = sort.active;
-       this.sortOrder = sort.direction == "asc" ? SortOrder.Asc : SortOrder.Desc;
+        this.sortField = sort.active;
+        this.sortOrder = sort.direction == "asc" ? SortOrder.Asc : SortOrder.Desc;
 
-       this.loadTransfers();
+        this.loadTransfers();
     }
 }
