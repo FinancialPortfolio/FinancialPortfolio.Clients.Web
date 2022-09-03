@@ -1,0 +1,29 @@
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+
+import { ApiConfiguration } from '../api-configuration';
+import { StockResponse } from '../models/Stocks/stock-response';
+import { ApiServiceBase } from '../api-base-service';
+import { GetStocksRequest } from '../models/Stocks/get-stocks-request';
+import { PaginationWebApiResponse } from '../models/Shared/pagination-web-api-response';
+
+@Injectable()
+export class StocksService extends ApiServiceBase {
+    constructor(config: ApiConfiguration, http: HttpClient) {
+        super(config, http, '/stocks');
+    }
+
+    GetAll(request: GetStocksRequest): Observable<PaginationWebApiResponse<Array<StockResponse>>> {
+        // TODO: move to shared place
+        let params = new HttpParams();
+        params = params.append('pagination.pageNumber', request.pagination.pageNumber);
+        params = params.append('pagination.pageSize', request.pagination.pageSize);
+        params = params.append('sorting.field', request.sorting.field);
+        params = params.append('sorting.order', request.sorting.order);
+
+        return this.http.get(this.apiEndpoint, { params })
+            .pipe(map((response: any) => response as PaginationWebApiResponse<Array<StockResponse>>));
+    }
+}

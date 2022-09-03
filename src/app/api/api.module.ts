@@ -3,7 +3,7 @@ import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { AccountsService } from './services/accounts.service';
-import { AssetsService } from './services/assets.service';
+import { StocksService } from './services/stockss.service';
 import { TransfersService } from './services/transfers.service';
 import { HttpErrorInterceptor } from './interceptors/HttpErrorInterceptor';
 
@@ -13,7 +13,7 @@ import { HttpErrorInterceptor } from './interceptors/HttpErrorInterceptor';
     declarations: [],
     providers: [
         AccountsService,
-        AssetsService,
+        StocksService,
         TransfersService,
         ApiConfiguration,
         {

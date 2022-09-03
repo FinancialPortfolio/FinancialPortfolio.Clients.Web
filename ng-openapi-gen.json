@@ -1,7 +1,7 @@
 {
     "$schema": "./node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
     "input": "swagger.json",
-    "output": "src/app/api",
+    "output": "src/app/api-swagger",
     "ignoreUnusedModels": false,
     "minParamsForContainer": 2,
     "sortParams": "none",
