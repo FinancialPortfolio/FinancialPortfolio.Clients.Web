@@ -1,4 +1,8 @@
 <div *ngIf="transfers.length > 0; else emptyTable">
+    <div class="table-header">
+        <h2 class="table-header-text">Transfers</h2>
+    </div>
+
     <table mat-table [dataSource]="transfers" matSort (matSortChange)="sort($event)" matSortDisableClear="true" class="mat-elevation-z8">
         <ng-container matColumnDef="position">
             <th mat-header-cell mat-sort-header="position" *matHeaderCellDef> No. </th>

@@ -23,6 +23,9 @@ export class StocksService extends ApiServiceBase {
         params = params.append('sorting.field', request.sorting.field);
         params = params.append('sorting.order', request.sorting.order);
 
+        params = params.append('name', request.name);
+        params = params.append('symbol', request.symbol);
+
         return this.http.get(this.apiEndpoint, { params })
             .pipe(map((response: any) => response as PaginationWebApiResponse<Array<StockResponse>>));
     }

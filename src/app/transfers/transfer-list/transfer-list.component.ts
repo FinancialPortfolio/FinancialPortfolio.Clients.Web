@@ -28,7 +28,7 @@ export class TransferListComponent implements OnInit {
     pageNumber = 0;
     pageSize = 10;
 
-    sortField = "dateTime";
+    sortField = "DateTime";
     sortOrder = SortOrder.Desc;
 
     selectedAccount: AccountResponse | undefined;

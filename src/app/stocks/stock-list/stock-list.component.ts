@@ -16,14 +16,17 @@ import { StocksService } from 'src/app/api/services/stockss.service';
 })
 export class StockListComponent implements OnInit {
     stocks: StockResponse[] = [];
-    displayedColumns: string[] = ['name', 'symbol'];
+    displayedColumns: string[] = ['name', 'symbol', 'exchange'];
     totalSize = 0;
 
     pageNumber = 0;
     pageSize = 25;
 
-    sortField = "symbol";
+    sortField = "Symbol";
     sortOrder = SortOrder.Asc;
+
+    name = "";
+    symbol = "";
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
@@ -47,7 +50,9 @@ export class StockListComponent implements OnInit {
             sorting: {
                 field: this.sortField,
                 order: this.sortOrder
-            }
+            },
+            name: this.name,
+            symbol: this.symbol
         };
         this.stocksService.GetAll(request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.totalSize = result.totalCount;
