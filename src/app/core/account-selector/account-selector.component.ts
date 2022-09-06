@@ -39,6 +39,8 @@ export class AccountSelectorComponent implements OnInit, OnDestroy {
     }
 
     accountSelected() {
+        localStorage.setItem('selectedAccount', this.selectedAccount.id);
+
         this.store.dispatch(SelectAccountAction({ account: this.selectedAccount }));
         this.dialogRef.close();
     }

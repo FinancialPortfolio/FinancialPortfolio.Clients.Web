@@ -42,7 +42,7 @@ export class StockListComponent implements OnInit {
     }
 
     loadStocks(): void {
-        var request: GetStocksRequest = {
+        let request: GetStocksRequest = {
             pagination: {
                 pageSize: this.pageSize,
                 pageNumber: this.pageNumber + 1

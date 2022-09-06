@@ -59,7 +59,7 @@ export class TransferListComponent implements OnInit {
         if (!this.selectedAccount)
             return;
 
-        var request: GetTransfersRequest = {
+        let request: GetTransfersRequest = {
             pagination: {
                 pageSize: this.pageSize,
                 pageNumber: this.pageNumber + 1
