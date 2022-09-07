@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Add order</h2>
+
+<mat-dialog-content class="mat-typography add-form">
+    <form (ngSubmit)="onSave()" [formGroup]="orderForm">
+        <mat-radio-group formControlName="type">
+            <mat-radio-button value="Buy">Buy</mat-radio-button>
+            <mat-radio-button value="Sell">Sell</mat-radio-button>
+        </mat-radio-group>
+
+        <mat-form-field>
+            <input matInput placeholder="Amount" formControlName="amount" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Price" formControlName="price" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput type="datetime-local" placeholder="DateTime" formControlName="dateTime" required>
+        </mat-form-field>
+
+        <mat-form-field>
+            <input matInput placeholder="Commission" formControlName="commission" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="standard">
+            <mat-label>Asset</mat-label>
+            <mat-select formControlName="assetId">
+                <mat-option value="7cb76312-bc8c-4cf0-8ab0-111befb98c98">Apple</mat-option>
+            </mat-select>
+        </mat-form-field>
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button type="submit" (click)="onSave()" [disabled]="orderForm.invalid">Save</button>
+</mat-dialog-actions>

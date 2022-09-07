@@ -5,6 +5,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { AccountsService } from './services/accounts.service';
 import { StocksService } from './services/stockss.service';
 import { TransfersService } from './services/transfers.service';
+import { OrdersService } from './services/orders.service';
 import { HttpErrorInterceptor } from './interceptors/HttpErrorInterceptor';
 
 @NgModule({
@@ -15,6 +16,7 @@ import { HttpErrorInterceptor } from './interceptors/HttpErrorInterceptor';
         AccountsService,
         StocksService,
         TransfersService,
+        OrdersService,
         ApiConfiguration,
         {
             provide: HTTP_INTERCEPTORS,

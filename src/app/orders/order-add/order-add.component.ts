@@ -8,33 +8,37 @@ import { takeUntil } from 'rxjs/operators';
 import { selectSelectedAccount } from 'src/app/accounts/store/accounts.selectors';
 import { BaseWebApiResponse } from 'src/app/api/models/Shared/base-web-api-response';
 import { WebApiProblemDetails } from 'src/app/api/models/Shared/web-api-problem-details';
-import { CreateTransferRequest } from 'src/app/api/models/Transfers/create-transfer-request';
-import { TransfersService } from 'src/app/api/services/transfers.service';
+import { CreateOrderRequest } from 'src/app/api/models/Orders/create-order-request';
+import { OrdersService } from 'src/app/api/services/orders.service';
 import { AppState } from 'src/app/store/app.reducers';
+import { OrderType } from 'src/app/api/models/Orders/order-type';
 
 @Component({
-    selector: 'app-transfer-add',
-    templateUrl: './transfer-add.component.html',
-    styleUrls: ['./transfer-add.component.scss']
+    selector: 'app-order-add',
+    templateUrl: './order-add.component.html',
+    styleUrls: ['./order-add.component.scss']
 })
-export class TransferAddComponent implements OnInit, OnDestroy {
-    transferForm!: UntypedFormGroup;
+export class OrderAddComponent implements OnInit, OnDestroy {
+    orderForm!: UntypedFormGroup;
     accountId: string | undefined | null;
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private transfersService: TransfersService,
-        private dialogRef: MatDialogRef<TransferAddComponent>,
+        private ordersService: OrdersService,
+        private dialogRef: MatDialogRef<OrderAddComponent>,
         private store: Store<AppState>,
         @Inject(MAT_DIALOG_DATA) public data: { accountId: string }) { }
 
     ngOnInit(): void {
-        this.transferForm = this.formBuilder.group({
-            amount: [0, [Validators.required]],
-            type: ['Deposit', [Validators.required]],
-            dateTime: [this.ToIsoDate(new Date()), [Validators.required]]
+        this.orderForm = this.formBuilder.group({
+            type: [OrderType.Buy, [Validators.required]],
+            amount: [1, [Validators.required]],
+            price: [1, [Validators.required]],
+            dateTime: [this.ToIsoDate(new Date()), [Validators.required]],
+            commission: [0, [Validators.required]],
+            assetId: ['7cb76312-bc8c-4cf0-8ab0-111befb98c98', [Validators.required]]
         });
 
         this.store.select(selectSelectedAccount).pipe(takeUntil(this.unsubscribe)).subscribe(
@@ -50,14 +54,14 @@ export class TransferAddComponent implements OnInit, OnDestroy {
     }
 
     onSave(): void {
-        if (!this.transferForm.valid)
+        if (!this.orderForm.valid)
             return;
 
-        let body: CreateTransferRequest = {
-            ...this.transferForm.value,
+        let body: CreateOrderRequest = {
+            ...this.orderForm.value,
             accountId: this.accountId
         };
-        this.transfersService.Create(this.data.accountId, body)
+        this.ordersService.Create(this.data.accountId, body)
             .subscribe(
                 (result: BaseWebApiResponse) => {
                     // TODO: add toastr

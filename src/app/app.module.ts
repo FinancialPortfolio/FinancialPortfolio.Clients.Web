@@ -28,7 +28,7 @@ import { environment } from 'src/environments/environment';
         HttpClientModule, // TODO: move to core
         CoreModule,
         HomeModule,
-        AuthenticationModule,
+        AuthenticationModule,// TODO: move to core?
         AppRoutingModule, // TODO: move to core
         ApiModule.forRoot({ rootUrl: environment.gatewayUrl }),
         StoreModule.forRoot(AppReducers),
