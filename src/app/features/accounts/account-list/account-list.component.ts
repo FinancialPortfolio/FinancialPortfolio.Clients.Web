@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 
 import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AccountsService } from 'src/app/api/services/accounts.service';
-import { LoadingService } from 'src/app/core/services/LoadingService';
+import { LoadingService } from 'src/app/core/services/loading.service';
 import { AppState } from 'src/app/store/app.reducers';
 import { AccountAddComponent } from '../account-add/account-add.component';
 import { AccountEditComponent } from '../account-edit/account-edit.component';

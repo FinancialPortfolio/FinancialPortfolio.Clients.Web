@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AppState } from 'src/app/store/app.reducers';
 import { AccountSelectorComponent } from '../../account-selector/account-selector.component';
-import { LoadingService } from '../../services/LoadingService';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
     selector: 'app-sidebar',
