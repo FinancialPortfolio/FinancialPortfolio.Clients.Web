@@ -11,6 +11,7 @@ import { WebApiProblemDetails } from 'src/app/api/models/Shared/web-api-problem-
 import { CreateTransferRequest } from 'src/app/api/models/Transfers/create-transfer-request';
 import { TransfersService } from 'src/app/api/services/transfers.service';
 import { AppState } from 'src/app/store/app.reducers';
+import { DateService } from 'src/app/core/services/date.service';
 
 @Component({
     selector: 'app-transfer-add',
@@ -26,6 +27,7 @@ export class TransferAddComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private transfersService: TransfersService,
+        private dateService: DateService,
         private dialogRef: MatDialogRef<TransferAddComponent>,
         private store: Store<AppState>,
         @Inject(MAT_DIALOG_DATA) public data: { accountId: string }) { }
@@ -34,7 +36,7 @@ export class TransferAddComponent implements OnInit, OnDestroy {
         this.transferForm = this.formBuilder.group({
             amount: [0, [Validators.required]],
             type: ['Deposit', [Validators.required]],
-            dateTime: [this.ToIsoDate(new Date()), [Validators.required]]
+            dateTime: [this.dateService.ToIsoDate(new Date()), [Validators.required]]
         });
 
         this.store.select(selectSelectedAccount).pipe(takeUntil(this.unsubscribe)).subscribe(
@@ -66,9 +68,5 @@ export class TransferAddComponent implements OnInit, OnDestroy {
                     this.dialogRef.close();
                 },
             );
-    }
-
-    private ToIsoDate(date: Date): string {
-        return new Date(date).toISOString().slice(0, 16);
     }
 }

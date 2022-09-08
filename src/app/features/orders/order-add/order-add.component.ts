@@ -15,6 +15,7 @@ import { OrderType } from 'src/app/api/models/Orders/order-type';
 import { StocksService } from 'src/app/api/services/stockss.service';
 import { GetStocksRequest } from 'src/app/api/models/Stocks/get-stocks-request';
 import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
+import { DateService } from 'src/app/core/services/date.service';
 
 @Component({
     selector: 'app-order-add',
@@ -36,6 +37,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private ordersService: OrdersService,
         private stocksService: StocksService,
+        private dateService: DateService,
         private dialogRef: MatDialogRef<OrderAddComponent>,
         private store: Store<AppState>,
         @Inject(MAT_DIALOG_DATA) public data: { accountId: string }) { }
@@ -45,7 +47,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
             type: [OrderType.Buy, [Validators.required]],
             amount: [1, [Validators.required]],
             price: [1, [Validators.required]],
-            dateTime: [this.ToIsoDate(new Date()), [Validators.required]],
+            dateTime: [this.dateService.ToIsoDate(new Date()), [Validators.required]],
             commission: [0, [Validators.required]],
             asset: ['', [Validators.required]],
             assetId: ['', [Validators.required]]
@@ -110,10 +112,6 @@ export class OrderAddComponent implements OnInit, OnDestroy {
                     this.dialogRef.close();
                 },
             );
-    }
-
-    private ToIsoDate(date: Date): string {
-        return new Date(date).toISOString().slice(0, 16);
     }
 
     clearSelection() {

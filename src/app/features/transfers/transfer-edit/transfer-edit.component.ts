@@ -6,6 +6,7 @@ import { AccountEditComponent } from "src/app/features/accounts/account-edit/acc
 
 import { TransferResponse } from "src/app/api/models/Transfers/transfer-response";
 import { TransfersService } from "src/app/api/services/transfers.service";
+import { DateService } from "src/app/core/services/date.service";
 
 @Component({
     selector: 'app-transfer-edit',
@@ -18,6 +19,7 @@ export class TransferEditComponent implements OnInit {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private transfersService: TransfersService,
+        private dateService: DateService,
         private dialogRef: MatDialogRef<AccountEditComponent>,
         @Inject(MAT_DIALOG_DATA) public data: { item: TransferResponse, accountId: string }) { }
 
@@ -25,12 +27,12 @@ export class TransferEditComponent implements OnInit {
         this.transferForm = this.formBuilder.group({
             amount: [0, [Validators.required]],
             type: [0, [Validators.required]],
-            dateTime: [this.ToIsoDate(new Date()), [Validators.required]]
+            dateTime: [this.dateService.ToIsoDate(new Date()), [Validators.required]]
         });
 
         this.transferForm.patchValue({
             ...this.data.item,
-            dateTime: this.ToIsoDate(this.data.item.dateTime)
+            dateTime: this.dateService.ToIsoDate(this.data.item.dateTime)
         });
     }
 
@@ -47,9 +49,5 @@ export class TransferEditComponent implements OnInit {
                     this.dialogRef.close();
                 },
             );
-    }
-
-    private ToIsoDate(date: Date): string {
-        return new Date(date).toISOString().slice(0, 16);
     }
 }

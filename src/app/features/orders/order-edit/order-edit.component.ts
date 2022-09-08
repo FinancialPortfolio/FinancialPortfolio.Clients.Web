@@ -9,6 +9,7 @@ import { GetStocksRequest } from "src/app/api/models/Stocks/get-stocks-request";
 import { StockResponse } from "src/app/api/models/Stocks/stock-response";
 import { OrdersService } from "src/app/api/services/orders.service";
 import { StocksService } from "src/app/api/services/stockss.service";
+import { DateService } from "src/app/core/services/date.service";
 import { AccountEditComponent } from "src/app/features/accounts/account-edit/account-edit.component";
 
 @Component({
@@ -28,6 +29,7 @@ export class OrderEditComponent implements OnInit {
         private formBuilder: UntypedFormBuilder,
         private ordersService: OrdersService,
         private stocksService: StocksService,
+        private dateService: DateService,
         private dialogRef: MatDialogRef<AccountEditComponent>,
         @Inject(MAT_DIALOG_DATA) public data: { item: OrderResponse, accountId: string }) { }
 
@@ -36,7 +38,7 @@ export class OrderEditComponent implements OnInit {
             type: [0, [Validators.required]],
             amount: [0, [Validators.required]],
             price: [0, [Validators.required]],
-            dateTime: [this.ToIsoDate(new Date()), [Validators.required]],
+            dateTime: [this.dateService.ToIsoDate(new Date()), [Validators.required]],
             commission: [0, [Validators.required]],
             asset: ['', [Validators.required]],
             assetId: ['', [Validators.required]]
@@ -46,7 +48,7 @@ export class OrderEditComponent implements OnInit {
             ...this.data.item,
             asset: this.data.item.stock.name,
             assetId: this.data.item.stock.id,
-            dateTime: this.ToIsoDate(this.data.item.dateTime)
+            dateTime: this.dateService.ToIsoDate(this.data.item.dateTime)
         });
 
         this.initAutocomplete();
@@ -93,10 +95,6 @@ export class OrderEditComponent implements OnInit {
                     this.dialogRef.close();
                 },
             );
-    }
-
-    private ToIsoDate(date: Date): string {
-        return new Date(date).toISOString().slice(0, 16);
     }
 
     clearSelection() {
