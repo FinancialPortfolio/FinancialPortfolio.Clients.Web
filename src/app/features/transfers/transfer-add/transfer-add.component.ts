@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { selectSelectedAccount } from 'src/app/accounts/store/accounts.selectors';
+import { selectSelectedAccount } from 'src/app/features/accounts/store/accounts.selectors';
 import { BaseWebApiResponse } from 'src/app/api/models/Shared/base-web-api-response';
 import { WebApiProblemDetails } from 'src/app/api/models/Shared/web-api-problem-details';
 import { CreateTransferRequest } from 'src/app/api/models/Transfers/create-transfer-request';

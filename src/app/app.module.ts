@@ -9,13 +9,13 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppComponent } from './app.component';
 import { AuthCallbackComponent } from './authentication/auth-callback/auth-callback.component';
 import { CoreModule } from './core/core.module';
-import { HomeModule } from './home/home.module';
+import { HomeModule } from './features/home/home.module';
 import { AppRoutingModule } from './routing/app-routing.module';
 import { AuthenticationModule } from './authentication/authentication.module';
 import { ApiModule } from './api/api.module';
 import { AuthenticationInterceptor } from './authentication/interceptors/authentication-interceptor';
 import { AppReducers } from './store/app.reducers';
-import { AccountsEffects } from './accounts/store/accounts.effects';
+import { AccountsEffects } from './features/accounts/store/accounts.effects';
 import { environment } from 'src/environments/environment';
 
 @NgModule({

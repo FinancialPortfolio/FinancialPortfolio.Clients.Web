@@ -2,7 +2,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Component, OnInit, Inject } from "@angular/core";
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { AccountEditComponent } from "src/app/accounts/account-edit/account-edit.component";
+import { AccountEditComponent } from "src/app/features/accounts/account-edit/account-edit.component";
 
 import { TransferResponse } from "src/app/api/models/Transfers/transfer-response";
 import { TransfersService } from "src/app/api/services/transfers.service";

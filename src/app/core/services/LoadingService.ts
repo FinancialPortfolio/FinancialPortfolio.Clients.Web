@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { take } from "rxjs/operators";
-import { LoadAccountsAction } from "src/app/accounts/store/accounts.actions";
+import { LoadAccountsAction } from "src/app/features/accounts/store/accounts.actions";
 import { AuthService } from "src/app/authentication/services/auth.service";
 import { AppState } from "src/app/store/app.reducers";
 

@@ -9,7 +9,7 @@ import { GetStocksRequest } from "src/app/api/models/Stocks/get-stocks-request";
 import { StockResponse } from "src/app/api/models/Stocks/stock-response";
 import { OrdersService } from "src/app/api/services/orders.service";
 import { StocksService } from "src/app/api/services/stockss.service";
-import { AccountEditComponent } from "src/app/accounts/account-edit/account-edit.component";
+import { AccountEditComponent } from "src/app/features/accounts/account-edit/account-edit.component";
 
 @Component({
     selector: 'app-order-edit',
