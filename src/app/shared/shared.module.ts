@@ -10,6 +10,8 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatSelectModule } from '@angular/material/select';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
     imports: [
@@ -23,7 +25,9 @@ import { MatSelectModule } from '@angular/material/select';
         MatInputModule,
         MatDialogModule,
         MatRadioModule,
-        MatSelectModule
+        MatSelectModule,
+        MatAutocompleteModule,
+        MatIconModule
     ],
     exports: [
         NgxSpinnerModule,
@@ -35,7 +39,9 @@ import { MatSelectModule } from '@angular/material/select';
         MatInputModule,
         MatDialogModule,
         MatRadioModule,
-        MatSelectModule
+        MatSelectModule,
+        MatAutocompleteModule,
+        MatIconModule
     ],
     providers: []
 })

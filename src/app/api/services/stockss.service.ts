@@ -18,13 +18,24 @@ export class StocksService extends ApiServiceBase {
     GetAll(request: GetStocksRequest): Observable<PaginationWebApiResponse<Array<StockResponse>>> {
         // TODO: move to shared place
         let params = new HttpParams();
-        params = params.append('pagination.pageNumber', request.pagination.pageNumber);
-        params = params.append('pagination.pageSize', request.pagination.pageSize);
-        params = params.append('sorting.field', request.sorting.field);
-        params = params.append('sorting.order', request.sorting.order);
 
-        params = params.append('name', request.name);
-        params = params.append('symbol', request.symbol);
+        if (request.pagination) {
+            params = params.append('pagination.pageNumber', request.pagination.pageNumber);
+            params = params.append('pagination.pageSize', request.pagination.pageSize);
+        }
+
+        if (request.sorting) {
+            params = params.append('sorting.field', request.sorting.field);
+            params = params.append('sorting.order', request.sorting.order);
+        }
+
+        if (request.name) {
+            params = params.append('name', request.name);
+        }
+
+        if (request.symbol) {
+            params = params.append('symbol', request.symbol);
+        }
 
         return this.http.get(this.apiEndpoint, { params })
             .pipe(map((response: any) => response as PaginationWebApiResponse<Array<StockResponse>>));

@@ -10,6 +10,16 @@
                 <td mat-cell *matCellDef="let element"> {{element.position}} </td>
             </ng-container>
 
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.stock.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="symbol">
+                <th mat-header-cell *matHeaderCellDef> Symbol </th>
+                <td mat-cell *matCellDef="let element"> {{element.stock.symbol}} </td>
+            </ng-container>
+
             <ng-container matColumnDef="type">
                 <th mat-header-cell mat-sort-header="Type" *matHeaderCellDef> Type </th>
                 <td mat-cell *matCellDef="let element"> {{element.type}} </td>
@@ -33,16 +43,6 @@
             <ng-container matColumnDef="commission">
                 <th mat-header-cell mat-sort-header="Commission" *matHeaderCellDef> Commission </th>
                 <td mat-cell *matCellDef="let element"> {{element.commission}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef> Name </th>
-                <td mat-cell *matCellDef="let element"> {{element.stock.name}} </td>
-            </ng-container>
-
-            <ng-container matColumnDef="symbol">
-                <th mat-header-cell *matHeaderCellDef> Symbol </th>
-                <td mat-cell *matCellDef="let element"> {{element.stock.symbol}} </td>
             </ng-container>
 
             <ng-container matColumnDef="actions">

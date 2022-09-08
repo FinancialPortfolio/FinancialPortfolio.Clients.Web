@@ -8,6 +8,24 @@
         </mat-radio-group>
 
         <mat-form-field>
+            <input matInput placeholder="Asset" formControlName="asset" [matAutocomplete]="assetsAutocomplete" required>
+
+            <button *ngIf="orderForm.get('asset')?.value" matSuffix mat-icon-button aria-label="Clear" type="button" (click)="clearSelection()">
+                <mat-icon>close</mat-icon>
+            </button>
+
+            <mat-autocomplete #assetsAutocomplete="matAutocomplete" (optionSelected)="onSelected($event.option.value)">
+                <mat-option *ngIf="isLoading" class="is-loading">Loading...</mat-option>
+
+                <ng-container *ngIf="!isLoading">
+                    <mat-option *ngFor="let asset of assets" [value]="asset">
+                        <span>{{asset.name}} ({{asset.symbol}})</span>
+                    </mat-option>
+                </ng-container>
+            </mat-autocomplete>
+        </mat-form-field>
+
+        <mat-form-field>
             <input matInput placeholder="Amount" formControlName="amount" required>
         </mat-form-field>
 
@@ -21,13 +39,6 @@
 
         <mat-form-field>
             <input matInput placeholder="Commission" formControlName="commission" required>
-        </mat-form-field>
-
-        <mat-form-field appearance="standard">
-            <mat-label>Asset</mat-label>
-            <mat-select formControlName="assetId">
-                <mat-option value="7cb76312-bc8c-4cf0-8ab0-111befb98c98">Apple</mat-option>
-            </mat-select>
         </mat-form-field>
     </form>
 </mat-dialog-content>

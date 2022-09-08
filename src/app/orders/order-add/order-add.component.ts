@@ -3,7 +3,7 @@ import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { debounceTime, distinctUntilChanged, filter, finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { selectSelectedAccount } from 'src/app/accounts/store/accounts.selectors';
 import { BaseWebApiResponse } from 'src/app/api/models/Shared/base-web-api-response';
@@ -12,6 +12,9 @@ import { CreateOrderRequest } from 'src/app/api/models/Orders/create-order-reque
 import { OrdersService } from 'src/app/api/services/orders.service';
 import { AppState } from 'src/app/store/app.reducers';
 import { OrderType } from 'src/app/api/models/Orders/order-type';
+import { StocksService } from 'src/app/api/services/stockss.service';
+import { GetStocksRequest } from 'src/app/api/models/Stocks/get-stocks-request';
+import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
 
 @Component({
     selector: 'app-order-add',
@@ -22,11 +25,17 @@ export class OrderAddComponent implements OnInit, OnDestroy {
     orderForm!: UntypedFormGroup;
     accountId: string | undefined | null;
 
+    isLoading = false;
+    minLengthTerm = 3;
+    debounceTime = 500;
+    assets: StockResponse[] = [];
+
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private ordersService: OrdersService,
+        private stocksService: StocksService,
         private dialogRef: MatDialogRef<OrderAddComponent>,
         private store: Store<AppState>,
         @Inject(MAT_DIALOG_DATA) public data: { accountId: string }) { }
@@ -38,7 +47,8 @@ export class OrderAddComponent implements OnInit, OnDestroy {
             price: [1, [Validators.required]],
             dateTime: [this.ToIsoDate(new Date()), [Validators.required]],
             commission: [0, [Validators.required]],
-            assetId: ['7cb76312-bc8c-4cf0-8ab0-111befb98c98', [Validators.required]]
+            asset: ['', [Validators.required]],
+            assetId: ['', [Validators.required]]
         });
 
         this.store.select(selectSelectedAccount).pipe(takeUntil(this.unsubscribe)).subscribe(
@@ -46,11 +56,41 @@ export class OrderAddComponent implements OnInit, OnDestroy {
                 this.accountId = selectedAccount?.id;
             }
         );
+
+        this.initAutocomplete();
     }
 
     ngOnDestroy(): void {
         this.unsubscribe.next();
         this.unsubscribe.complete();
+    }
+
+    initAutocomplete(): void {
+        this.orderForm.get('asset')?.valueChanges
+            .pipe(
+                filter(result => {
+                    return result !== null && result.length >= this.minLengthTerm
+                }),
+                distinctUntilChanged(),
+                debounceTime(this.debounceTime),
+                tap(() => {
+                    this.assets = [];
+                    this.isLoading = true;
+                }),
+                switchMap(value => {
+                    let request: GetStocksRequest = {
+                        name: value,
+                        symbol: null,
+                        pagination: null,
+                        sorting: null
+                    };
+                    return this.stocksService.GetAll(request)
+                        .pipe(finalize(() => this.isLoading = false));
+                })
+            )
+            .subscribe((result: any) => {
+                this.assets = result.response;
+            });
     }
 
     onSave(): void {
@@ -74,5 +114,16 @@ export class OrderAddComponent implements OnInit, OnDestroy {
 
     private ToIsoDate(date: Date): string {
         return new Date(date).toISOString().slice(0, 16);
+    }
+
+    clearSelection() {
+        this.orderForm.get('asset')?.setValue("");
+        this.orderForm.get('assetId')?.setValue("");
+        this.assets = [];
+    }
+
+    onSelected(asset: StockResponse) {
+        this.orderForm.get('asset')?.setValue(asset.name);
+        this.orderForm.get('assetId')?.setValue(asset.id);
     }
 }
