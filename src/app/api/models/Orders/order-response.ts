@@ -1,4 +1,5 @@
 import { OrderType } from "./order-type";
+import { StockResponse } from "./stock-response";
 
 export interface OrderResponse {
     id: string;
@@ -7,6 +8,6 @@ export interface OrderResponse {
     price: number;
     dateTime: Date;
     commission: number;
-    assetId: string;
+    stock: StockResponse;
     accountId: string;
 }

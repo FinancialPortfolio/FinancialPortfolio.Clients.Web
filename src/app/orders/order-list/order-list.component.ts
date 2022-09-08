@@ -22,7 +22,7 @@ import { AppState } from 'src/app/store/app.reducers';
 })
 export class OrderListComponent implements OnInit {
     orders: OrderResponse[] = [];
-    displayedColumns: string[] = ['type', 'amount', 'price', 'dateTime', 'commission', 'actions'];
+    displayedColumns: string[] = ['type', 'amount', 'price', 'dateTime', 'commission', 'name', 'symbol', 'actions'];
     totalSize = 0;
 
     pageNumber = 0;

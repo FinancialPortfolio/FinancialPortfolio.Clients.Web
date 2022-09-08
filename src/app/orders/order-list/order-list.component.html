@@ -35,6 +35,16 @@
                 <td mat-cell *matCellDef="let element"> {{element.commission}} </td>
             </ng-container>
 
+            <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef> Name </th>
+                <td mat-cell *matCellDef="let element"> {{element.stock.name}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="symbol">
+                <th mat-header-cell *matHeaderCellDef> Symbol </th>
+                <td mat-cell *matCellDef="let element"> {{element.stock.symbol}} </td>
+            </ng-container>
+
             <ng-container matColumnDef="actions">
                 <th mat-header-cell *matHeaderCellDef class="actions-header-cell"> Actions </th>
                 <td mat-cell *matCellDef="let element" class="action-cell">
