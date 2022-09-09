@@ -3,10 +3,11 @@ import { HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { AccountsService } from './services/accounts.service';
-import { StocksService } from './services/stockss.service';
+import { StocksService } from './services/stocks.service';
 import { TransfersService } from './services/transfers.service';
 import { OrdersService } from './services/orders.service';
 import { HttpErrorInterceptor } from './interceptors/HttpErrorInterceptor';
+import { AccountStocksService } from './services/account-stocks.service';
 
 @NgModule({
     imports: [],
@@ -15,6 +16,7 @@ import { HttpErrorInterceptor } from './interceptors/HttpErrorInterceptor';
     providers: [
         AccountsService,
         StocksService,
+        AccountStocksService,
         TransfersService,
         OrdersService,
         ApiConfiguration,

@@ -8,7 +8,7 @@ import { OrderResponse } from "src/app/api/models/Orders/order-response";
 import { GetStocksRequest } from "src/app/api/models/Stocks/get-stocks-request";
 import { StockResponse } from "src/app/api/models/Stocks/stock-response";
 import { OrdersService } from "src/app/api/services/orders.service";
-import { StocksService } from "src/app/api/services/stockss.service";
+import { StocksService } from "src/app/api/services/stocks.service";
 import { DateService } from "src/app/core/services/date.service";
 import { AccountEditComponent } from "src/app/features/accounts/account-edit/account-edit.component";
 

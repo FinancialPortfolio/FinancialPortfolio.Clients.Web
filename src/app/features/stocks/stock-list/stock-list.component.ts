@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
 import { GetStocksRequest } from 'src/app/api/models/Stocks/get-stocks-request';
 import { SortOrder } from 'src/app/api/models/Shared/Search/Sorting/sort-order';
-import { StocksService } from 'src/app/api/services/stockss.service';
+import { StocksService } from 'src/app/api/services/stocks.service';
 
 @Component({
     selector: 'app-stock-list',

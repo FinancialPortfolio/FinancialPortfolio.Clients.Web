@@ -12,7 +12,7 @@ import { CreateOrderRequest } from 'src/app/api/models/Orders/create-order-reque
 import { OrdersService } from 'src/app/api/services/orders.service';
 import { AppState } from 'src/app/store/app.reducers';
 import { OrderType } from 'src/app/api/models/Orders/order-type';
-import { StocksService } from 'src/app/api/services/stockss.service';
+import { StocksService } from 'src/app/api/services/stocks.service';
 import { GetStocksRequest } from 'src/app/api/models/Stocks/get-stocks-request';
 import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
 import { DateService } from 'src/app/core/services/date.service';
