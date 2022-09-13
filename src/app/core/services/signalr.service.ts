@@ -5,7 +5,9 @@ import { Subject } from 'rxjs';
 import { AuthService } from 'src/app/authentication/services/auth.service';
 import { environment } from 'src/environments/environment';
 import { FailedOperation } from '../models/failed-operation';
+import { getFailedMessage, getSuccessfulMessage } from '../models/operations';
 import { SuccessfulOperation } from '../models/successful-operation';
+import { NotificationService } from './notification.service';
 
 @Injectable({
     providedIn: 'root'
@@ -16,7 +18,7 @@ export class SignalrService {
     public operationSucceededSubject = new Subject<SuccessfulOperation>();
     public operationFailedSubject = new Subject<FailedOperation>();
 
-    constructor(private authService: AuthService) {
+    constructor(private authService: AuthService, private notificationService: NotificationService) {
         this.hubConnection = new HubConnectionBuilder()
             .withUrl(environment.operationsUrl)
             .build();
@@ -48,12 +50,16 @@ export class SignalrService {
 
     public addOperationsListener(): void {
         this.hubConnection.on('OperationSucceeded', (operation: SuccessfulOperation) => {
-            console.log(operation);
+            let message = getSuccessfulMessage(operation);
+            this.notificationService.success(message);
+
             this.operationSucceededSubject.next(operation);
         });
 
         this.hubConnection.on('OperationFailed', (operation: FailedOperation) => {
-            console.log(operation);
+            let title = getFailedMessage(operation);
+            this.notificationService.error(title, operation.message);
+
             this.operationFailedSubject.next(operation);
         });
     }

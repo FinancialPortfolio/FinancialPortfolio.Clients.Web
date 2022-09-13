@@ -16,6 +16,7 @@ import { StocksService } from 'src/app/api/services/stocks.service';
 import { GetStocksRequest } from 'src/app/api/models/Stocks/get-stocks-request';
 import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
 import { DateService } from 'src/app/core/services/date.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
     selector: 'app-order-add',
@@ -38,6 +39,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
         private ordersService: OrdersService,
         private stocksService: StocksService,
         private dateService: DateService,
+        private notificationService: NotificationService,
         private dialogRef: MatDialogRef<OrderAddComponent>,
         private store: Store<AppState>,
         @Inject(MAT_DIALOG_DATA) public data: { accountId: string }) { }
@@ -105,10 +107,10 @@ export class OrderAddComponent implements OnInit, OnDestroy {
         };
         this.ordersService.Create(this.data.accountId, body)
             .subscribe(
-                (result: BaseWebApiResponse) => {
-                    // TODO: add toastr
+                () => {
+                    this.notificationService.success('Accepted');
                     this.dialogRef.close();
-                }, (error: WebApiProblemDetails) => {
+                }, () => {
                     this.dialogRef.close();
                 },
             );

@@ -5,6 +5,7 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AccountsService } from 'src/app/api/services/accounts.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
     selector: 'app-account-edit',
@@ -17,6 +18,7 @@ export class AccountEditComponent implements OnInit {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private accountsService: AccountsService,
+        private notificationService: NotificationService,
         private dialogRef: MatDialogRef<AccountEditComponent>,
         @Inject(MAT_DIALOG_DATA) public data: { item: AccountResponse }) {
     }
@@ -36,10 +38,10 @@ export class AccountEditComponent implements OnInit {
 
         this.accountsService.Update(this.data.item.id, this.accountForm.value)
             .subscribe(
-                (response) => {
-                    // TODO: add toastr
+                () => {
+                    this.notificationService.success('Accepted');
                     this.dialogRef.close();
-                }, (response: HttpErrorResponse) => {
+                }, () => {
                     this.dialogRef.close();
                 },
             );

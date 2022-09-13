@@ -10,6 +10,7 @@ import { StockResponse } from "src/app/api/models/Stocks/stock-response";
 import { OrdersService } from "src/app/api/services/orders.service";
 import { StocksService } from "src/app/api/services/stocks.service";
 import { DateService } from "src/app/core/services/date.service";
+import { NotificationService } from "src/app/core/services/notification.service";
 import { AccountEditComponent } from "src/app/features/accounts/account-edit/account-edit.component";
 
 @Component({
@@ -30,6 +31,7 @@ export class OrderEditComponent implements OnInit {
         private ordersService: OrdersService,
         private stocksService: StocksService,
         private dateService: DateService,
+        private notificationService: NotificationService,
         private dialogRef: MatDialogRef<AccountEditComponent>,
         @Inject(MAT_DIALOG_DATA) public data: { item: OrderResponse, accountId: string }) { }
 
@@ -88,10 +90,10 @@ export class OrderEditComponent implements OnInit {
 
         this.ordersService.Update(this.data.accountId, this.data.item.id, this.orderForm.value)
             .subscribe(
-                (response) => {
-                    // TODO: add toastr
+                () => {
+                    this.notificationService.success('Accepted');
                     this.dialogRef.close();
-                }, (response: HttpErrorResponse) => {
+                }, () => {
                     this.dialogRef.close();
                 },
             );

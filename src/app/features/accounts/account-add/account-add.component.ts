@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AccountsService } from 'src/app/api/services/accounts.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
     selector: 'app-account-add',
@@ -15,6 +16,7 @@ export class AccountAddComponent implements OnInit {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private accountsService: AccountsService,
+        private notificationService: NotificationService,
         private dialogRef: MatDialogRef<AccountAddComponent>) { }
 
     ngOnInit(): void {
@@ -30,10 +32,10 @@ export class AccountAddComponent implements OnInit {
 
         this.accountsService.Create(this.accountForm.value)
             .subscribe(
-                (response) => {
-                    // TODO: add toastr
+                () => {
+                    this.notificationService.success('Accepted');
                     this.dialogRef.close();
-                }, (response: HttpErrorResponse) => {
+                }, () => {
                     this.dialogRef.close();
                 },
             );

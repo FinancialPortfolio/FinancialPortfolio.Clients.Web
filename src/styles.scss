@@ -1,87 +1,89 @@
- @import "~bootstrap/scss/bootstrap.scss";
- @import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
- @import "~@fortawesome/fontawesome-free/scss/solid.scss";
- @import "~@fortawesome/fontawesome-free/scss/regular.scss";
- @import "~@fortawesome/fontawesome-free/scss/brands.scss";
+@import '~ngx-toastr/toastr';
 
- main>.container {
-     padding: 35px 0;
- }
+@import "~bootstrap/scss/bootstrap.scss";
+@import "~@fortawesome/fontawesome-free/scss/fontawesome.scss";
+@import "~@fortawesome/fontawesome-free/scss/solid.scss";
+@import "~@fortawesome/fontawesome-free/scss/regular.scss";
+@import "~@fortawesome/fontawesome-free/scss/brands.scss";
 
- .ng-valid[required],
- .ng-valid.required {
-     border-left: 5px solid #42A948;
- }
+main>.container {
+    padding: 35px 0;
+}
 
- .ng-invalid:not(form) {
-     border-left: 5px solid #a94442;
- }
+.ng-valid[required],
+.ng-valid.required {
+    border-left: 5px solid #42A948;
+}
 
- html,
- body {
-     height: 100%;
- }
+.ng-invalid:not(form) {
+    border-left: 5px solid #a94442;
+}
 
- body {
-     margin: 0;
-     font-family: Roboto, "Helvetica Neue", sans-serif;
- }
+html,
+body {
+    height: 100%;
+}
 
- .table-header {
-     display: flex;
-     align-items: center;
-     justify-content: space-between;
-     margin: 0 15px;
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
-     .table-header-text {
-         font-size: 24px;
-     }
+.table-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 15px;
 
-     .table-filter {
-         font-size: 14px;
+    .table-header-text {
+        font-size: 24px;
+    }
 
-         .filter-form-field {
-             width: 180px;
-             margin-left: 20px;
-         }
-     }
- }
+    .table-filter {
+        font-size: 14px;
 
- table {
-     width: 100%;
+        .filter-form-field {
+            width: 180px;
+            margin-left: 20px;
+        }
+    }
+}
 
-     .mat-row {
-         cursor: pointer;
-     }
+table {
+    width: 100%;
 
-     .actions-header-cell {
-         text-align: center;
-         width: 250px;
-     }
+    .mat-row {
+        cursor: pointer;
+    }
 
-     td.mat-cell.action-cell {
-         display: flex;
-         padding: 6px 12px 6px 0;
-         width: 250px;
+    .actions-header-cell {
+        text-align: center;
+        width: 250px;
+    }
 
-         button {
-             width: 100%;
-             margin-right: 8px;
-             display: inline-block;
-         }
-     }
- }
+    td.mat-cell.action-cell {
+        display: flex;
+        padding: 6px 12px 6px 0;
+        width: 250px;
 
- .edit-buttons {
-     width: 100%;
+        button {
+            width: 100%;
+            margin-right: 8px;
+            display: inline-block;
+        }
+    }
+}
 
-     button {
-         margin: 15px 10px;
-     }
- }
+.edit-buttons {
+    width: 100%;
 
- .add-form form,
- .edit-form form {
+    button {
+        margin: 15px 10px;
+    }
+}
+
+.add-form form,
+.edit-form form {
     display: flex;
     flex-direction: column;
     font-size: 16px;

@@ -14,6 +14,10 @@ import { GetTransfersRequest } from 'src/app/api/models/Transfers/get-transfers-
 import { SortOrder } from 'src/app/api/models/Shared/Search/Sorting/sort-order';
 import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AppState } from 'src/app/store/app.reducers';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { TransferCreatedOperation, TransferUpdatedOperation, TransferDeletedOperation } from 'src/app/core/models/operations';
+import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
+import { SignalrService } from 'src/app/core/services/signalr.service';
 
 @Component({
     selector: 'app-transfer-list',
@@ -37,6 +41,8 @@ export class TransferListComponent implements OnInit {
 
     constructor(
         private dialog: MatDialog,
+        private notificationService: NotificationService,
+        private signalrService: SignalrService,
         private store: Store<AppState>,
         private transfersService: TransfersService) { }
 
@@ -48,6 +54,11 @@ export class TransferListComponent implements OnInit {
                 this.loadTransfers();
             }
         );
+
+        this.signalrService.operationSucceededSubject.subscribe((data: SuccessfulOperation) => {
+            if (data.name == TransferCreatedOperation || data.name == TransferUpdatedOperation || data.name == TransferDeletedOperation)
+                this.loadTransfers();
+        });
     }
 
     ngOnDestroy(): void {
@@ -94,12 +105,9 @@ export class TransferListComponent implements OnInit {
             return;
 
         this.transfersService.Delete(this.selectedAccount.id, element.id)
-            .subscribe(
-                (response) => {
-                    // TODO: add toastr
-                    alert('Accepted');
-                }
-            );
+            .subscribe(() => {
+                this.notificationService.success('Accepted');
+            });
     }
 
     paginate(paginate: PageEvent) {

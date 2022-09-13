@@ -14,6 +14,10 @@ import { GetOrdersRequest } from 'src/app/api/models/Orders/get-orders-request';
 import { SortOrder } from 'src/app/api/models/Shared/Search/Sorting/sort-order';
 import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AppState } from 'src/app/store/app.reducers';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { SignalrService } from 'src/app/core/services/signalr.service';
+import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
+import { OrderCreatedOperation, OrderDeletedOperation, OrderUpdatedOperation } from 'src/app/core/models/operations';
 
 @Component({
     selector: 'app-order-list',
@@ -37,6 +41,8 @@ export class OrderListComponent implements OnInit {
 
     constructor(
         private dialog: MatDialog,
+        private notificationService: NotificationService,
+        private signalrService: SignalrService,
         private store: Store<AppState>,
         private ordersService: OrdersService) { }
 
@@ -48,6 +54,11 @@ export class OrderListComponent implements OnInit {
                 this.loadOrders();
             }
         );
+
+        this.signalrService.operationSucceededSubject.subscribe((data: SuccessfulOperation) => {
+            if (data.name == OrderCreatedOperation || data.name == OrderUpdatedOperation || data.name == OrderDeletedOperation)
+                this.loadOrders();
+        });
     }
 
     ngOnDestroy(): void {
@@ -94,12 +105,9 @@ export class OrderListComponent implements OnInit {
             return;
 
         this.ordersService.Delete(this.selectedAccount.id, element.id)
-            .subscribe(
-                (response) => {
-                    // TODO: add toastr
-                    alert('Accepted');
-                }
-            );
+            .subscribe(() => {
+                this.notificationService.success('Accepted');
+            });
     }
 
     paginate(paginate: PageEvent) {

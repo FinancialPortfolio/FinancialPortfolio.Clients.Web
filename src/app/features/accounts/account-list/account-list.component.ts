@@ -7,6 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AccountsService } from 'src/app/api/services/accounts.service';
 import { LoadingService } from 'src/app/core/services/loading.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 import { AppState } from 'src/app/store/app.reducers';
 import { AccountAddComponent } from '../account-add/account-add.component';
 import { AccountEditComponent } from '../account-edit/account-edit.component';
@@ -26,6 +27,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
         private dialog: MatDialog,
         private store: Store<AppState>,
         private loadingService: LoadingService,
+        private notificationService: NotificationService,
         private accountsService: AccountsService) { }
 
     ngOnInit(): void {
@@ -58,11 +60,8 @@ export class AccountListComponent implements OnInit, OnDestroy {
 
     delete(element: AccountResponse): void {
         this.accountsService.Delete(element.id)
-            .subscribe(
-                (response) => {
-                    // TODO: add toastr
-                    alert('Accepted');
-                }
-            );
+            .subscribe(() => {
+                this.notificationService.success('Accepted');
+            });
     }
 }

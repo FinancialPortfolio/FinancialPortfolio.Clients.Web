@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+
 import { AccountCreatedOperation, AccountDeletedOperation, AccountUpdatedOperation } from './core/models/operations';
 import { SuccessfulOperation } from './core/models/successful-operation';
-
 import { SignalrService } from './core/services/signalr.service';
 import { AddAccountAction, DeleteAccountAction, UpdateAccountAction } from './features/accounts/store/accounts.actions';
 import { AccountsState } from './features/accounts/store/accounts.reducers';
@@ -20,7 +20,6 @@ export class AppComponent implements OnInit {
         this.signalrService.addOperationsListener();
 
         this.signalrService.operationSucceededSubject.subscribe((data: SuccessfulOperation) => {
-            console.log(data);
             let action = null;
             if (data.name == AccountCreatedOperation)
                 action = AddAccountAction({ account: data.payload });

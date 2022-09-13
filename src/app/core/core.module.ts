@@ -17,6 +17,7 @@ import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { LayoutComponent } from './layout/layout.component';
 import { AccountSelectorComponent } from './account-selector/account-selector.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
     declarations: [
@@ -38,7 +39,8 @@ import { AccountSelectorComponent } from './account-selector/account-selector.co
         MatDialogModule,
         MatSelectModule,
         MatFormFieldModule,
-        FormsModule
+        FormsModule,
+        ToastrModule.forRoot()
     ],
     exports: [
         LayoutComponent

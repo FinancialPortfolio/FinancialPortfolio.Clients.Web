@@ -30,6 +30,7 @@
         "font-awesome": "^4.7.0",
         "ng-openapi-gen": "^0.21.2",
         "ngx-spinner": "^14.0.0",
+        "ngx-toastr": "^15.0.0",
         "oidc-client": "^1.11.5",
         "rxjs": "~6.6.0",
         "tslib": "^2.3.0",

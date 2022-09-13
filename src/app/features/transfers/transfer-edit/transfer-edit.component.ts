@@ -7,6 +7,7 @@ import { AccountEditComponent } from "src/app/features/accounts/account-edit/acc
 import { TransferResponse } from "src/app/api/models/Transfers/transfer-response";
 import { TransfersService } from "src/app/api/services/transfers.service";
 import { DateService } from "src/app/core/services/date.service";
+import { NotificationService } from "src/app/core/services/notification.service";
 
 @Component({
     selector: 'app-transfer-edit',
@@ -20,6 +21,7 @@ export class TransferEditComponent implements OnInit {
         private formBuilder: UntypedFormBuilder,
         private transfersService: TransfersService,
         private dateService: DateService,
+        private notificationService: NotificationService,
         private dialogRef: MatDialogRef<AccountEditComponent>,
         @Inject(MAT_DIALOG_DATA) public data: { item: TransferResponse, accountId: string }) { }
 
@@ -42,10 +44,10 @@ export class TransferEditComponent implements OnInit {
 
         this.transfersService.Update(this.data.accountId, this.data.item.id, this.transferForm.value)
             .subscribe(
-                (response) => {
-                    // TODO: add toastr
+                () => {
+                    this.notificationService.success('Accepted');
                     this.dialogRef.close();
-                }, (response: HttpErrorResponse) => {
+                }, () => {
                     this.dialogRef.close();
                 },
             );

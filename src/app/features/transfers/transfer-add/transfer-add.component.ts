@@ -12,6 +12,7 @@ import { CreateTransferRequest } from 'src/app/api/models/Transfers/create-trans
 import { TransfersService } from 'src/app/api/services/transfers.service';
 import { AppState } from 'src/app/store/app.reducers';
 import { DateService } from 'src/app/core/services/date.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
     selector: 'app-transfer-add',
@@ -28,6 +29,7 @@ export class TransferAddComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private transfersService: TransfersService,
         private dateService: DateService,
+        private notificationService: NotificationService,
         private dialogRef: MatDialogRef<TransferAddComponent>,
         private store: Store<AppState>,
         @Inject(MAT_DIALOG_DATA) public data: { accountId: string }) { }
@@ -61,10 +63,10 @@ export class TransferAddComponent implements OnInit, OnDestroy {
         };
         this.transfersService.Create(this.data.accountId, body)
             .subscribe(
-                (result: BaseWebApiResponse) => {
-                    // TODO: add toastr
+                () => {
+                    this.notificationService.success('Accepted');
                     this.dialogRef.close();
-                }, (error: WebApiProblemDetails) => {
+                }, () => {
                     this.dialogRef.close();
                 },
             );
