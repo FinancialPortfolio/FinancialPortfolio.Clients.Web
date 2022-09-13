@@ -40,6 +40,10 @@ export class AuthService {
         return this.user?.profile?.Email != null ? this.user.profile.Email : '';
     }
 
+    get userId(): string {
+        return this.user?.profile?.UserId != null ? this.user.profile.UserId : '';
+    }
+
     async signout() {
         await this.manager.signoutRedirect();
     }
