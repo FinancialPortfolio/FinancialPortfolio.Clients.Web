@@ -4,7 +4,7 @@ import { Injectable } from "@angular/core";
     providedIn: 'root'
 })
 export class DateService {
-    ToIsoDate(date: Date): string {
+    toIsoDate(date: Date): string {
         return new Date(date).toISOString().slice(0, 16);
     }
 }

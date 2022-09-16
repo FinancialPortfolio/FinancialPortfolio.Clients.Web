@@ -59,7 +59,7 @@ export class AccountListComponent implements OnInit, OnDestroy {
     }
 
     delete(element: AccountResponse): void {
-        this.accountsService.Delete(element.id)
+        this.accountsService.delete(element.id)
             .subscribe(() => {
                 this.notificationService.success('Accepted');
             });

@@ -19,7 +19,7 @@ export class TransfersService extends ApiServiceBase {
         super(config, http, '');
     }
 
-    GetAll(accountId: string, request: GetTransfersRequest): Observable<PaginationWebApiResponse<Array<TransferResponse>>> {
+    getAll(accountId: string, request: GetTransfersRequest): Observable<PaginationWebApiResponse<Array<TransferResponse>>> {
         // TODO: move to shared place
         let params = new HttpParams();
         params = params.append('pagination.pageNumber', request.pagination.pageNumber);
@@ -27,41 +27,41 @@ export class TransfersService extends ApiServiceBase {
         params = params.append('sorting.field', request.sorting.field);
         params = params.append('sorting.order', request.sorting.order);
 
-        let baseUrl = this.CreateBaseUrl(accountId);
+        let baseUrl = this.createBaseUrl(accountId);
 
         return this.http.get(baseUrl, { params })
             .pipe(map((response: any) => response as PaginationWebApiResponse<Array<TransferResponse>>));
     }
 
-    GetById(accountId: string, id: string): Observable<WebApiResponse<TransferResponse>> {
-        let baseUrl = this.CreateBaseUrl(accountId, id);
+    getById(accountId: string, id: string): Observable<WebApiResponse<TransferResponse>> {
+        let baseUrl = this.createBaseUrl(accountId, id);
 
         return this.http.get(baseUrl)
             .pipe(map((response: any) => response as WebApiResponse<TransferResponse>));
     }
 
-    Create(accountId: string, request: CreateTransferRequest): Observable<BaseWebApiResponse> {
-        let baseUrl = this.CreateBaseUrl(accountId);
+    create(accountId: string, request: CreateTransferRequest): Observable<BaseWebApiResponse> {
+        let baseUrl = this.createBaseUrl(accountId);
 
         return this.http.post(baseUrl, request)
             .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 
-    Update(accountId: string, id: string, request: UpdateTransferRequest): Observable<BaseWebApiResponse> {
-        let baseUrl = this.CreateBaseUrl(accountId, id);
+    update(accountId: string, id: string, request: UpdateTransferRequest): Observable<BaseWebApiResponse> {
+        let baseUrl = this.createBaseUrl(accountId, id);
 
         return this.http.put(baseUrl, request)
             .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 
-    Delete(accountId: string, id: string): Observable<BaseWebApiResponse> {
-        let baseUrl = this.CreateBaseUrl(accountId, id);
+    delete(accountId: string, id: string): Observable<BaseWebApiResponse> {
+        let baseUrl = this.createBaseUrl(accountId, id);
 
         return this.http.delete(baseUrl)
             .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 
-    CreateBaseUrl(accountId: string, id: string | null = null): string {
+    createBaseUrl(accountId: string, id: string | null = null): string {
         let baseUrl = `${this.apiEndpoint}/accounts/${accountId}/transfers`;
         if (id) {
             baseUrl += `/${id}`;

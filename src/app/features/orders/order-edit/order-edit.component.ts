@@ -5,12 +5,16 @@ import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
 import { filter, distinctUntilChanged, debounceTime, tap, switchMap, finalize } from "rxjs/operators";
 
 import { OrderResponse } from "src/app/api/models/Orders/order-response";
+import { FetchStockStatisticsRequest } from "src/app/api/models/Stocks/fetch-stock-statistics-request";
 import { GetStocksRequest } from "src/app/api/models/Stocks/get-stocks-request";
 import { StockResponse } from "src/app/api/models/Stocks/stock-response";
 import { OrdersService } from "src/app/api/services/orders.service";
 import { StocksService } from "src/app/api/services/stocks.service";
+import { StocksUpdatedOperation } from "src/app/core/models/operations";
+import { SuccessfulOperation } from "src/app/core/models/successful-operation";
 import { DateService } from "src/app/core/services/date.service";
 import { NotificationService } from "src/app/core/services/notification.service";
+import { SignalrService } from "src/app/core/services/signalr.service";
 import { AccountEditComponent } from "src/app/features/accounts/account-edit/account-edit.component";
 
 @Component({
@@ -30,6 +34,7 @@ export class OrderEditComponent implements OnInit {
         private formBuilder: UntypedFormBuilder,
         private ordersService: OrdersService,
         private stocksService: StocksService,
+        private signalrService: SignalrService,
         private dateService: DateService,
         private notificationService: NotificationService,
         private dialogRef: MatDialogRef<AccountEditComponent>,
@@ -40,7 +45,7 @@ export class OrderEditComponent implements OnInit {
             type: [0, [Validators.required]],
             amount: [0, [Validators.required]],
             price: [0, [Validators.required]],
-            dateTime: [this.dateService.ToIsoDate(new Date()), [Validators.required]],
+            dateTime: [this.dateService.toIsoDate(new Date()), [Validators.required]],
             commission: [0, [Validators.required]],
             asset: ['', [Validators.required]],
             assetId: ['', [Validators.required]]
@@ -50,7 +55,17 @@ export class OrderEditComponent implements OnInit {
             ...this.data.item,
             asset: this.data.item.stock.name,
             assetId: this.data.item.stock.id,
-            dateTime: this.dateService.ToIsoDate(this.data.item.dateTime)
+            dateTime: this.dateService.toIsoDate(this.data.item.dateTime)
+        });
+
+        this.signalrService.operationSucceededSubject.subscribe((data: SuccessfulOperation) => {
+            if (data.name != StocksUpdatedOperation)
+                return;
+
+            let stockId = this.orderForm.get('assetId')?.value;
+            let stock = data.payload.stocks.find((s: StockResponse) => s.id == stockId);
+            if (stock)
+                this.orderForm.get('price')?.setValue(stock.stockStatistics.currentPrice);
         });
 
         this.initAutocomplete();
@@ -75,7 +90,7 @@ export class OrderEditComponent implements OnInit {
                         pagination: null,
                         sorting: null
                     };
-                    return this.stocksService.GetAll(request)
+                    return this.stocksService.getAll(request)
                         .pipe(finalize(() => this.isLoading = false));
                 })
             )
@@ -88,7 +103,7 @@ export class OrderEditComponent implements OnInit {
         if (!this.orderForm.valid)
             return;
 
-        this.ordersService.Update(this.data.accountId, this.data.item.id, this.orderForm.value)
+        this.ordersService.update(this.data.accountId, this.data.item.id, this.orderForm.value)
             .subscribe(
                 () => {
                     this.notificationService.success('Accepted');
@@ -106,7 +121,17 @@ export class OrderEditComponent implements OnInit {
     }
 
     onSelected(asset: StockResponse) {
+        this.fetchStockPrice(asset.symbol);
+
         this.orderForm.get('asset')?.setValue(asset.name);
         this.orderForm.get('assetId')?.setValue(asset.id);
+    }
+
+    fetchStockPrice(symbol: string): void {
+        let request: FetchStockStatisticsRequest = {
+            symbols: [ symbol ]
+        };
+
+        this.stocksService.fetchStockStatistics(request).subscribe(() => {});
     }
 }

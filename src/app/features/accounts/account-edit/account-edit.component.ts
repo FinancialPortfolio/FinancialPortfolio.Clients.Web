@@ -36,7 +36,7 @@ export class AccountEditComponent implements OnInit {
         if (!this.accountForm.valid)
             return;
 
-        this.accountsService.Update(this.data.item.id, this.accountForm.value)
+        this.accountsService.update(this.data.item.id, this.accountForm.value)
             .subscribe(
                 () => {
                     this.notificationService.success('Accepted');

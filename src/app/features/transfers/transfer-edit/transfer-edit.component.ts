@@ -29,12 +29,12 @@ export class TransferEditComponent implements OnInit {
         this.transferForm = this.formBuilder.group({
             amount: [0, [Validators.required]],
             type: [0, [Validators.required]],
-            dateTime: [this.dateService.ToIsoDate(new Date()), [Validators.required]]
+            dateTime: [this.dateService.toIsoDate(new Date()), [Validators.required]]
         });
 
         this.transferForm.patchValue({
             ...this.data.item,
-            dateTime: this.dateService.ToIsoDate(this.data.item.dateTime)
+            dateTime: this.dateService.toIsoDate(this.data.item.dateTime)
         });
     }
 
@@ -42,7 +42,7 @@ export class TransferEditComponent implements OnInit {
         if (!this.transferForm.valid)
             return;
 
-        this.transfersService.Update(this.data.accountId, this.data.item.id, this.transferForm.value)
+        this.transfersService.update(this.data.accountId, this.data.item.id, this.transferForm.value)
             .subscribe(
                 () => {
                     this.notificationService.success('Accepted');

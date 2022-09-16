@@ -8,6 +8,12 @@ import { AccountStocksService } from 'src/app/api/services/account-stocks.servic
 import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AppState } from 'src/app/store/app.reducers';
 import { OrderType } from 'src/app/api/models/Orders/order-type';
+import { StocksService } from 'src/app/api/services/stocks.service';
+import { FetchStockStatisticsRequest } from 'src/app/api/models/Stocks/fetch-stock-statistics-request';
+import { SignalrService } from 'src/app/core/services/signalr.service';
+import { StocksUpdatedOperation } from 'src/app/core/models/operations';
+import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
+import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
 
 @Component({
     selector: 'app-account-stock-list',
@@ -21,7 +27,11 @@ export class AccountStockListComponent implements OnInit {
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private store: Store<AppState>, private accountStocksService: AccountStocksService) { }
+    constructor(
+        private store: Store<AppState>,
+        private signalrService: SignalrService,
+        private stocksService: StocksService,
+        private accountStocksService: AccountStocksService) { }
 
     ngOnInit(): void {
         this.store.pipe(takeUntil(this.unsubscribe)).subscribe(
@@ -31,6 +41,16 @@ export class AccountStockListComponent implements OnInit {
                 this.loadStocks();
             }
         );
+
+        this.signalrService.operationSucceededSubject.subscribe((data: SuccessfulOperation) => {
+            if (data.name != StocksUpdatedOperation)
+                return;
+
+            this.stocks.forEach((stock: AccountStockResponse) => {
+                let stockStatistics = data.payload.stocks.find((s: StockResponse) => s.id == stock.id)?.stockStatistics;
+                stock.price = stockStatistics?.currentPrice;
+            });
+        });
     }
 
     ngOnDestroy(): void {
@@ -42,14 +62,19 @@ export class AccountStockListComponent implements OnInit {
         if (!this.selectedAccount)
             return;
 
-        this.accountStocksService.GetAll(this.selectedAccount.id).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
+        this.accountStocksService.getAll(this.selectedAccount.id).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.stocks = result.response;
 
-            // TODO: remove when the price will be fetched from be
-            this.stocks.forEach(stock => {
-                stock.price = 100;
-            });
+            this.fetchStockPrices(this.stocks.map(s => s.symbol));
         });
+    }
+
+    fetchStockPrices(symbols: string[]): void {
+        let request: FetchStockStatisticsRequest = {
+            symbols
+        };
+
+        this.stocksService.fetchStockStatistics(request).subscribe(() => {});
     }
 
     invested(stock: AccountStockResponse): number {

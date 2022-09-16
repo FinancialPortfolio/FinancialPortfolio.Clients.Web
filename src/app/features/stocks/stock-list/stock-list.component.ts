@@ -54,7 +54,7 @@ export class StockListComponent implements OnInit {
             name: this.name,
             symbol: this.symbol
         };
-        this.stocksService.GetAll(request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
+        this.stocksService.getAll(request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.totalSize = result.totalCount;
             this.stocks = result.response;
         });

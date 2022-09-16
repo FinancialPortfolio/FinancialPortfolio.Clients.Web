@@ -19,7 +19,7 @@ export class OrdersService extends ApiServiceBase {
         super(config, http, '');
     }
 
-    GetAll(accountId: string, request: GetOrdersRequest): Observable<PaginationWebApiResponse<Array<OrderResponse>>> {
+    getAll(accountId: string, request: GetOrdersRequest): Observable<PaginationWebApiResponse<Array<OrderResponse>>> {
         // TODO: move to shared place
         let params = new HttpParams();
         params = params.append('pagination.pageNumber', request.pagination.pageNumber);
@@ -27,41 +27,41 @@ export class OrdersService extends ApiServiceBase {
         params = params.append('sorting.field', request.sorting.field);
         params = params.append('sorting.order', request.sorting.order);
 
-        let baseUrl = this.CreateBaseUrl(accountId);
+        let baseUrl = this.createBaseUrl(accountId);
 
         return this.http.get(baseUrl, { params })
             .pipe(map((response: any) => response as PaginationWebApiResponse<Array<OrderResponse>>));
     }
 
-    GetById(accountId: string, id: string): Observable<WebApiResponse<OrderResponse>> {
-        let baseUrl = this.CreateBaseUrl(accountId, id);
+    getById(accountId: string, id: string): Observable<WebApiResponse<OrderResponse>> {
+        let baseUrl = this.createBaseUrl(accountId, id);
 
         return this.http.get(baseUrl)
             .pipe(map((response: any) => response as WebApiResponse<OrderResponse>));
     }
 
-    Create(accountId: string, request: CreateOrderRequest): Observable<BaseWebApiResponse> {
-        let baseUrl = this.CreateBaseUrl(accountId);
+    create(accountId: string, request: CreateOrderRequest): Observable<BaseWebApiResponse> {
+        let baseUrl = this.createBaseUrl(accountId);
 
         return this.http.post(baseUrl, request)
             .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 
-    Update(accountId: string, id: string, request: UpdateOrderRequest): Observable<BaseWebApiResponse> {
-        let baseUrl = this.CreateBaseUrl(accountId, id);
+    update(accountId: string, id: string, request: UpdateOrderRequest): Observable<BaseWebApiResponse> {
+        let baseUrl = this.createBaseUrl(accountId, id);
 
         return this.http.put(baseUrl, request)
             .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 
-    Delete(accountId: string, id: string): Observable<BaseWebApiResponse> {
-        let baseUrl = this.CreateBaseUrl(accountId, id);
+    delete(accountId: string, id: string): Observable<BaseWebApiResponse> {
+        let baseUrl = this.createBaseUrl(accountId, id);
 
         return this.http.delete(baseUrl)
             .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 
-    CreateBaseUrl(accountId: string, id: string | null = null): string {
+    createBaseUrl(accountId: string, id: string | null = null): string {
         let baseUrl = `${this.apiEndpoint}/accounts/${accountId}/orders`;
         if (id) {
             baseUrl += `/${id}`;

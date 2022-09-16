@@ -17,27 +17,27 @@ export class AccountsService extends ApiServiceBase {
         super(config, http, '/accounts');
     }
 
-    GetAll(): Observable<WebApiResponse<Array<AccountResponse>>> {
+    getAll(): Observable<WebApiResponse<Array<AccountResponse>>> {
         return this.http.get(this.apiEndpoint)
             .pipe(map((response: any) => response as WebApiResponse<Array<AccountResponse>>));
     }
 
-    GetById(id: string): Observable<WebApiResponse<AccountResponse>> {
+    getById(id: string): Observable<WebApiResponse<AccountResponse>> {
         return this.http.get(`${this.apiEndpoint}/${id}`)
             .pipe(map((response: any) => response as WebApiResponse<AccountResponse>));
     }
 
-    Create(request: CreateAccountRequest): Observable<BaseWebApiResponse> {
+    create(request: CreateAccountRequest): Observable<BaseWebApiResponse> {
         return this.http.post(`${this.apiEndpoint}`, request)
             .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 
-    Update(id: string, request: UpdateAccountRequest): Observable<BaseWebApiResponse> {
+    update(id: string, request: UpdateAccountRequest): Observable<BaseWebApiResponse> {
         return this.http.put(`${this.apiEndpoint}/${id}`, request)
             .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 
-    Delete(id: string): Observable<BaseWebApiResponse> {
+    delete(id: string): Observable<BaseWebApiResponse> {
         return this.http.delete(`${this.apiEndpoint}/${id}`)
             .pipe(map((response: any) => response as BaseWebApiResponse));
     }

@@ -38,7 +38,7 @@ export class TransferAddComponent implements OnInit, OnDestroy {
         this.transferForm = this.formBuilder.group({
             amount: [0, [Validators.required]],
             type: ['Deposit', [Validators.required]],
-            dateTime: [this.dateService.ToIsoDate(new Date()), [Validators.required]]
+            dateTime: [this.dateService.toIsoDate(new Date()), [Validators.required]]
         });
 
         this.store.select(selectSelectedAccount).pipe(takeUntil(this.unsubscribe)).subscribe(
@@ -61,7 +61,7 @@ export class TransferAddComponent implements OnInit, OnDestroy {
             ...this.transferForm.value,
             accountId: this.accountId
         };
-        this.transfersService.Create(this.data.accountId, body)
+        this.transfersService.create(this.data.accountId, body)
             .subscribe(
                 () => {
                     this.notificationService.success('Accepted');

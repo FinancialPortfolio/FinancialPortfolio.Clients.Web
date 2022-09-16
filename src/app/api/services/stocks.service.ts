@@ -8,6 +8,8 @@ import { StockResponse } from '../models/Stocks/stock-response';
 import { ApiServiceBase } from '../api-base-service';
 import { GetStocksRequest } from '../models/Stocks/get-stocks-request';
 import { PaginationWebApiResponse } from '../models/Shared/pagination-web-api-response';
+import { FetchStockStatisticsRequest } from '../models/Stocks/fetch-stock-statistics-request';
+import { BaseWebApiResponse } from '../models/Shared/base-web-api-response';
 
 @Injectable()
 export class StocksService extends ApiServiceBase {
@@ -15,7 +17,7 @@ export class StocksService extends ApiServiceBase {
         super(config, http, '/stocks');
     }
 
-    GetAll(request: GetStocksRequest): Observable<PaginationWebApiResponse<Array<StockResponse>>> {
+    getAll(request: GetStocksRequest): Observable<PaginationWebApiResponse<Array<StockResponse>>> {
         // TODO: move to shared place
         let params = new HttpParams();
 
@@ -39,5 +41,10 @@ export class StocksService extends ApiServiceBase {
 
         return this.http.get(this.apiEndpoint, { params })
             .pipe(map((response: any) => response as PaginationWebApiResponse<Array<StockResponse>>));
+    }
+
+    fetchStockStatistics(request: FetchStockStatisticsRequest): Observable<BaseWebApiResponse> {
+        return this.http.patch(`${this.apiEndpoint}/stock-statistics`, request)
+            .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 }

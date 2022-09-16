@@ -80,7 +80,7 @@ export class OrderListComponent implements OnInit {
                 order: this.sortOrder
             }
         };
-        this.ordersService.GetAll(this.selectedAccount.id, request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
+        this.ordersService.getAll(this.selectedAccount.id, request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.totalSize = result.totalCount;
             this.orders = result.response;
         });
@@ -104,7 +104,7 @@ export class OrderListComponent implements OnInit {
         if (!this.selectedAccount)
             return;
 
-        this.ordersService.Delete(this.selectedAccount.id, element.id)
+        this.ordersService.delete(this.selectedAccount.id, element.id)
             .subscribe(() => {
                 this.notificationService.success('Accepted');
             });

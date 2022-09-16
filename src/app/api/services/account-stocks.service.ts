@@ -14,14 +14,14 @@ export class AccountStocksService extends ApiServiceBase {
         super(config, http, '');
     }
 
-    GetAll(accountId: string): Observable<WebApiResponse<Array<AccountStockResponse>>> {
-        let baseUrl = this.CreateBaseUrl(accountId);
+    getAll(accountId: string): Observable<WebApiResponse<Array<AccountStockResponse>>> {
+        let baseUrl = this.createBaseUrl(accountId);
 
         return this.http.get(baseUrl)
             .pipe(map((response: any) => response as WebApiResponse<Array<AccountStockResponse>>));
     }
 
-    CreateBaseUrl(accountId: string, id: string | null = null): string {
+    createBaseUrl(accountId: string, id: string | null = null): string {
         let baseUrl = `${this.apiEndpoint}/accounts/${accountId}/stocks`;
         return baseUrl;
     }

@@ -17,6 +17,10 @@ import { GetStocksRequest } from 'src/app/api/models/Stocks/get-stocks-request';
 import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
 import { DateService } from 'src/app/core/services/date.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
+import { FetchStockStatisticsRequest } from 'src/app/api/models/Stocks/fetch-stock-statistics-request';
+import { SignalrService } from 'src/app/core/services/signalr.service';
+import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
+import { StocksUpdatedOperation } from 'src/app/core/models/operations';
 
 @Component({
     selector: 'app-order-add',
@@ -38,6 +42,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private ordersService: OrdersService,
         private stocksService: StocksService,
+        private signalrService: SignalrService,
         private dateService: DateService,
         private notificationService: NotificationService,
         private dialogRef: MatDialogRef<OrderAddComponent>,
@@ -49,7 +54,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
             type: [OrderType.Buy, [Validators.required]],
             amount: [1, [Validators.required]],
             price: [1, [Validators.required]],
-            dateTime: [this.dateService.ToIsoDate(new Date()), [Validators.required]],
+            dateTime: [this.dateService.toIsoDate(new Date()), [Validators.required]],
             commission: [0, [Validators.required]],
             asset: ['', [Validators.required]],
             assetId: ['', [Validators.required]]
@@ -60,6 +65,16 @@ export class OrderAddComponent implements OnInit, OnDestroy {
                 this.accountId = selectedAccount?.id;
             }
         );
+
+        this.signalrService.operationSucceededSubject.subscribe((data: SuccessfulOperation) => {
+            if (data.name != StocksUpdatedOperation)
+                return;
+
+            let stockId = this.orderForm.get('assetId')?.value;
+            let stock = data.payload.stocks.find((s: StockResponse) => s.id == stockId);
+            if (stock)
+                this.orderForm.get('price')?.setValue(stock.stockStatistics.currentPrice);
+        });
 
         this.initAutocomplete();
     }
@@ -88,7 +103,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
                         pagination: null,
                         sorting: null
                     };
-                    return this.stocksService.GetAll(request)
+                    return this.stocksService.getAll(request)
                         .pipe(finalize(() => this.isLoading = false));
                 })
             )
@@ -105,7 +120,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
             ...this.orderForm.value,
             accountId: this.accountId
         };
-        this.ordersService.Create(this.data.accountId, body)
+        this.ordersService.create(this.data.accountId, body)
             .subscribe(
                 () => {
                     this.notificationService.success('Accepted');
@@ -123,7 +138,17 @@ export class OrderAddComponent implements OnInit, OnDestroy {
     }
 
     onSelected(asset: StockResponse) {
+        this.fetchStockPrice(asset.symbol);
+
         this.orderForm.get('asset')?.setValue(asset.name);
         this.orderForm.get('assetId')?.setValue(asset.id);
+    }
+
+    fetchStockPrice(symbol: string): void {
+        let request: FetchStockStatisticsRequest = {
+            symbols: [ symbol ]
+        };
+
+        this.stocksService.fetchStockStatistics(request).subscribe(() => {});
     }
 }

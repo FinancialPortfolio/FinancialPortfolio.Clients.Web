@@ -30,7 +30,7 @@ export class AccountAddComponent implements OnInit {
         if (!this.accountForm.valid)
             return;
 
-        this.accountsService.Create(this.accountForm.value)
+        this.accountsService.create(this.accountForm.value)
             .subscribe(
                 () => {
                     this.notificationService.success('Accepted');

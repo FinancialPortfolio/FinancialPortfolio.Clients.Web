@@ -80,7 +80,7 @@ export class TransferListComponent implements OnInit {
                 order: this.sortOrder
             }
         };
-        this.transfersService.GetAll(this.selectedAccount.id, request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
+        this.transfersService.getAll(this.selectedAccount.id, request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.totalSize = result.totalCount;
             this.transfers = result.response;
         });
@@ -104,7 +104,7 @@ export class TransferListComponent implements OnInit {
         if (!this.selectedAccount)
             return;
 
-        this.transfersService.Delete(this.selectedAccount.id, element.id)
+        this.transfersService.delete(this.selectedAccount.id, element.id)
             .subscribe(() => {
                 this.notificationService.success('Accepted');
             });

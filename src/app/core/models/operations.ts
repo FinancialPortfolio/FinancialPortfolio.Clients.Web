@@ -14,6 +14,8 @@ export const OrderCreatedOperation = "OrderCreatedEvent";
 export const OrderUpdatedOperation = "OrderUpdatedEvent";
 export const OrderDeletedOperation = "OrderDeletedEvent";
 
+export const StocksUpdatedOperation = "StocksUpdatedEvent";
+
 
 // Commands
 export const CreateAccountOperation = "CreateAccountCommand";
@@ -28,8 +30,10 @@ export const CreateOrderOperation = "CreateOrderCommand";
 export const UpdateOrderOperation = "UpdateOrderCommand";
 export const DeleteOrderOperation = "DeleteOrderCommand";
 
+export const FetchStockStatisticsOperation = "FetchStockStatisticsCommand";
 
-export function getSuccessfulMessage(operation: SuccessfulOperation): string {
+
+export function getSuccessfulMessage(operation: SuccessfulOperation): string | null {
     switch (operation.name) {
         case AccountCreatedOperation: return "Account was created successfully.";
         case AccountUpdatedOperation: return "Account was updated successfully.";
@@ -44,7 +48,7 @@ export function getSuccessfulMessage(operation: SuccessfulOperation): string {
         case OrderDeletedOperation: return "Order was deleted successfully.";
 
         default:
-            throw new Error(`Message for ${operation.name} is not defined.`)
+            return null;
     }
 }
 
@@ -61,6 +65,8 @@ export function getFailedMessage(operation: FailedOperation): string {
         case CreateOrderOperation: return "Order wasn't created.";
         case UpdateOrderOperation: return "Order wasn't updated.";
         case DeleteOrderOperation: return "Order wasn't deleted.";
+
+        case FetchStockStatisticsOperation: return "Stock statistics wasn't updated.";
 
         default:
             throw new Error(`Message for ${operation.name} is not defined.`)

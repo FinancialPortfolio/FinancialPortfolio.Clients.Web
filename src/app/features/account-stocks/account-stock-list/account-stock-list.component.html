@@ -10,12 +10,12 @@
 
             <div class="price-details">
                 <div>
-                    <p>Price per share: {{ stock.price }}</p>
+                    <p>Price per share: {{ stock.price | number: '1.0-2' }}</p>
                     <p>Number of shares: {{ numberOfShares(stock) }}</p>
                 </div>
                 <div>
-                    <p>Total price: {{ price(stock) }}</p>
-                    <p>Total invested: {{ invested(stock) }}</p>
+                    <p>Total price: {{ price(stock) | number: '1.0-2' }}</p>
+                    <p>Total invested: {{ invested(stock) | number: '1.0-2' }}</p>
                 </div>
             </div>
         </mat-expansion-panel-header>
