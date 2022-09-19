@@ -9,6 +9,13 @@
             <mat-form-field class="filter-form-field">
                 <input matInput placeholder="Symbol" [(ngModel)]="symbol" (change)="loadStocks()">
             </mat-form-field>
+            <mat-form-field class="filter-form-field">
+                <mat-select placeholder="Type" [(ngModel)]="type" (selectionChange)="loadStocks()">
+                    <mat-option value="">*</mat-option>
+                    <mat-option value="ETP">ETFs</mat-option>
+                    <mat-option value="Common Stock">Stocks</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
     </div>
 
@@ -32,6 +39,11 @@
             <ng-container matColumnDef="exchange">
                 <th mat-header-cell mat-sort-header="Exchange" *matHeaderCellDef class="exchange-cell-header"> Exchange </th>
                 <td mat-cell *matCellDef="let element" class="exchange-cell"> {{element.exchange}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="type">
+                <th mat-header-cell mat-sort-header="Type" *matHeaderCellDef class="type-cell-header"> Type </th>
+                <td mat-cell *matCellDef="let element" class="type-cell"> {{element.type}} </td>
             </ng-container>
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

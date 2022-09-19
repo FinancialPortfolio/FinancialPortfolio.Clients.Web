@@ -39,6 +39,10 @@ export class StocksService extends ApiServiceBase {
             params = params.append('symbol', request.symbol);
         }
 
+        if (request.type) {
+            params = params.append('type', request.type);
+        }
+
         return this.http.get(this.apiEndpoint, { params })
             .pipe(map((response: any) => response as PaginationWebApiResponse<Array<StockResponse>>));
     }

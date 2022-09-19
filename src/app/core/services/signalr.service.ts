@@ -50,6 +50,7 @@ export class SignalrService {
 
     public addOperationsListener(): void {
         this.hubConnection.on('OperationSucceeded', (operation: SuccessfulOperation) => {
+            console.log(operation);
             let message = getSuccessfulMessage(operation);
             if (message)
                 this.notificationService.success(message);

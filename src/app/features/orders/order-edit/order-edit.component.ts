@@ -87,6 +87,7 @@ export class OrderEditComponent implements OnInit {
                     let request: GetStocksRequest = {
                         name: value,
                         symbol: null,
+                        type: null,
                         pagination: null,
                         sorting: null
                     };

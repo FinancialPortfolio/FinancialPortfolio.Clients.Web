@@ -14,6 +14,7 @@ import { SignalrService } from 'src/app/core/services/signalr.service';
 import { StocksUpdatedOperation } from 'src/app/core/models/operations';
 import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
 import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
+import { GetAccountStocksRequest } from 'src/app/api/models/AccountStocks/get-account-stocks-request';
 
 @Component({
     selector: 'app-account-stock-list',
@@ -24,6 +25,7 @@ export class AccountStockListComponent implements OnInit {
     stocks: AccountStockResponse[] = [];
     selectedAccount: AccountResponse | undefined;
     displayedColumns: string[] = ['type', 'price', 'amount', 'total', 'dateTime', 'commission'];
+    type = "";
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
@@ -62,7 +64,10 @@ export class AccountStockListComponent implements OnInit {
         if (!this.selectedAccount)
             return;
 
-        this.accountStocksService.getAll(this.selectedAccount.id).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
+        let request: GetAccountStocksRequest = {
+            type: this.type
+        };
+        this.accountStocksService.getAll(this.selectedAccount.id, request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.stocks = result.response;
 
             this.fetchStockPrices(this.stocks.map(s => s.symbol));
@@ -74,7 +79,7 @@ export class AccountStockListComponent implements OnInit {
             symbols
         };
 
-        this.stocksService.fetchStockStatistics(request).subscribe(() => {});
+        this.stocksService.fetchStockStatistics(request).subscribe(() => { });
     }
 
     invested(stock: AccountStockResponse): number {

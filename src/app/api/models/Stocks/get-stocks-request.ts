@@ -6,4 +6,5 @@ export interface GetStocksRequest {
     sorting: SortingOptions | null;
     name: string | null;
     symbol: string | null;
+    type: string | null;
 }

@@ -7,6 +7,7 @@ import { ApiConfiguration } from '../api-configuration';
 import { WebApiResponse } from '../models/Shared/web-api-response';
 import { ApiServiceBase } from '../api-base-service';
 import { AccountStockResponse } from '../models/AccountStocks/account-stock-response';
+import { GetAccountStocksRequest } from '../models/AccountStocks/get-account-stocks-request';
 
 @Injectable()
 export class AccountStocksService extends ApiServiceBase {
@@ -14,10 +15,15 @@ export class AccountStocksService extends ApiServiceBase {
         super(config, http, '');
     }
 
-    getAll(accountId: string): Observable<WebApiResponse<Array<AccountStockResponse>>> {
+    getAll(accountId: string, request: GetAccountStocksRequest): Observable<WebApiResponse<Array<AccountStockResponse>>> {
         let baseUrl = this.createBaseUrl(accountId);
 
-        return this.http.get(baseUrl)
+        let params = new HttpParams();
+        if (request.type) {
+            params = params.append('type', request.type);
+        }
+
+        return this.http.get(baseUrl, { params })
             .pipe(map((response: any) => response as WebApiResponse<Array<AccountStockResponse>>));
     }
 

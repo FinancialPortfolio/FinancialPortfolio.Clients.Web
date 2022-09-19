@@ -16,7 +16,7 @@ import { StocksService } from 'src/app/api/services/stocks.service';
 })
 export class StockListComponent implements OnInit {
     stocks: StockResponse[] = [];
-    displayedColumns: string[] = ['name', 'symbol', 'exchange'];
+    displayedColumns: string[] = ['name', 'symbol', 'exchange', 'type'];
     totalSize = 0;
 
     pageNumber = 0;
@@ -27,6 +27,7 @@ export class StockListComponent implements OnInit {
 
     name = "";
     symbol = "";
+    type = "";
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
@@ -52,7 +53,8 @@ export class StockListComponent implements OnInit {
                 order: this.sortOrder
             },
             name: this.name,
-            symbol: this.symbol
+            symbol: this.symbol,
+            type: this.type
         };
         this.stocksService.getAll(request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.totalSize = result.totalCount;

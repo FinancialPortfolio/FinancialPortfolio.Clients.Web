@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Integrate</h2>
+
+<mat-dialog-content class="mat-typography edit-form">
+    <form (ngSubmit)="onSave()" [formGroup]="integrationForm">
+        <mat-form-field appearance="standard">
+            <mat-label>Source</mat-label>
+            <mat-select formControlName="source">
+                <mat-option value="AdmiralMarkets">Admiral Markets</mat-option>
+                <mat-option value="InteractiveBrokers">Interactive Brokers</mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <div class="report-form-group">
+            <button type="button" mat-raised-button (click)="fileInput.click()">Choose Report</button>
+            <input hidden #fileInput type="file" formControlName="file" (change)="onFileChange($event)">
+            <label class="file-name">{{file?.name}}</label>
+        </div>
+
+        <input type="submit" hidden />
+    </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button type="submit" (click)="onSave()" [disabled]="integrationForm.invalid">Save</button>
+</mat-dialog-actions>

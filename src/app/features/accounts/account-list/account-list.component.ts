@@ -11,6 +11,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { AppState } from 'src/app/store/app.reducers';
 import { AccountAddComponent } from '../account-add/account-add.component';
 import { AccountEditComponent } from '../account-edit/account-edit.component';
+import { AccountIntegrateComponent } from '../account-integrate/account-integrate.component';
 
 @Component({
     selector: 'app-account-list',
@@ -48,6 +49,13 @@ export class AccountListComponent implements OnInit, OnDestroy {
     add(): void {
         this.dialog.open(AccountAddComponent, {
             width: '500px'
+        });
+    }
+
+    integrate(element: AccountResponse): void {
+        this.dialog.open(AccountIntegrateComponent, {
+            width: '500px',
+            data: { item: element }
         });
     }
 
