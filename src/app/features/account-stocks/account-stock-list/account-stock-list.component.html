@@ -16,7 +16,7 @@
     <mat-accordion hideToggle multi>
         <mat-expansion-panel *ngFor="let stock of stocks" class="stock-panel">
             <mat-expansion-panel-header class="stock-header">
-                <img src="assets/images/stock.jpg" class="rounded-circle" [alt]="stock.name" />
+                <img [src]="getLogo(stock)" class="rounded-circle" [alt]="stock.name" />
 
                 <div class="name-details">
                     <h3 class="symbol">{{ stock.symbol }}</h3>
@@ -25,11 +25,11 @@
 
                 <div class="price-details">
                     <div>
-                        <p>Price per share: {{ stock.price | number: '1.0-2' }}</p>
+                        <p>Price per share: {{ stock.stockStatistics?.currentPrice | number: '1.0-2' }}</p>
                         <p>Number of shares: {{ numberOfShares(stock) }}</p>
                     </div>
                     <div>
-                        <p>Total price: {{ price(stock) | number: '1.0-2' }}</p>
+                        <p>Total price: {{ totalPrice(stock) | number: '1.0-2' }}</p>
                         <p>Total invested: {{ invested(stock) | number: '1.0-2' }}</p>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
 
                 <ng-container matColumnDef="price">
                     <th mat-header-cell *matHeaderCellDef> Price </th>
-                    <td mat-cell *matCellDef="let element"> {{element.price | number: '1.0-2'}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.stockStatistics?.currentPrice | number: '1.0-2'}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="amount">
@@ -58,7 +58,7 @@
 
                 <ng-container matColumnDef="total">
                     <th mat-header-cell *matHeaderCellDef> Total </th>
-                    <td mat-cell *matCellDef="let element"> {{element.price * element.amount | number: '1.0-2'}} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.stockStatistics?.currentPrice * element.amount | number: '1.0-2'}} </td>
                 </ng-container>
 
                 <ng-container matColumnDef="dateTime">

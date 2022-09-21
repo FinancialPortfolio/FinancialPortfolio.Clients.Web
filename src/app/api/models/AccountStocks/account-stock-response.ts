@@ -1,3 +1,4 @@
+import { StockStatisticsResponse } from "../Stocks/stock-statistics-response";
 import { OrderResponse } from "./order-response";
 
 export interface AccountStockResponse {
@@ -5,6 +6,6 @@ export interface AccountStockResponse {
     symbol: string;
     name: string;
     exchange: string;
-    price: number;
     orders: OrderResponse[];
+    stockStatistics: StockStatisticsResponse | undefined;
 }

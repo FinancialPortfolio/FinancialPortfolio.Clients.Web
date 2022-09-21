@@ -49,8 +49,7 @@ export class AccountStockListComponent implements OnInit {
                 return;
 
             this.stocks.forEach((stock: AccountStockResponse) => {
-                let stockStatistics = data.payload.stocks.find((s: StockResponse) => s.id == stock.id)?.stockStatistics;
-                stock.price = stockStatistics?.currentPrice;
+                stock.stockStatistics = data.payload.stocks.find((s: StockResponse) => s.id == stock.id)?.stockStatistics;
             });
         });
     }
@@ -86,8 +85,11 @@ export class AccountStockListComponent implements OnInit {
         return this.averageSharePrice(stock) * this.numberOfShares(stock);
     }
 
-    price(stock: AccountStockResponse): number {
-        return stock.price * this.numberOfShares(stock);
+    totalPrice(stock: AccountStockResponse): number | null {
+        if (stock.stockStatistics == null)
+            return null;
+
+        return stock.stockStatistics?.currentPrice * this.numberOfShares(stock);
     }
 
     averageSharePrice(stock: AccountStockResponse): number {
@@ -114,5 +116,12 @@ export class AccountStockListComponent implements OnInit {
 
             return totalShares - order.amount;
         }, 0);
+    }
+
+    getLogo(stock: AccountStockResponse): string {
+        if (stock.stockStatistics?.logo == null || stock.stockStatistics?.logo == "")
+            return "assets/images/stock.png";
+
+        return stock.stockStatistics?.logo;
     }
 }
