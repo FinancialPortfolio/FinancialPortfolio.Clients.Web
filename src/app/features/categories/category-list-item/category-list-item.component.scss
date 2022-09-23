@@ -1,0 +1,22 @@
+.category-details {
+    padding: 10px;
+
+    .category-header {
+        padding: 10px 0 0 20px;
+
+        .category-header-text {
+            font-size: 22px;
+            margin-bottom: 0;
+        }
+    }
+}
+
+.sub-category-details {
+    display: flex;
+
+    .name, .allocation {
+        font-size: 20px;
+        margin-bottom: 0;
+        margin-right: 10px;
+    }
+}

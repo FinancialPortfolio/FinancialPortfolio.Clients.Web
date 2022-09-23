@@ -1,0 +1,22 @@
+<div class="category-details">
+    <div class="category-header">
+        <h2 class="category-header-text">{{category.name}}</h2>
+    </div>
+
+    <div class="sub-categories-block" *ngIf="category.subCategories.length > 0">
+        <mat-list>
+            <mat-list-item *ngFor="let subCategory of category.subCategories" class="sub-category-details">
+                <h3 class="name">{{ subCategory.name }}</h3>
+                <h3 class="allocation">{{ subCategory.expectedAllocation }}/{{ subCategory.allocation }}%</h3>
+            </mat-list-item>
+        </mat-list>
+    </div>
+
+    <div class="stocks-block" *ngIf="category.stocks.length > 0">
+
+    </div>
+
+    <ng-container *ngIf="category.stocks.length == 0 && category.subCategories.length == 0">
+        <h3 class="mt-3 text-center mat-h3">You don't have any stocks or cateogries.</h3>
+    </ng-container>
+</div>

@@ -1,0 +1,33 @@
+<div *ngIf="categories.length > 0; else emptyTable" class="categories">
+    <div class="table-header">
+        <h2 class="table-header-text">Categories</h2>
+    </div>
+
+    <div class="categories-details mat-elevation-z4">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="categories-tree"
+            [ngStyle]="{'width': treeWidth ? treeWidth + 'px' : 'fit-content'}" #categoriesTree>
+            <mat-tree-node *matTreeNodeDef="let category" matTreeNodePadding (click)="onSelect(category)">
+                <button mat-icon-button disabled></button>
+                {{category.name}}
+            </mat-tree-node>
+
+            <mat-tree-node *matTreeNodeDef="let category; when: hasChild" matTreeNodePadding
+                (click)="onSelect(category)">
+                <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + category.name">
+                    <mat-icon class="mat-icon-rtl-mirror">{{treeControl.isExpanded(category) ? 'expand_more' :
+                        'chevron_right'}}
+                    </mat-icon>
+                </button>
+                {{category.name}}
+            </mat-tree-node>
+        </mat-tree>
+
+        <div class="category-item-details" *ngIf="selectedCategory">
+            <app-category-list-item [category]="selectedCategory"></app-category-list-item>
+        </div>
+    </div>
+</div>
+
+<ng-template #emptyTable>
+    <h2 class="mt-3 text-center mat-h2">You don't have any categories yet</h2>
+</ng-template>

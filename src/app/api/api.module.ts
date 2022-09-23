@@ -9,6 +9,7 @@ import { OrdersService } from './services/orders.service';
 import { HttpErrorInterceptor } from './interceptors/HttpErrorInterceptor';
 import { AccountStocksService } from './services/account-stocks.service';
 import { IntegrationService } from './services/integration.service';
+import { CategoriesService } from './services/categories.service';
 
 @NgModule({
     imports: [],
@@ -21,6 +22,7 @@ import { IntegrationService } from './services/integration.service';
         TransfersService,
         OrdersService,
         IntegrationService,
+        CategoriesService,
         ApiConfiguration,
         {
             provide: HTTP_INTERCEPTORS,

@@ -1,0 +1,19 @@
+.categories {
+    .categories-details {
+        display: flex;
+    }
+
+    .categories-tree {
+        padding: 10px;
+        flex-shrink: 0;
+
+        mat-tree-node {
+            padding-right: 10px;
+            cursor: pointer;
+        }
+    }
+
+    .category-item-details {
+        width: 100%;
+    }
+}
