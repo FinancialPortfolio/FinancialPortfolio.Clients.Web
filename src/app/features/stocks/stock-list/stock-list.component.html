@@ -9,6 +9,11 @@
             <mat-form-field class="filter-form-field">
                 <input matInput placeholder="Symbol" [(ngModel)]="symbol" (change)="loadStocks()">
             </mat-form-field>
+            <mat-form-field class="filter-form-field">
+                <mat-select placeholder="Exchange" [(ngModel)]="exchange" (selectionChange)="loadStocks()">
+                    <mat-option value="US">US</mat-option>
+                </mat-select>
+            </mat-form-field>
         </div>
     </div>
 

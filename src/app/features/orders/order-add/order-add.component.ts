@@ -100,6 +100,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
                     let request: GetStocksRequest = {
                         name: value,
                         symbol: null,
+                        exchange: null,
                         pagination: null,
                         sorting: null
                     };

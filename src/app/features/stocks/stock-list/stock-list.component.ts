@@ -27,6 +27,7 @@ export class StockListComponent implements OnInit {
 
     name = "";
     symbol = "";
+    exchange = "";
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
@@ -52,7 +53,8 @@ export class StockListComponent implements OnInit {
                 order: this.sortOrder
             },
             name: this.name,
-            symbol: this.symbol
+            symbol: this.symbol,
+            exchange: this.exchange
         };
         this.stocksService.getAll(request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.totalSize = result.totalCount;
