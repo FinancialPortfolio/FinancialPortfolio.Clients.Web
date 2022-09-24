@@ -44,7 +44,9 @@ export class CategoryListComponent implements OnInit, OnDestroy, AfterViewInit {
         node => node.subCategories,
     );
 
-    treeWidth: number | undefined;
+    treeBlockWidth: string = 'fit-content';
+    contentBlockWidth: string = '100%';
+
     dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     categories: CategoryResponse[] = [];
     selectedCategory: CategoryResponse | undefined;
@@ -64,10 +66,13 @@ export class CategoryListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngAfterViewInit() {
         this.categoriesTree.treeControl.expandAll();
+
         setTimeout(() => {
-            this.treeWidth = this.categoriesTreeElement.nativeElement.clientWidth;
+            let clientWidth = this.categoriesTreeElement.nativeElement.clientWidth;
+            this.treeBlockWidth = clientWidth + 'px';
+            this.contentBlockWidth = `calc(100% - ${clientWidth}px)`;
         });
-      }
+    }
 
     loadCategories(): void {
         this.categoriesService.getAll().pipe(takeUntil(this.unsubscribe)).subscribe(result => {

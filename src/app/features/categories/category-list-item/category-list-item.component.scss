@@ -1,22 +1,36 @@
 .category-details {
     padding: 10px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 
     .category-header {
         padding: 10px 0 0 20px;
 
         .category-header-text {
             font-size: 22px;
-            margin-bottom: 0;
         }
     }
 }
 
-.sub-category-details {
+.sub-categories-block {
+    width: 100%;
     display: flex;
+    flex-grow: 1;
 
-    .name, .allocation {
-        font-size: 20px;
-        margin-bottom: 0;
-        margin-right: 10px;
+    .charts-block {
+        display: flex;
+        flex-grow: 1;
+        max-width: 100%;
+
+        .category-pie {
+            width: 50%;
+
+            .category-pie-title {
+                margin-bottom: 0;
+                text-align: center;
+                font-size: 20px;
+            }
+        }
     }
 }
