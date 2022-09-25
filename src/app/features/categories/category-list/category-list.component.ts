@@ -77,7 +77,16 @@ export class CategoryListComponent implements OnInit, OnDestroy, AfterViewInit {
     loadCategories(): void {
         this.categoriesService.getAll().pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.categories = result.response;
-            this.dataSource.data = result.response;
+            this.dataSource.data = [{
+                id: "",
+                name: "All",
+                description: "",
+                subCategories: result.response,
+                allocation: 100,
+                expectedAllocation: 100,
+                stocks: [],
+                userId: ""
+            }];
 
             if (this.categories.length > 0)
                 this.selectedCategory = this.categories[0];
@@ -86,7 +95,11 @@ export class CategoryListComponent implements OnInit, OnDestroy, AfterViewInit {
 
     hasChild = (_: number, node: CategoryNode) => node.expandable;
 
-    onSelect(categoryNode: CategoryNode) {
-        this.selectedCategory = categoryNode.category
+    onSelect(category: CategoryResponse) {
+        this.selectedCategory = category
+    }
+
+    onNodeSelect(categoryNode: CategoryNode) {
+        this.onSelect(categoryNode.category);
     }
 }

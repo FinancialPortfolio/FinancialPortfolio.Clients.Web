@@ -23,6 +23,7 @@ export class CategoryAddComponent implements OnInit {
     ngOnInit(): void {
         this.categoryForm = this.formBuilder.group({
             name: ['', [Validators.required, Validators.maxLength(25)]],
+            description: ['', [Validators.maxLength(150)]],
             allocation: [3, [Validators.required, Validators.maxLength(50)]]
         });
     }
@@ -35,6 +36,7 @@ export class CategoryAddComponent implements OnInit {
             allocation: this.categoryForm.get('allocation')?.value,
             expectedAllocation: this.categoryForm.get('allocation')?.value,
             name: this.categoryForm.get('name')?.value,
+            description: this.categoryForm.get('description')?.value,
             userId: "",
             id: "",
             stocks: [],

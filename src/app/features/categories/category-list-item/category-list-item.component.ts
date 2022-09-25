@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LegendPosition } from '@swimlane/ngx-charts';
 
@@ -12,6 +12,9 @@ import { StockAddComponent } from '../stock-add/stock-add.component';
     styleUrls: ['./category-list-item.component.scss']
 })
 export class CategoryListItemComponent {
+    @Output()
+    select = new EventEmitter<CategoryResponse>();
+
     category!: CategoryResponse;
     @Input() set categoryItem(value: CategoryResponse) {
         this.category = value;
@@ -57,11 +60,15 @@ export class CategoryListItemComponent {
         });
     }
 
-    editThis(): void {
+    edit(): void {
         alert('edit shold be here');
     }
 
-    edit(data: any): void {
-        alert('edit shold be here');
+    onSelect(data: any): void {
+        if (this.category.subCategories.length == 0)
+            return;
+
+        let selectedCategory = this.category.subCategories.find(c => c.name == data.name);
+        this.select.emit(selectedCategory);
     }
 }

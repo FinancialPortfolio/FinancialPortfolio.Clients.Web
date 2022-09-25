@@ -3,9 +3,9 @@
         <h2 class="category-header-text">{{category.name}}</h2>
 
         <div class="page-action-buttons">
-            <button mat-raised-button (click)="editThis()">Edit</button>
-            <button mat-raised-button *ngIf="category.subCategories.length > 0" (click)="addCategory()">Add Sub-category</button>
-            <button mat-raised-button *ngIf="category.stocks.length > 0" (click)="addStock()">Add Stock</button>
+            <button mat-raised-button (click)="edit()">Edit</button>
+            <button mat-raised-button *ngIf="category.stocks.length == 0" (click)="addCategory()">Add Sub-category</button>
+            <button mat-raised-button *ngIf="category.subCategories.length == 0" (click)="addStock()">Add Stock</button>
         </div>
     </div>
 
@@ -15,7 +15,7 @@
             <ngx-charts-pie-chart [view]="[allocationsCategoryChart.offsetWidth, 400]" [scheme]="pieOptions.colorScheme"
                 [results]="allocationsChart" [gradient]="pieOptions.gradient" [legend]="pieOptions.showLegend"
                 [legendPosition]="pieOptions.legendPosition" [labels]="pieOptions.showLabels"
-                [doughnut]="pieOptions.isDoughnut" (select)="edit($event)">
+                [doughnut]="pieOptions.isDoughnut" (select)="onSelect($event)">
             </ngx-charts-pie-chart>
         </div>
 
@@ -24,7 +24,7 @@
             <ngx-charts-pie-chart [view]="[expectedAllocationsCategoryChart.offsetWidth, 400]"
                 [scheme]="pieOptions.colorScheme" [results]="expectedAllocationsChart" [gradient]="pieOptions.gradient"
                 [legend]="pieOptions.showLegend" [legendPosition]="pieOptions.legendPosition"
-                [labels]="pieOptions.showLabels" [doughnut]="pieOptions.isDoughnut" (select)="edit($event)">
+                [labels]="pieOptions.showLabels" [doughnut]="pieOptions.isDoughnut" (select)="onSelect($event)">
             </ngx-charts-pie-chart>
         </div>
     </div>

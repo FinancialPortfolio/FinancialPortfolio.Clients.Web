@@ -6,13 +6,13 @@
     <div class="categories-details mat-elevation-z4">
         <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="categories-tree"
             [ngStyle]="{'width': treeBlockWidth}" #categoriesTree>
-            <mat-tree-node *matTreeNodeDef="let category" matTreeNodePadding (click)="onSelect(category)">
+            <mat-tree-node *matTreeNodeDef="let category" matTreeNodePadding (click)="onNodeSelect(category)">
                 <button mat-icon-button disabled></button>
                 {{category.name}}
             </mat-tree-node>
 
             <mat-tree-node *matTreeNodeDef="let category; when: hasChild" matTreeNodePadding
-                (click)="onSelect(category)">
+                (click)="onNodeSelect(category)">
                 <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + category.name">
                     <mat-icon class="mat-icon-rtl-mirror">{{treeControl.isExpanded(category) ? 'expand_more' :
                         'chevron_right'}}
@@ -23,7 +23,7 @@
         </mat-tree>
 
         <div class="category-item-details" *ngIf="selectedCategory" [ngStyle]="{'width': contentBlockWidth}">
-            <app-category-list-item [categoryItem]="selectedCategory"></app-category-list-item>
+            <app-category-list-item [categoryItem]="selectedCategory" (select)="onSelect($event)"></app-category-list-item>
         </div>
     </div>
 </div>
