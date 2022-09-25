@@ -29,17 +29,17 @@ body {
     font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.table-header {
+.list-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin: 0 15px;
 
-    .table-header-text {
+    .list-header-text {
         font-size: 24px;
     }
 
-    .table-filter {
+    .list-filter {
         font-size: 14px;
 
         .filter-form-field {
