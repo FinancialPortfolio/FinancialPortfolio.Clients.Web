@@ -4,4 +4,5 @@ export interface StockResponse {
     name: string;
     exchange: string;
     allocation: number;
+    expectedAllocation: number;
 }

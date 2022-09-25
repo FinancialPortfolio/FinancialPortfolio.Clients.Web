@@ -38,17 +38,43 @@ export class CategoriesService extends ApiServiceBase {
                                 stocks: [
                                     {
                                         id: "",
-                                        symbol: "",
-                                        name: "",
-                                        exchange: "",
-                                        allocation: 40
+                                        allocation: 3,
+                                        exchange: "US",
+                                        name: "JPMorgan",
+                                        symbol: "JPM",
+                                        expectedAllocation: 3
                                     },
                                     {
                                         id: "",
-                                        symbol: "",
-                                        name: "",
-                                        exchange: "",
-                                        allocation: 60
+                                        allocation: 3,
+                                        exchange: "US",
+                                        name: "Morgan Stanley",
+                                        symbol: "MS",
+                                        expectedAllocation: 3
+                                    },
+                                    {
+                                        id: "",
+                                        allocation: 3,
+                                        exchange: "US",
+                                        name: "Brookfield Asset Management",
+                                        symbol: "BAM",
+                                        expectedAllocation: 3
+                                    },
+                                    {
+                                        id: "",
+                                        allocation: 3,
+                                        exchange: "US",
+                                        name: "Royal Bank of Canada",
+                                        symbol: "RY",
+                                        expectedAllocation: 3
+                                    },
+                                    {
+                                        id: "",
+                                        allocation: 3,
+                                        exchange: "US",
+                                        name: "Bank of America",
+                                        symbol: "BAC",
+                                        expectedAllocation: 3
                                     }
                                 ],
                                 subCategories: []

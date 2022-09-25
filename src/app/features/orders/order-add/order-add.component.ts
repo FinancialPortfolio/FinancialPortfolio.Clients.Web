@@ -6,8 +6,6 @@ import { Subject } from 'rxjs';
 import { debounceTime, distinctUntilChanged, filter, finalize, switchMap, takeUntil, tap } from 'rxjs/operators';
 
 import { selectSelectedAccount } from 'src/app/features/accounts/store/accounts.selectors';
-import { BaseWebApiResponse } from 'src/app/api/models/Shared/base-web-api-response';
-import { WebApiProblemDetails } from 'src/app/api/models/Shared/web-api-problem-details';
 import { CreateOrderRequest } from 'src/app/api/models/Orders/create-order-request';
 import { OrdersService } from 'src/app/api/services/orders.service';
 import { AppState } from 'src/app/store/app.reducers';

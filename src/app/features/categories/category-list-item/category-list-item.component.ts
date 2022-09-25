@@ -1,6 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { LegendPosition, ScaleType } from '@swimlane/ngx-charts';
+import { MatDialog } from '@angular/material/dialog';
+import { LegendPosition } from '@swimlane/ngx-charts';
+
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
+import { CategoryAddComponent } from '../category-add/category-add.component';
+import { StockAddComponent } from '../stock-add/stock-add.component';
 
 @Component({
     selector: 'app-category-list-item',
@@ -12,14 +16,21 @@ export class CategoryListItemComponent {
     @Input() set categoryItem(value: CategoryResponse) {
         this.category = value;
 
-        let sortedCategories = this.category.subCategories.sort((a,b) => b.expectedAllocation - a.expectedAllocation)
+        if (this.category.subCategories.length > 0) {
+            let sortedCategories = this.category.subCategories.sort((a,b) => b.expectedAllocation - a.expectedAllocation)
 
-        this.categoryAllocations = sortedCategories.map(category => ({ name: category.name, value: category.allocation }));
-        this.categoryExpectedAllocations = sortedCategories.map(category => ({ name: category.name, value: category.expectedAllocation }));
+            this.allocationsChart = sortedCategories.map(category => ({ name: category.name, value: category.allocation }));
+            this.expectedAllocationsChart = sortedCategories.map(category => ({ name: category.name, value: category.expectedAllocation }));
+        } else if (this.category.stocks.length > 0) {
+            let sortedStocks = this.category.stocks.sort((a,b) => b.expectedAllocation - a.expectedAllocation)
+
+            this.allocationsChart = sortedStocks.map(stock => ({ name: stock.name, value: stock.allocation }));
+            this.expectedAllocationsChart = sortedStocks.map(stock => ({ name: stock.name, value: stock.expectedAllocation }));
+        }
     }
 
-    categoryAllocations: {name: string, value: number}[] = [];
-    categoryExpectedAllocations: {name: string, value: number}[] = [];
+    allocationsChart: {name: string, value: number}[] = [];
+    expectedAllocationsChart: {name: string, value: number}[] = [];
 
     pieOptions = {
         gradient: true,
@@ -27,11 +38,30 @@ export class CategoryListItemComponent {
         showLabels: true,
         isDoughnut: false,
         legendPosition: LegendPosition.Below,
-        colorScheme: {
-            name: "Default",
-            group: ScaleType.Linear,
-            selectable: false,
-            domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
-        }
+        colorScheme: "nightLights"
     };
+
+    constructor(private dialog: MatDialog) { }
+
+    addCategory(): void {
+        this.dialog.open(CategoryAddComponent, {
+            width: '500px',
+            data: { item: this.category }
+        });
+    }
+
+    addStock(): void {
+        this.dialog.open(StockAddComponent, {
+            width: '500px',
+            data: { item: this.category }
+        });
+    }
+
+    editThis(): void {
+        alert('edit shold be here');
+    }
+
+    edit(data: any): void {
+        alert('edit shold be here');
+    }
 }

@@ -1,31 +1,39 @@
-<div class="category-details" #blockHeight>
+<div class="category-details">
     <div class="category-header">
         <h2 class="category-header-text">{{category.name}}</h2>
+
+        <div class="page-action-buttons">
+            <button mat-raised-button (click)="editThis()">Edit</button>
+            <button mat-raised-button *ngIf="category.subCategories.length > 0" (click)="addCategory()">Add Sub-category</button>
+            <button mat-raised-button *ngIf="category.stocks.length > 0" (click)="addStock()">Add Stock</button>
+        </div>
     </div>
 
-    <div class="sub-categories-block" *ngIf="category.subCategories.length > 0">
-        <div class="charts-block">
-            <div class="category-pie" #allocationCategoryPie>
-                <h3 class="category-pie-title">Allocation</h3>
-                <ngx-charts-pie-chart [view]="[allocationCategoryPie.offsetWidth, 400]" [scheme]="pieOptions.colorScheme" [results]="categoryAllocations" [gradient]="pieOptions.gradient"
-                    [legend]="pieOptions.showLegend" [legendPosition]="pieOptions.legendPosition" [labels]="pieOptions.showLabels" [doughnut]="pieOptions.isDoughnut">
-                </ngx-charts-pie-chart>
-            </div>
+    <div class="charts-block" *ngIf="category.subCategories.length > 0 || category.stocks.length > 0">
+        <div class="allocation-pie" #allocationsCategoryChart>
+            <h3 class="allocation-pie-title">Allocation</h3>
+            <ngx-charts-pie-chart [view]="[allocationsCategoryChart.offsetWidth, 400]" [scheme]="pieOptions.colorScheme"
+                [results]="allocationsChart" [gradient]="pieOptions.gradient" [legend]="pieOptions.showLegend"
+                [legendPosition]="pieOptions.legendPosition" [labels]="pieOptions.showLabels"
+                [doughnut]="pieOptions.isDoughnut" (select)="edit($event)">
+            </ngx-charts-pie-chart>
+        </div>
 
-            <div class="category-pie" #expectedCategoryPie>
-                <h3 class="category-pie-title">Expected allocation</h3>
-                <ngx-charts-pie-chart [view]="[expectedCategoryPie.offsetWidth, 400]" [scheme]="pieOptions.colorScheme" [results]="categoryExpectedAllocations" [gradient]="pieOptions.gradient"
-                    [legend]="pieOptions.showLegend" [legendPosition]="pieOptions.legendPosition" [labels]="pieOptions.showLabels" [doughnut]="pieOptions.isDoughnut">
-                </ngx-charts-pie-chart>
-            </div>
+        <div class="allocation-pie" #expectedAllocationsCategoryChart>
+            <h3 class="allocation-pie-title">Expected allocation</h3>
+            <ngx-charts-pie-chart [view]="[expectedAllocationsCategoryChart.offsetWidth, 400]"
+                [scheme]="pieOptions.colorScheme" [results]="expectedAllocationsChart" [gradient]="pieOptions.gradient"
+                [legend]="pieOptions.showLegend" [legendPosition]="pieOptions.legendPosition"
+                [labels]="pieOptions.showLabels" [doughnut]="pieOptions.isDoughnut" (select)="edit($event)">
+            </ngx-charts-pie-chart>
         </div>
     </div>
 
     <div class="stocks-block" *ngIf="category.stocks.length > 0">
-        <h3 class="mt-3 text-center mat-h3">Stocks will be here.</h3>
+        <h3 class="mt-3 text-center mat-h3 stock-comparission-block">Stock comparison should be here.</h3>
     </div>
 
     <ng-container *ngIf="category.stocks.length == 0 && category.subCategories.length == 0">
-        <h3 class="mt-3 text-center mat-h3">You don't have any stocks or cateogries.</h3>
+        <h3 class="mt-3 text-center mat-h3">You don't have any stocks or sub-cateogries.</h3>
     </ng-container>
 </div>
