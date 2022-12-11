@@ -55,7 +55,7 @@ export class TransferListComponent implements OnInit {
             }
         );
 
-        this.signalrService.operationSucceededSubject.subscribe((data: SuccessfulOperation) => {
+        this.signalrService.operationSucceededSubject.pipe(takeUntil(this.unsubscribe)).subscribe((data: SuccessfulOperation) => {
             if (data.name == TransferCreatedOperation || data.name == TransferUpdatedOperation || data.name == TransferDeletedOperation)
                 this.loadTransfers();
         });

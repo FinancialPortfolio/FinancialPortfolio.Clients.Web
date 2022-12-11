@@ -4,12 +4,12 @@
 
         <div class="page-action-buttons">
             <button mat-raised-button (click)="edit()">Edit</button>
-            <button mat-raised-button *ngIf="category.stocks.length == 0" (click)="addCategory()">Add Sub-category</button>
-            <button mat-raised-button *ngIf="category.subCategories.length == 0" (click)="addStock()">Add Stock</button>
+            <button mat-raised-button *ngIf="!category.stocks?.length" (click)="addCategory()">Add Sub-category</button>
+            <button mat-raised-button *ngIf="!category.subCategories?.length" (click)="addStock()">Add Stock</button>
         </div>
     </div>
 
-    <div class="charts-block" *ngIf="category.subCategories.length > 0 || category.stocks.length > 0">
+    <div class="charts-block" *ngIf="category.subCategories?.length || category.stocks?.length">
         <div class="allocation-pie" #allocationsCategoryChart>
             <h3 class="allocation-pie-title">Allocation</h3>
             <ngx-charts-pie-chart [view]="[allocationsCategoryChart.offsetWidth, 400]" [scheme]="pieOptions.colorScheme"
@@ -29,11 +29,11 @@
         </div>
     </div>
 
-    <div class="stocks-block" *ngIf="category.stocks.length > 0">
+    <div class="stocks-block" *ngIf="category.stocks?.length">
         <h3 class="mt-3 text-center mat-h3 stock-comparission-block">Stock comparison should be here.</h3>
     </div>
 
-    <ng-container *ngIf="category.stocks.length == 0 && category.subCategories.length == 0">
+    <ng-container *ngIf="!category.subCategories?.length && !category.stocks?.length">
         <h3 class="mt-3 text-center mat-h3">You don't have any stocks or sub-cateogries.</h3>
     </ng-container>
 </div>

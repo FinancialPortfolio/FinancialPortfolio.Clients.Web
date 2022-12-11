@@ -32,16 +32,16 @@ export class CategoryAddComponent implements OnInit {
         if (!this.categoryForm.valid)
             return;
 
-        this.category.subCategories.push({
-            allocation: this.categoryForm.get('allocation')?.value,
-            expectedAllocation: this.categoryForm.get('allocation')?.value,
-            name: this.categoryForm.get('name')?.value,
-            description: this.categoryForm.get('description')?.value,
-            userId: "",
-            id: "",
-            stocks: [],
-            subCategories: []
-        });
+        // this.category.subCategories.push({
+        //     allocation: this.categoryForm.get('allocation')?.value,
+        //     expectedAllocation: this.categoryForm.get('allocation')?.value,
+        //     name: this.categoryForm.get('name')?.value,
+        //     description: this.categoryForm.get('description')?.value,
+        //     userId: "",
+        //     id: "",
+        //     stocks: [],
+        //     subCategories: []
+        // });
 
         this.dialogRef.close();
     }

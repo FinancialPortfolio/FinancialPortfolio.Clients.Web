@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from "@angular/common/http";
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit, Inject, OnDestroy } from "@angular/core";
 import { UntypedFormGroup, UntypedFormBuilder, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { filter, distinctUntilChanged, debounceTime, tap, switchMap, finalize } from "rxjs/operators";
+import { Subject } from "rxjs";
+import { filter, distinctUntilChanged, debounceTime, tap, switchMap, finalize, takeUntil } from "rxjs/operators";
 
 import { OrderResponse } from "src/app/api/models/Orders/order-response";
 import { FetchStockStatisticsRequest } from "src/app/api/models/Stocks/fetch-stock-statistics-request";
@@ -22,13 +23,15 @@ import { AccountEditComponent } from "src/app/features/accounts/account-edit/acc
     templateUrl: './order-edit.component.html',
     styleUrls: ['./order-edit.component.scss']
 })
-export class OrderEditComponent implements OnInit {
+export class OrderEditComponent implements OnInit, OnDestroy {
     orderForm!: UntypedFormGroup;
 
     isLoading = false;
     minLengthTerm = 3;
     debounceTime = 500;
     assets: StockResponse[] = [];
+
+    private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -58,7 +61,7 @@ export class OrderEditComponent implements OnInit {
             dateTime: this.dateService.toIsoDate(this.data.item.dateTime)
         });
 
-        this.signalrService.operationSucceededSubject.subscribe((data: SuccessfulOperation) => {
+        this.signalrService.operationSucceededSubject.pipe(takeUntil(this.unsubscribe)).subscribe((data: SuccessfulOperation) => {
             if (data.name != StocksUpdatedOperation)
                 return;
 
@@ -69,6 +72,11 @@ export class OrderEditComponent implements OnInit {
         });
 
         this.initAutocomplete();
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     initAutocomplete(): void {

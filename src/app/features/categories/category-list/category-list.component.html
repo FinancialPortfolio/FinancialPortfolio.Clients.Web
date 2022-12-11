@@ -1,4 +1,4 @@
-<div *ngIf="categories.length > 0; else emptyTable" class="categories">
+<div *ngIf="category != null; else emptyTable" class="categories">
     <div class="list-header">
         <h2 class="list-header-text">Categories</h2>
     </div>
@@ -22,7 +22,7 @@
             </mat-tree-node>
         </mat-tree>
 
-        <div class="category-item-details" *ngIf="selectedCategory" [ngStyle]="{'width': contentBlockWidth}">
+        <div class="category-item-details" *ngIf="selectedCategory && loadedStockStatistics" [ngStyle]="{'width': contentBlockWidth}">
             <app-category-list-item [categoryItem]="selectedCategory" (select)="onSelect($event)"></app-category-list-item>
         </div>
     </div>

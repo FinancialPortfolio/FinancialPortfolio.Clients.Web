@@ -75,14 +75,12 @@ export class StockAddComponent implements OnInit {
         if (!this.stockForm.valid || !this.asset)
             return;
 
-        this.category.stocks.push({
-            id: "",
-            allocation: this.stockForm.get('allocation')?.value,
-            expectedAllocation: this.stockForm.get('allocation')?.value,
-            exchange: this.asset.exchange,
-            name: this.asset.name,
-            symbol: this.asset.symbol
-        });
+        // this.category.stocks.push({
+        //     allocation: this.stockForm.get('allocation')?.value,
+        //     expectedAllocation: this.stockForm.get('allocation')?.value,
+        //     name: this.asset.name,
+        //     symbol: this.asset.symbol
+        // });
 
         this.dialogRef.close();
     }

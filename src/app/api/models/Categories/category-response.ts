@@ -4,8 +4,9 @@ export interface CategoryResponse {
     id: string;
     name: string;
     description: string;
-    expectedAllocation: number;
     allocation: number;
+    allocationInPercentage: number;
+    expectedAllocation: number;
     userId: string;
     subCategories: CategoryResponse[];
     stocks: StockResponse[];

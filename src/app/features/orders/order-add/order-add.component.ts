@@ -64,7 +64,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
             }
         );
 
-        this.signalrService.operationSucceededSubject.subscribe((data: SuccessfulOperation) => {
+        this.signalrService.operationSucceededSubject.pipe(takeUntil(this.unsubscribe)).subscribe((data: SuccessfulOperation) => {
             if (data.name != StocksUpdatedOperation)
                 return;
 

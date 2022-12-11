@@ -19,6 +19,7 @@ export const AccountsReducer = createReducer(
     on(AddAccountAction, (state: AccountsState, action) => {
         return {
             ...state,
+            selectedAccount: state.accounts.length == 0 ? action.account : state.selectedAccount,
             accounts: [...state.accounts, action.account]
         }
     }),

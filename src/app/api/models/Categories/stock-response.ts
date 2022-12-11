@@ -1,8 +1,13 @@
+import { StockStatisticsResponse } from "../Stocks/stock-statistics-response";
+import { OrderResponse } from "./order-response";
+
 export interface StockResponse {
-    id: string;
     symbol: string;
     name: string;
-    exchange: string;
+    assetId: string;
     allocation: number;
+    allocationInPercentage: number;
     expectedAllocation: number;
+    stockStatistics: StockStatisticsResponse | undefined;
+    orders: OrderResponse[];
 }

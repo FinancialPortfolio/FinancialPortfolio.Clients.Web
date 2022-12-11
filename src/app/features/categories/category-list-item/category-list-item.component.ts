@@ -22,12 +22,12 @@ export class CategoryListItemComponent {
         if (this.category.subCategories.length > 0) {
             let sortedCategories = this.category.subCategories.sort((a,b) => b.expectedAllocation - a.expectedAllocation)
 
-            this.allocationsChart = sortedCategories.map(category => ({ name: category.name, value: category.allocation }));
+            this.allocationsChart = sortedCategories.map(category => ({ name: category.name, value: category.allocationInPercentage }));
             this.expectedAllocationsChart = sortedCategories.map(category => ({ name: category.name, value: category.expectedAllocation }));
         } else if (this.category.stocks.length > 0) {
             let sortedStocks = this.category.stocks.sort((a,b) => b.expectedAllocation - a.expectedAllocation)
 
-            this.allocationsChart = sortedStocks.map(stock => ({ name: stock.name, value: stock.allocation }));
+            this.allocationsChart = sortedStocks.map(stock => ({ name: stock.name, value: stock.allocationInPercentage }));
             this.expectedAllocationsChart = sortedStocks.map(stock => ({ name: stock.name, value: stock.expectedAllocation }));
         }
     }
