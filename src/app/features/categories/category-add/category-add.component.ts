@@ -34,7 +34,7 @@ export class CategoryAddComponent implements OnInit {
 
         // this.category.subCategories.push({
         //     allocation: this.categoryForm.get('allocation')?.value,
-        //     expectedAllocation: this.categoryForm.get('allocation')?.value,
+        //     expectedAllocationInPercentage: this.categoryForm.get('allocation')?.value,
         //     name: this.categoryForm.get('name')?.value,
         //     description: this.categoryForm.get('description')?.value,
         //     userId: "",

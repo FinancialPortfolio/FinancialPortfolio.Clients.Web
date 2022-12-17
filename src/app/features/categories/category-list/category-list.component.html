@@ -22,7 +22,7 @@
             </mat-tree-node>
         </mat-tree>
 
-        <div class="category-item-details" *ngIf="selectedCategory && loadedStockStatistics" [ngStyle]="{'width': contentBlockWidth}">
+        <div class="category-item-details" *ngIf="selectedCategory && loadedAssetStatistics" [ngStyle]="{'width': contentBlockWidth}">
             <app-category-list-item [categoryItem]="selectedCategory" (select)="onSelect($event)"></app-category-list-item>
         </div>
     </div>

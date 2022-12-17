@@ -1,4 +1,4 @@
-export interface StockStatisticsResponse {
+export interface AssetStatisticsResponse {
     currentPrice: number;
     retrievalDateTime: Date;
     earningsPerShare: number;

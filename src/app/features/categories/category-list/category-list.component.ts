@@ -6,7 +6,7 @@ import { CategoriesService } from 'src/app/api/services/categories.service';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { FetchStockStatisticsRequest } from 'src/app/api/models/Stocks/fetch-stock-statistics-request';
+import { FetchAssetStatisticsRequest } from 'src/app/api/models/Stocks/fetch-stock-statistics-request';
 import { StocksService } from 'src/app/api/services/stocks.service';
 import { StocksUpdatedOperation } from 'src/app/core/models/operations';
 import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
@@ -54,7 +54,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
     treeBlockWidth: string = 'fit-content';
     contentBlockWidth: string = '100%';
-    loadedStockStatistics = false;
+    loadedAssetStatistics = false;
 
     dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     category: CategoryResponse | null = null;
@@ -77,13 +77,13 @@ export class CategoryListComponent implements OnInit, OnDestroy {
                 return;
 
             for (let stock of this.stocks) {
-                stock.stockStatistics = data.payload.stocks.find((s: StockResponse) => s.id == stock.assetId)?.stockStatistics;
+                stock.assetStatistics = data.payload.stocks.find((s: StockResponse) => s.id == stock.assetId)?.assetStatistics;
             }
 
             if (this.category)
                 this.calculateAllocations(this.category);
 
-            this.loadedStockStatistics = true;
+            this.loadedAssetStatistics = true;
         });
     }
 
@@ -122,16 +122,16 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     }
 
     fetchStockPrices(symbols: string[]): void {
-        let request: FetchStockStatisticsRequest = {
+        let request: FetchAssetStatisticsRequest = {
             symbols
         };
 
-        this.stocksService.fetchStockStatistics(request).subscribe(() => { });
+        this.stocksService.fetchAssetStatistics(request).subscribe(() => { });
     }
 
     calculateAllocations(category: CategoryResponse) {
         for (let stock of category.stocks ?? []) {
-            stock.allocation = stock.stockStatistics!.currentPrice * this.numberOfShares(stock);
+            stock.allocation = stock.assetStatistics!.currentPrice * this.numberOfShares(stock);
         }
 
         for (let subCategory of category.subCategories ?? []) {

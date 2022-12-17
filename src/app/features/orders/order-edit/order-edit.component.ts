@@ -6,7 +6,7 @@ import { Subject } from "rxjs";
 import { filter, distinctUntilChanged, debounceTime, tap, switchMap, finalize, takeUntil } from "rxjs/operators";
 
 import { OrderResponse } from "src/app/api/models/Orders/order-response";
-import { FetchStockStatisticsRequest } from "src/app/api/models/Stocks/fetch-stock-statistics-request";
+import { FetchAssetStatisticsRequest } from "src/app/api/models/Stocks/fetch-stock-statistics-request";
 import { GetStocksRequest } from "src/app/api/models/Stocks/get-stocks-request";
 import { StockResponse } from "src/app/api/models/Stocks/stock-response";
 import { OrdersService } from "src/app/api/services/orders.service";
@@ -68,7 +68,7 @@ export class OrderEditComponent implements OnInit, OnDestroy {
             let stockId = this.orderForm.get('assetId')?.value;
             let stock = data.payload.stocks.find((s: StockResponse) => s.id == stockId);
             if (stock)
-                this.orderForm.get('price')?.setValue(stock.stockStatistics.currentPrice);
+                this.orderForm.get('price')?.setValue(stock.assetStatistics.currentPrice);
         });
 
         this.initAutocomplete();
@@ -137,10 +137,10 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     }
 
     fetchStockPrice(symbol: string): void {
-        let request: FetchStockStatisticsRequest = {
+        let request: FetchAssetStatisticsRequest = {
             symbols: [ symbol ]
         };
 
-        this.stocksService.fetchStockStatistics(request).subscribe(() => {});
+        this.stocksService.fetchAssetStatistics(request).subscribe(() => {});
     }
 }

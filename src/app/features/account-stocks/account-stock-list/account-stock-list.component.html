@@ -25,7 +25,7 @@
 
                 <div class="price-details">
                     <div>
-                        <p>Price per share: {{ stock.stockStatistics?.currentPrice | number: '1.0-2' }}</p>
+                        <p>Price per share: {{ stock.assetStatistics?.currentPrice | number: '1.0-2' }}</p>
                         <p>Number of shares: {{ numberOfShares(stock) }}</p>
                     </div>
                     <div>

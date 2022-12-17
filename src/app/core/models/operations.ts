@@ -34,7 +34,7 @@ export const IntegrateOrdersOperation = "IntegrateOrdersCommand";
 export const UpdateOrderOperation = "UpdateOrderCommand";
 export const DeleteOrderOperation = "DeleteOrderCommand";
 
-export const FetchStockStatisticsOperation = "FetchStockStatisticsCommand";
+export const FetchAssetStatisticsOperation = "FetchAssetStatisticsCommand";
 
 
 export function getSuccessfulMessage(operation: SuccessfulOperation): string | null {
@@ -74,7 +74,7 @@ export function getFailedMessage(operation: FailedOperation): string {
         case UpdateOrderOperation: return "Order wasn't updated.";
         case DeleteOrderOperation: return "Order wasn't deleted.";
 
-        case FetchStockStatisticsOperation: return "Stock statistics wasn't updated.";
+        case FetchAssetStatisticsOperation: return "Stock statistics wasn't updated.";
 
         default:
             throw new Error(`Message for ${operation.name} is not defined.`)

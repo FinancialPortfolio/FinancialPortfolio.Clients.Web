@@ -1,3 +1,3 @@
-export interface FetchStockStatisticsRequest {
+export interface FetchAssetStatisticsRequest {
     symbols: string[];
 }

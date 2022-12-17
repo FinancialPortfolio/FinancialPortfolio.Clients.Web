@@ -77,7 +77,7 @@ export class StockAddComponent implements OnInit {
 
         // this.category.stocks.push({
         //     allocation: this.stockForm.get('allocation')?.value,
-        //     expectedAllocation: this.stockForm.get('allocation')?.value,
+        //     expectedAllocationInPercentage: this.stockForm.get('allocation')?.value,
         //     name: this.asset.name,
         //     symbol: this.asset.symbol
         // });

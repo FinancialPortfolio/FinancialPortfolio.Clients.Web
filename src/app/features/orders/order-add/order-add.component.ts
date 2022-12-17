@@ -15,7 +15,7 @@ import { GetStocksRequest } from 'src/app/api/models/Stocks/get-stocks-request';
 import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
 import { DateService } from 'src/app/core/services/date.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { FetchStockStatisticsRequest } from 'src/app/api/models/Stocks/fetch-stock-statistics-request';
+import { FetchAssetStatisticsRequest } from 'src/app/api/models/Stocks/fetch-stock-statistics-request';
 import { SignalrService } from 'src/app/core/services/signalr.service';
 import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
 import { StocksUpdatedOperation } from 'src/app/core/models/operations';
@@ -71,7 +71,7 @@ export class OrderAddComponent implements OnInit, OnDestroy {
             let stockId = this.orderForm.get('assetId')?.value;
             let stock = data.payload.stocks.find((s: StockResponse) => s.id == stockId);
             if (stock)
-                this.orderForm.get('price')?.setValue(stock.stockStatistics.currentPrice);
+                this.orderForm.get('price')?.setValue(stock.assetStatistics.currentPrice);
         });
 
         this.initAutocomplete();
@@ -144,10 +144,10 @@ export class OrderAddComponent implements OnInit, OnDestroy {
     }
 
     fetchStockPrice(symbol: string): void {
-        let request: FetchStockStatisticsRequest = {
+        let request: FetchAssetStatisticsRequest = {
             symbols: [ symbol ]
         };
 
-        this.stocksService.fetchStockStatistics(request).subscribe(() => {});
+        this.stocksService.fetchAssetStatistics(request).subscribe(() => {});
     }
 }

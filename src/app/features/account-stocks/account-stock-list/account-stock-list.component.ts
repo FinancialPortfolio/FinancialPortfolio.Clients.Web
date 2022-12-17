@@ -9,7 +9,7 @@ import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AppState } from 'src/app/store/app.reducers';
 import { OrderType } from 'src/app/api/models/Orders/order-type';
 import { StocksService } from 'src/app/api/services/stocks.service';
-import { FetchStockStatisticsRequest } from 'src/app/api/models/Stocks/fetch-stock-statistics-request';
+import { FetchAssetStatisticsRequest } from 'src/app/api/models/Stocks/fetch-stock-statistics-request';
 import { SignalrService } from 'src/app/core/services/signalr.service';
 import { StocksUpdatedOperation } from 'src/app/core/models/operations';
 import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
@@ -49,7 +49,7 @@ export class AccountStockListComponent implements OnInit {
                 return;
 
             this.stocks.forEach((stock: AccountStockResponse) => {
-                stock.stockStatistics = data.payload.stocks.find((s: StockResponse) => s.id == stock.id)?.stockStatistics;
+                stock.assetStatistics = data.payload.stocks.find((s: StockResponse) => s.id == stock.id)?.assetStatistics;
             });
         });
     }
@@ -74,11 +74,11 @@ export class AccountStockListComponent implements OnInit {
     }
 
     fetchStockPrices(symbols: string[]): void {
-        let request: FetchStockStatisticsRequest = {
+        let request: FetchAssetStatisticsRequest = {
             symbols
         };
 
-        this.stocksService.fetchStockStatistics(request).subscribe(() => { });
+        this.stocksService.fetchAssetStatistics(request).subscribe(() => { });
     }
 
     invested(stock: AccountStockResponse): number {
@@ -86,10 +86,10 @@ export class AccountStockListComponent implements OnInit {
     }
 
     totalPrice(stock: AccountStockResponse): number | null {
-        if (stock.stockStatistics == null)
+        if (stock.assetStatistics == null)
             return null;
 
-        return stock.stockStatistics?.currentPrice * this.numberOfShares(stock);
+        return stock.assetStatistics?.currentPrice * this.numberOfShares(stock);
     }
 
     averageSharePrice(stock: AccountStockResponse): number {
@@ -119,9 +119,9 @@ export class AccountStockListComponent implements OnInit {
     }
 
     getLogo(stock: AccountStockResponse): string {
-        if (stock.stockStatistics?.logo == null || stock.stockStatistics?.logo == "")
+        if (stock.assetStatistics?.logo == null || stock.assetStatistics?.logo == "")
             return "assets/images/stock.png";
 
-        return stock.stockStatistics?.logo;
+        return stock.assetStatistics?.logo;
     }
 }

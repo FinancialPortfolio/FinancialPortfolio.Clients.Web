@@ -1,4 +1,4 @@
-import { StockStatisticsResponse } from "../Stocks/stock-statistics-response";
+import { AssetStatisticsResponse } from "../Stocks/asset-statistics-response";
 import { OrderResponse } from "./order-response";
 
 export interface StockResponse {
@@ -7,7 +7,7 @@ export interface StockResponse {
     assetId: string;
     allocation: number;
     allocationInPercentage: number;
-    expectedAllocation: number;
-    stockStatistics: StockStatisticsResponse | undefined;
+    expectedAllocationInPercentage: number;
+    assetStatistics: AssetStatisticsResponse | undefined;
     orders: OrderResponse[];
 }
