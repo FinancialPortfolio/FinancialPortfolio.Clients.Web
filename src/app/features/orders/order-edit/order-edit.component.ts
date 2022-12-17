@@ -6,12 +6,12 @@ import { Subject } from "rxjs";
 import { filter, distinctUntilChanged, debounceTime, tap, switchMap, finalize, takeUntil } from "rxjs/operators";
 
 import { OrderResponse } from "src/app/api/models/Orders/order-response";
-import { FetchAssetStatisticsRequest } from "src/app/api/models/Stocks/fetch-stock-statistics-request";
-import { GetStocksRequest } from "src/app/api/models/Stocks/get-stocks-request";
-import { StockResponse } from "src/app/api/models/Stocks/stock-response";
+import { FetchAssetStatisticsRequest } from "src/app/api/models/Assets/fetch-asset-statistics-request";
+import { GetAssetsRequest } from "src/app/api/models/Assets/get-assets-request";
+import { AssetResponse } from "src/app/api/models/Assets/asset-response";
 import { OrdersService } from "src/app/api/services/orders.service";
-import { StocksService } from "src/app/api/services/stocks.service";
-import { StocksUpdatedOperation } from "src/app/core/models/operations";
+import { AssetsService } from "src/app/api/services/assets.service";
+import { AssetsUpdatedOperation } from "src/app/core/models/operations";
 import { SuccessfulOperation } from "src/app/core/models/successful-operation";
 import { DateService } from "src/app/core/services/date.service";
 import { NotificationService } from "src/app/core/services/notification.service";
@@ -29,14 +29,14 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     isLoading = false;
     minLengthTerm = 3;
     debounceTime = 500;
-    assets: StockResponse[] = [];
+    assets: AssetResponse[] = [];
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private ordersService: OrdersService,
-        private stocksService: StocksService,
+        private assetsService: AssetsService,
         private signalrService: SignalrService,
         private dateService: DateService,
         private notificationService: NotificationService,
@@ -56,19 +56,19 @@ export class OrderEditComponent implements OnInit, OnDestroy {
 
         this.orderForm.patchValue({
             ...this.data.item,
-            asset: this.data.item.stock.name,
-            assetId: this.data.item.stock.id,
+            asset: this.data.item.asset.name,
+            assetId: this.data.item.asset.id,
             dateTime: this.dateService.toIsoDate(this.data.item.dateTime)
         });
 
         this.signalrService.operationSucceededSubject.pipe(takeUntil(this.unsubscribe)).subscribe((data: SuccessfulOperation) => {
-            if (data.name != StocksUpdatedOperation)
+            if (data.name != AssetsUpdatedOperation)
                 return;
 
-            let stockId = this.orderForm.get('assetId')?.value;
-            let stock = data.payload.stocks.find((s: StockResponse) => s.id == stockId);
-            if (stock)
-                this.orderForm.get('price')?.setValue(stock.assetStatistics.currentPrice);
+            let assetId = this.orderForm.get('assetId')?.value;
+            let asset = data.payload.assets.find((s: AssetResponse) => s.id == assetId);
+            if (asset)
+                this.orderForm.get('price')?.setValue(asset.assetStatistics.currentPrice);
         });
 
         this.initAutocomplete();
@@ -92,14 +92,14 @@ export class OrderEditComponent implements OnInit, OnDestroy {
                     this.isLoading = true;
                 }),
                 switchMap(value => {
-                    let request: GetStocksRequest = {
+                    let request: GetAssetsRequest = {
                         name: value,
                         symbol: null,
                         type: null,
                         pagination: null,
                         sorting: null
                     };
-                    return this.stocksService.getAll(request)
+                    return this.assetsService.getAll(request)
                         .pipe(finalize(() => this.isLoading = false));
                 })
             )
@@ -129,18 +129,18 @@ export class OrderEditComponent implements OnInit, OnDestroy {
         this.assets = [];
     }
 
-    onSelected(asset: StockResponse) {
-        this.fetchStockPrice(asset.symbol);
+    onSelected(asset: AssetResponse) {
+        this.fetchAssetPrice(asset.symbol);
 
         this.orderForm.get('asset')?.setValue(asset.name);
         this.orderForm.get('assetId')?.setValue(asset.id);
     }
 
-    fetchStockPrice(symbol: string): void {
+    fetchAssetPrice(symbol: string): void {
         let request: FetchAssetStatisticsRequest = {
             symbols: [ symbol ]
         };
 
-        this.stocksService.fetchAssetStatistics(request).subscribe(() => {});
+        this.assetsService.fetchAssetStatistics(request).subscribe(() => {});
     }
 }

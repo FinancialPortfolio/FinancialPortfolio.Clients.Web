@@ -4,18 +4,18 @@ import { PageEvent } from '@angular/material/paginator';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
-import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
-import { GetStocksRequest } from 'src/app/api/models/Stocks/get-stocks-request';
+import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
+import { GetAssetsRequest } from 'src/app/api/models/Assets/get-assets-request';
 import { SortOrder } from 'src/app/api/models/Shared/Search/Sorting/sort-order';
-import { StocksService } from 'src/app/api/services/stocks.service';
+import { AssetsService } from 'src/app/api/services/assets.service';
 
 @Component({
-    selector: 'app-stock-list',
-    templateUrl: './stock-list.component.html',
-    styleUrls: ['./stock-list.component.scss']
+    selector: 'app-asset-list',
+    templateUrl: './asset-list.component.html',
+    styleUrls: ['./asset-list.component.scss']
 })
-export class StockListComponent implements OnInit {
-    stocks: StockResponse[] = [];
+export class AssetListComponent implements OnInit {
+    assets: AssetResponse[] = [];
     displayedColumns: string[] = ['name', 'symbol', 'exchange', 'type'];
     totalSize = 0;
 
@@ -31,10 +31,10 @@ export class StockListComponent implements OnInit {
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private stocksService: StocksService) { }
+    constructor(private assetsService: AssetsService) { }
 
     ngOnInit(): void {
-        this.loadStocks();
+        this.loadAssets();
     }
 
     ngOnDestroy(): void {
@@ -42,8 +42,8 @@ export class StockListComponent implements OnInit {
         this.unsubscribe.complete();
     }
 
-    loadStocks(): void {
-        let request: GetStocksRequest = {
+    loadAssets(): void {
+        let request: GetAssetsRequest = {
             pagination: {
                 pageSize: this.pageSize,
                 pageNumber: this.pageNumber + 1
@@ -56,9 +56,9 @@ export class StockListComponent implements OnInit {
             symbol: this.symbol,
             type: this.type
         };
-        this.stocksService.getAll(request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
+        this.assetsService.getAll(request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.totalSize = result.totalCount;
-            this.stocks = result.response;
+            this.assets = result.response;
         });
     }
 
@@ -66,13 +66,13 @@ export class StockListComponent implements OnInit {
         this.pageNumber = paginate.pageIndex;
         this.pageSize = paginate.pageSize;
 
-        this.loadStocks();
+        this.loadAssets();
     }
 
     sort(sort: Sort) {
         this.sortField = sort.active;
         this.sortOrder = sort.direction == "asc" ? SortOrder.Asc : SortOrder.Desc;
 
-        this.loadStocks();
+        this.loadAssets();
     }
 }

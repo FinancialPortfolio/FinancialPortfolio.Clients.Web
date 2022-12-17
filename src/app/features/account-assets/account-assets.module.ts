@@ -3,18 +3,18 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 import { SharedModule } from '../../shared/shared.module';
-import { AccountStockListComponent } from './account-stock-list/account-stock-list.component';
-import { AccountStocksRoutingModule } from './account-stocks-routing.module';
+import { AccountAssetListComponent } from './account-asset-list/account-asset-list.component';
+import { AccountAssetsRoutingModule } from './account-assets-routing.module';
 
 @NgModule({
   declarations: [
-    AccountStockListComponent
+    AccountAssetListComponent
   ],
   imports: [
     CommonModule,
-    AccountStocksRoutingModule,
+    AccountAssetsRoutingModule,
     SharedModule,
     FormsModule
   ]
 })
-export class AccountStocksModule { }
+export class AccountAssetsModule { }

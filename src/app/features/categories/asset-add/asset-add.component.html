@@ -1,7 +1,7 @@
-<h2 mat-dialog-title>Add stock</h2>
+<h2 mat-dialog-title>Add asset</h2>
 
 <mat-dialog-content class="mat-typography add-form">
-    <form (ngSubmit)="onSave()" [formGroup]="stockForm">
+    <form (ngSubmit)="onSave()" [formGroup]="assetForm">
         <mat-form-field>
             <input matInput placeholder="Allocation" formControlName="allocation" required>
         </mat-form-field>
@@ -9,7 +9,7 @@
         <mat-form-field>
             <input matInput placeholder="Asset" formControlName="asset" [matAutocomplete]="assetsAutocomplete" required>
 
-            <button *ngIf="stockForm.get('asset')?.value" matSuffix mat-icon-button aria-label="Clear" type="button" (click)="clearSelection()">
+            <button *ngIf="assetForm.get('asset')?.value" matSuffix mat-icon-button aria-label="Clear" type="button" (click)="clearSelection()">
                 <mat-icon>close</mat-icon>
             </button>
 
@@ -30,5 +30,5 @@
 
 <mat-dialog-actions align="end" class="dialog-actions">
     <button mat-button mat-dialog-close>Close</button>
-    <button mat-button type="submit" (click)="onSave()" [disabled]="stockForm.invalid">Save</button>
+    <button mat-button type="submit" (click)="onSave()" [disabled]="assetForm.invalid">Save</button>
 </mat-dialog-actions>

@@ -4,36 +4,36 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { filter, distinctUntilChanged, debounceTime, tap, switchMap, finalize } from 'rxjs/operators';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
-import { GetStocksRequest } from 'src/app/api/models/Stocks/get-stocks-request';
+import { GetAssetsRequest } from 'src/app/api/models/Assets/get-assets-request';
 import { CategoryAddComponent } from '../category-add/category-add.component';
-import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
-import { StocksService } from 'src/app/api/services/stocks.service';
+import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
+import { AssetsService } from 'src/app/api/services/assets.service';
 
 @Component({
-  selector: 'app-stock-add',
-  templateUrl: './stock-add.component.html',
-  styleUrls: ['./stock-add.component.scss']
+  selector: 'app-asset-add',
+  templateUrl: './asset-add.component.html',
+  styleUrls: ['./asset-add.component.scss']
 })
-export class StockAddComponent implements OnInit {
-    stockForm!: UntypedFormGroup;
+export class AssetAddComponent implements OnInit {
+    assetForm!: UntypedFormGroup;
     category: CategoryResponse;
 
     isLoading = false;
     minLengthTerm = 3;
     debounceTime = 500;
-    assets: StockResponse[] = [];
-    asset: StockResponse | undefined;
+    assets: AssetResponse[] = [];
+    asset: AssetResponse | undefined;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private dialogRef: MatDialogRef<CategoryAddComponent>,
-        private stocksService: StocksService,
+        private assetsService: AssetsService,
         @Inject(MAT_DIALOG_DATA) public data: { item: CategoryResponse }) {
         this.category = data.item;
     }
 
     ngOnInit(): void {
-        this.stockForm = this.formBuilder.group({
+        this.assetForm = this.formBuilder.group({
             allocation: [3, [Validators.required, Validators.maxLength(50)]],
             asset: ['', [Validators.required]],
             assetId: ['', [Validators.required]]
@@ -43,7 +43,7 @@ export class StockAddComponent implements OnInit {
     }
 
     initAutocomplete(): void {
-        this.stockForm.get('asset')?.valueChanges
+        this.assetForm.get('asset')?.valueChanges
             .pipe(
                 filter(result => {
                     return result !== null && result.length >= this.minLengthTerm
@@ -55,14 +55,14 @@ export class StockAddComponent implements OnInit {
                     this.isLoading = true;
                 }),
                 switchMap(value => {
-                    let request: GetStocksRequest = {
+                    let request: GetAssetsRequest = {
                         name: value,
                         symbol: null,
                         type: null,
                         pagination: null,
                         sorting: null
                     };
-                    return this.stocksService.getAll(request)
+                    return this.assetsService.getAll(request)
                         .pipe(finalize(() => this.isLoading = false));
                 })
             )
@@ -72,12 +72,12 @@ export class StockAddComponent implements OnInit {
     }
 
     onSave(): void {
-        if (!this.stockForm.valid || !this.asset)
+        if (!this.assetForm.valid || !this.asset)
             return;
 
-        // this.category.stocks.push({
-        //     allocation: this.stockForm.get('allocation')?.value,
-        //     expectedAllocationInPercentage: this.stockForm.get('allocation')?.value,
+        // this.category.assets.push({
+        //     allocation: this.assetForm.get('allocation')?.value,
+        //     expectedAllocationInPercentage: this.assetForm.get('allocation')?.value,
         //     name: this.asset.name,
         //     symbol: this.asset.symbol
         // });
@@ -86,14 +86,14 @@ export class StockAddComponent implements OnInit {
     }
 
     clearSelection() {
-        this.stockForm.get('asset')?.setValue("");
-        this.stockForm.get('assetId')?.setValue("");
+        this.assetForm.get('asset')?.setValue("");
+        this.assetForm.get('assetId')?.setValue("");
         this.assets = [];
     }
 
-    onSelected(asset: StockResponse) {
+    onSelected(asset: AssetResponse) {
         this.asset = asset;
-        this.stockForm.get('asset')?.setValue(asset.name);
-        this.stockForm.get('assetId')?.setValue(asset.id);
+        this.assetForm.get('asset')?.setValue(asset.name);
+        this.assetForm.get('assetId')?.setValue(asset.id);
     }
 }

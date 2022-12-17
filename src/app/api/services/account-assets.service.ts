@@ -6,16 +6,16 @@ import { map } from 'rxjs/operators';
 import { ApiConfiguration } from '../api-configuration';
 import { WebApiResponse } from '../models/Shared/web-api-response';
 import { ApiServiceBase } from '../api-base-service';
-import { AccountStockResponse } from '../models/AccountStocks/account-stock-response';
-import { GetAccountStocksRequest } from '../models/AccountStocks/get-account-stocks-request';
+import { AccountAssetResponse } from '../models/AccountAssets/account-asset-response';
+import { GetAccountAssetsRequest } from '../models/AccountAssets/get-account-assets-request';
 
 @Injectable()
-export class AccountStocksService extends ApiServiceBase {
+export class AccountAssetsService extends ApiServiceBase {
     constructor(config: ApiConfiguration, http: HttpClient) {
         super(config, http, '');
     }
 
-    getAll(accountId: string, request: GetAccountStocksRequest): Observable<WebApiResponse<Array<AccountStockResponse>>> {
+    getAll(accountId: string, request: GetAccountAssetsRequest): Observable<WebApiResponse<Array<AccountAssetResponse>>> {
         let baseUrl = this.createBaseUrl(accountId);
 
         let params = new HttpParams();
@@ -24,11 +24,11 @@ export class AccountStocksService extends ApiServiceBase {
         }
 
         return this.http.get(baseUrl, { params })
-            .pipe(map((response: any) => response as WebApiResponse<Array<AccountStockResponse>>));
+            .pipe(map((response: any) => response as WebApiResponse<Array<AccountAssetResponse>>));
     }
 
     createBaseUrl(accountId: string, id: string | null = null): string {
-        let baseUrl = `${this.apiEndpoint}/accounts/${accountId}/stocks`;
+        let baseUrl = `${this.apiEndpoint}/accounts/${accountId}/assets`;
         return baseUrl;
     }
 }

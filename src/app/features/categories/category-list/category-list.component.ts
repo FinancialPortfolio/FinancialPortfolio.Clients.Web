@@ -6,13 +6,13 @@ import { CategoriesService } from 'src/app/api/services/categories.service';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-import { FetchAssetStatisticsRequest } from 'src/app/api/models/Stocks/fetch-stock-statistics-request';
-import { StocksService } from 'src/app/api/services/stocks.service';
-import { StocksUpdatedOperation } from 'src/app/core/models/operations';
+import { FetchAssetStatisticsRequest } from 'src/app/api/models/Assets/fetch-asset-statistics-request';
+import { AssetsService } from 'src/app/api/services/assets.service';
+import { AssetsUpdatedOperation } from 'src/app/core/models/operations';
 import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
 import { SignalrService } from 'src/app/core/services/signalr.service';
-import { StockResponse as CategoryStockResponse } from 'src/app/api/models/Categories/stock-response';
-import { StockResponse } from 'src/app/api/models/Stocks/stock-response';
+import { AssetResponse as CategoryAssetResponse } from 'src/app/api/models/Categories/asset-response';
+import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
 import { OrderType } from 'src/app/api/models/Orders/order-type';
 
 interface CategoryNode {
@@ -58,26 +58,26 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
     dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
     category: CategoryResponse | null = null;
-    stocks: CategoryStockResponse[] | null = null;
+    assets: CategoryAssetResponse[] | null = null;
     selectedCategory: CategoryResponse | undefined;
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(private categoriesService: CategoriesService,
-        private signalrService: SignalrService, private stocksService: StocksService,) { }
+        private signalrService: SignalrService, private assetsService: AssetsService,) { }
 
     ngOnInit(): void {
         this.loadCategories();
 
         this.signalrService.operationSucceededSubject.pipe(takeUntil(this.unsubscribe)).subscribe((data: SuccessfulOperation) => {
-            if (data.name != StocksUpdatedOperation)
+            if (data.name != AssetsUpdatedOperation)
                 return;
 
-            if (this.stocks === null)
+            if (this.assets === null)
                 return;
 
-            for (let stock of this.stocks) {
-                stock.assetStatistics = data.payload.stocks.find((s: StockResponse) => s.id == stock.assetId)?.assetStatistics;
+            for (let asset of this.assets) {
+                asset.assetStatistics = data.payload.assets.find((s: AssetResponse) => s.id == asset.assetId)?.assetStatistics;
             }
 
             if (this.category)
@@ -100,49 +100,49 @@ export class CategoryListComponent implements OnInit, OnDestroy {
             if (this.category)
                 this.selectedCategory = this.category;
 
-            this.stocks = this.retrieveStocks(this.category);
+            this.assets = this.retrieveAssets(this.category);
 
-            this.fetchStockPrices(this.stocks.map(s => s.symbol));
+            this.fetchAssetPrices(this.assets.map(s => s.symbol));
 
             setTimeout(() => this.setTreeWidth());
         });
     }
 
-    retrieveStocks(category: CategoryResponse): CategoryStockResponse[] {
-        let stocks: CategoryStockResponse[] = [];
+    retrieveAssets(category: CategoryResponse): CategoryAssetResponse[] {
+        let assets: CategoryAssetResponse[] = [];
 
-        if (category.stocks)
-            stocks.push(...category.stocks);
+        if (category.assets)
+            assets.push(...category.assets);
 
         for (let subCategory of category.subCategories ?? []) {
-            stocks.push(...this.retrieveStocks(subCategory));
+            assets.push(...this.retrieveAssets(subCategory));
         }
 
-        return stocks;
+        return assets;
     }
 
-    fetchStockPrices(symbols: string[]): void {
+    fetchAssetPrices(symbols: string[]): void {
         let request: FetchAssetStatisticsRequest = {
             symbols
         };
 
-        this.stocksService.fetchAssetStatistics(request).subscribe(() => { });
+        this.assetsService.fetchAssetStatistics(request).subscribe(() => { });
     }
 
     calculateAllocations(category: CategoryResponse) {
-        for (let stock of category.stocks ?? []) {
-            stock.allocation = stock.assetStatistics!.currentPrice * this.numberOfShares(stock);
+        for (let asset of category.assets ?? []) {
+            asset.allocation = asset.assetStatistics!.currentPrice * this.numberOfShares(asset);
         }
 
         for (let subCategory of category.subCategories ?? []) {
             this.calculateAllocations(subCategory);
         }
 
-        category.allocation = category.stocks?.reduce((sum, current) => sum + current.allocation, 0) ?? 0;
+        category.allocation = category.assets?.reduce((sum, current) => sum + current.allocation, 0) ?? 0;
         category.allocation += category.subCategories?.reduce((sum, current) => sum + current.allocation, 0) ?? 0;
 
-        for (let stock of category.stocks ?? []) {
-            stock.allocationInPercentage = category.allocation ? stock.allocation / category.allocation * 100 : 0;
+        for (let asset of category.assets ?? []) {
+            asset.allocationInPercentage = category.allocation ? asset.allocation / category.allocation * 100 : 0;
         }
 
         for (let subCategory of category.subCategories ?? []) {
@@ -150,8 +150,8 @@ export class CategoryListComponent implements OnInit, OnDestroy {
         }
     }
 
-    numberOfShares(stock: CategoryStockResponse): number {
-        return stock.orders.reduce((totalShares, order) => {
+    numberOfShares(asset: CategoryAssetResponse): number {
+        return asset.orders.reduce((totalShares, order) => {
             if (order.type == OrderType.Buy) {
                 return totalShares + order.amount;
             }

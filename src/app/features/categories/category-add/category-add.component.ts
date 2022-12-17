@@ -39,7 +39,7 @@ export class CategoryAddComponent implements OnInit {
         //     description: this.categoryForm.get('description')?.value,
         //     userId: "",
         //     id: "",
-        //     stocks: [],
+        //     assets: [],
         //     subCategories: []
         // });
 

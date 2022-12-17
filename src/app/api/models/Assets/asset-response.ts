@@ -1,6 +1,6 @@
 import { AssetStatisticsResponse } from "./asset-statistics-response";
 
-export interface StockResponse {
+export interface AssetResponse {
     id: string;
     symbol: string;
     name: string;

@@ -3,9 +3,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { LegendPosition } from '@swimlane/ngx-charts';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
-import { StockResponse } from 'src/app/api/models/Categories/stock-response';
+import { AssetResponse } from 'src/app/api/models/Categories/asset-response';
 import { CategoryAddComponent } from '../category-add/category-add.component';
-import { StockAddComponent } from '../stock-add/stock-add.component';
+import { AssetAddComponent } from '../asset-add/asset-add.component';
 
 @Component({
     selector: 'app-category-list-item',
@@ -25,16 +25,16 @@ export class CategoryListItemComponent {
 
             this.allocationsChart = sortedCategories.map(category => ({ name: category.name, value: category.allocationInPercentage }));
             this.expectedAllocationsChart = sortedCategories.map(category => ({ name: category.name, value: category.expectedAllocationInPercentage }));
-        } else if (this.category.stocks.length > 0) {
-            let sortedStocks = this.category.stocks.sort((a,b) => b.expectedAllocationInPercentage - a.expectedAllocationInPercentage)
+        } else if (this.category.assets.length > 0) {
+            let sortedAssets = this.category.assets.sort((a,b) => b.expectedAllocationInPercentage - a.expectedAllocationInPercentage)
 
-            this.allocationsChart = sortedStocks.map(stock => ({ name: stock.name, value: stock.allocationInPercentage }));
-            this.expectedAllocationsChart = sortedStocks.map(stock => ({ name: stock.name, value: stock.expectedAllocationInPercentage }));
+            this.allocationsChart = sortedAssets.map(asset => ({ name: asset.name, value: asset.allocationInPercentage }));
+            this.expectedAllocationsChart = sortedAssets.map(asset => ({ name: asset.name, value: asset.expectedAllocationInPercentage }));
         }
     }
 
     categoriesDisplayedColumns: string[] = ['name', 'description', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];
-    stocksDisplayedColumns: string[] = ['symbol', 'name', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];
+    assetsDisplayedColumns: string[] = ['symbol', 'name', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];
     comparissonDisplayedColumns: string[] = ['symbol', 'marketCapitalization', 'priceToEarningsValue', 'priceToSalesValue', 'priceToBookValue', 'dividendYield', 'beta']
 
     allocationsChart: {name: string, value: number}[] = [];
@@ -58,8 +58,8 @@ export class CategoryListItemComponent {
         });
     }
 
-    addStock(): void {
-        this.dialog.open(StockAddComponent, {
+    addAsset(): void {
+        this.dialog.open(AssetAddComponent, {
             width: '500px',
             data: { item: this.category }
         });
@@ -69,8 +69,8 @@ export class CategoryListItemComponent {
         return this.category.subCategories != null && this.category.subCategories.length > 0;
     }
 
-    hasStocks(): boolean {
-        return this.category.stocks != null && this.category.stocks.length > 0;
+    hasAssets(): boolean {
+        return this.category.assets != null && this.category.assets.length > 0;
     }
 
     editCurrentCategory(): void {
@@ -85,11 +85,11 @@ export class CategoryListItemComponent {
         alert('delete shold be here');
     }
 
-    editStock(stock: StockResponse): void {
+    editAsset(asset: AssetResponse): void {
         alert('edit shold be here');
     }
 
-    deleteStock(stock: StockResponse): void {
+    deleteAsset(asset: AssetResponse): void {
         alert('delete shold be here');
     }
 

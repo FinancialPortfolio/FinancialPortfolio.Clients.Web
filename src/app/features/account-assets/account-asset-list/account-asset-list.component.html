@@ -1,41 +1,41 @@
-<div *ngIf="stocks.length > 0; else emptyTable">
+<div *ngIf="assets.length > 0; else emptyTable">
     <div class="list-header">
-        <h2 class="list-header-text">Stocks</h2>
+        <h2 class="list-header-text">Assets</h2>
 
         <div class="list-filter">
             <mat-form-field class="filter-form-field">
-                <mat-select placeholder="Type" [(ngModel)]="type" (selectionChange)="loadStocks()">
+                <mat-select placeholder="Type" [(ngModel)]="type" (selectionChange)="loadAssets()">
                     <mat-option value="">*</mat-option>
                     <mat-option value="ETP">ETFs</mat-option>
-                    <mat-option value="Common Stock">Stocks</mat-option>
+                    <mat-option value="Common Asset">Assets</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
     </div>
 
     <mat-accordion hideToggle multi>
-        <mat-expansion-panel *ngFor="let stock of stocks" class="stock-panel">
-            <mat-expansion-panel-header class="stock-header">
-                <img [src]="getLogo(stock)" class="rounded-circle" [alt]="stock.name" />
+        <mat-expansion-panel *ngFor="let asset of assets" class="asset-panel">
+            <mat-expansion-panel-header class="asset-header">
+                <img [src]="getLogo(asset)" class="rounded-circle" [alt]="asset.name" />
 
                 <div class="name-details">
-                    <h3 class="symbol">{{ stock.symbol }}</h3>
-                    <h2 class="name">{{ stock.name }}</h2>
+                    <h3 class="symbol">{{ asset.symbol }}</h3>
+                    <h2 class="name">{{ asset.name }}</h2>
                 </div>
 
                 <div class="price-details">
                     <div>
-                        <p>Price per share: {{ stock.assetStatistics?.currentPrice | number: '1.0-2' }}</p>
-                        <p>Number of shares: {{ numberOfShares(stock) }}</p>
+                        <p>Price per share: {{ asset.assetStatistics?.currentPrice | number: '1.0-2' }}</p>
+                        <p>Number of shares: {{ numberOfShares(asset) }}</p>
                     </div>
                     <div>
-                        <p>Total price: {{ totalPrice(stock) | number: '1.0-2' }}</p>
-                        <p>Total invested: {{ invested(stock) | number: '1.0-2' }}</p>
+                        <p>Total price: {{ totalPrice(asset) | number: '1.0-2' }}</p>
+                        <p>Total invested: {{ invested(asset) | number: '1.0-2' }}</p>
                     </div>
                 </div>
             </mat-expansion-panel-header>
 
-            <table mat-table [dataSource]="stock.orders" class="orders-table">
+            <table mat-table [dataSource]="asset.orders" class="orders-table">
                 <ng-container matColumnDef="position">
                     <th mat-header-cell *matHeaderCellDef> No. </th>
                     <td mat-cell *matCellDef="let element"> {{element.position}} </td>
@@ -79,6 +79,6 @@
 </div>
 
 <ng-template #emptyTable>
-    <h2 class="mt-3 text-center mat-h2">You don't have any stocks yet</h2>
+    <h2 class="mt-3 text-center mat-h2">You don't have any assets yet</h2>
 </ng-template>
 

@@ -1,4 +1,4 @@
-import { StockResponse } from "./stock-response";
+import { AssetResponse } from "./asset-response";
 
 export interface CategoryResponse {
     id: string;
@@ -9,5 +9,5 @@ export interface CategoryResponse {
     expectedAllocationInPercentage: number;
     userId: string;
     subCategories: CategoryResponse[];
-    stocks: StockResponse[];
+    assets: AssetResponse[];
 }

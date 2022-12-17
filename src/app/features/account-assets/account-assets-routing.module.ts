@@ -1,10 +1,10 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
-import { StockListComponent } from "./stock-list/stock-list.component";
+import { AccountAssetListComponent } from "./account-asset-list/account-asset-list.component";
 
 export const routes: Routes = [
-    { path: '', component: StockListComponent }
+    { path: '', component: AccountAssetListComponent }
 ];
 
 @NgModule({
@@ -12,4 +12,4 @@ export const routes: Routes = [
     exports: [RouterModule],
     providers: []
 })
-export class StocksRoutingModule { }
+export class AccountAssetsRoutingModule { }

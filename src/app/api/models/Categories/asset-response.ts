@@ -1,7 +1,7 @@
-import { AssetStatisticsResponse } from "../Stocks/asset-statistics-response";
+import { AssetStatisticsResponse } from "../Assets/asset-statistics-response";
 import { OrderResponse } from "./order-response";
 
-export interface StockResponse {
+export interface AssetResponse {
     symbol: string;
     name: string;
     assetId: string;

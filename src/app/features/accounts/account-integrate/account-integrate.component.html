@@ -20,7 +20,7 @@
     </form>
 
     <div *ngIf="invalidOrders.length > 0" class="invalid-orders-table">
-        <span class="title">Stocks for orders don't exist. Those orders won't be integrated.</span>
+        <span class="title">Assets for orders don't exist. Those orders won't be integrated.</span>
         <table mat-table [dataSource]="invalidOrders" class="mat-elevation-z4">
             <ng-container matColumnDef="dateTime">
                 <th mat-header-cell *matHeaderCellDef> DateTime </th>

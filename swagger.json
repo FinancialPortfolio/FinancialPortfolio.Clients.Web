@@ -459,7 +459,7 @@
             },
             "AssetApi.AssetType": {
                 "enum": [
-                    "Stock"
+                    "Asset"
                 ],
                 "type": "string"
             },
@@ -493,7 +493,7 @@
             },
             "FinancialPortfolio.APIGateway.Contracts.Assets.Enums.AssetType": {
                 "enum": [
-                    "Stock"
+                    "Asset"
                 ],
                 "type": "string"
             },

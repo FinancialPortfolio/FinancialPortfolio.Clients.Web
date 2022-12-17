@@ -9,14 +9,14 @@ import { CategoryListItemComponent } from './category-list-item/category-list-it
 import { CategoriesRoutingModule } from './categories-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { CategoryAddComponent } from './category-add/category-add.component';
-import { StockAddComponent } from './stock-add/stock-add.component';
+import { AssetAddComponent } from './asset-add/asset-add.component';
 
 @NgModule({
     declarations: [
         CategoryListComponent,
         CategoryListItemComponent,
         CategoryAddComponent,
-        StockAddComponent
+        AssetAddComponent
     ],
     imports: [
         CommonModule,
