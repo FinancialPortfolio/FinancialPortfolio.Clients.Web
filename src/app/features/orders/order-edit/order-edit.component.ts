@@ -130,15 +130,15 @@ export class OrderEditComponent implements OnInit, OnDestroy {
     }
 
     onSelected(asset: AssetResponse) {
-        this.fetchAssetPrice(asset.symbol);
+        this.fetchAssetPrice(asset.id);
 
         this.orderForm.get('asset')?.setValue(asset.name);
         this.orderForm.get('assetId')?.setValue(asset.id);
     }
 
-    fetchAssetPrice(symbol: string): void {
+    fetchAssetPrice(id: string): void {
         let request: FetchAssetStatisticsRequest = {
-            symbols: [ symbol ]
+            ids: [ id ]
         };
 
         this.assetsService.fetchAssetStatistics(request).subscribe(() => {});

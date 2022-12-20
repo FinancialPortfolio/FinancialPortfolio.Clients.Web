@@ -1,4 +1,4 @@
-<div *ngIf="assets.length > 0; else emptyTable">
+<div>
     <div class="list-header">
         <h2 class="list-header-text">Assets</h2>
 
@@ -6,14 +6,14 @@
             <mat-form-field class="filter-form-field">
                 <mat-select placeholder="Type" [(ngModel)]="type" (selectionChange)="loadAssets()">
                     <mat-option value="">*</mat-option>
-                    <mat-option value="ETP">ETFs</mat-option>
-                    <mat-option value="Common Asset">Assets</mat-option>
+                    <mat-option value="IndexFund">Index funds</mat-option>
+                    <mat-option value="Stock">Stocks</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
     </div>
 
-    <mat-accordion hideToggle multi>
+    <mat-accordion hideToggle multi *ngIf="assets.length > 0; else emptyTable">
         <mat-expansion-panel *ngFor="let asset of assets" class="asset-panel">
             <mat-expansion-panel-header class="asset-header">
                 <img [src]="getLogo(asset)" class="rounded-circle" [alt]="asset.name" />

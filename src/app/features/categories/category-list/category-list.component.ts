@@ -102,7 +102,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
             this.assets = this.retrieveAssets(this.category);
 
-            this.fetchAssetPrices(this.assets.map(s => s.symbol));
+            this.fetchAssetPrices(this.assets.map(s => s.assetId));
 
             setTimeout(() => this.setTreeWidth());
         });
@@ -121,9 +121,9 @@ export class CategoryListComponent implements OnInit, OnDestroy {
         return assets;
     }
 
-    fetchAssetPrices(symbols: string[]): void {
+    fetchAssetPrices(ids: string[]): void {
         let request: FetchAssetStatisticsRequest = {
-            symbols
+            ids
         };
 
         this.assetsService.fetchAssetStatistics(request).subscribe(() => { });

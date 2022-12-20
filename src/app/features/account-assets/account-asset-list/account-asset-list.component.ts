@@ -69,13 +69,13 @@ export class AccountAssetListComponent implements OnInit {
         this.accountAssetsService.getAll(this.selectedAccount.id, request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.assets = result.response;
 
-            this.fetchAssetPrices(this.assets.map(s => s.symbol));
+            this.fetchAssetPrices(this.assets.map(s => s.id));
         });
     }
 
-    fetchAssetPrices(symbols: string[]): void {
+    fetchAssetPrices(ids: string[]): void {
         let request: FetchAssetStatisticsRequest = {
-            symbols
+            ids
         };
 
         this.assetsService.fetchAssetStatistics(request).subscribe(() => { });
