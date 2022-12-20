@@ -6,6 +6,7 @@ import { CategoryResponse } from 'src/app/api/models/Categories/category-respons
 import { AssetResponse } from 'src/app/api/models/Categories/asset-response';
 import { CategoryAddComponent } from '../category-add/category-add.component';
 import { AssetAddComponent } from '../asset-add/asset-add.component';
+import { Sort } from '@angular/material/sort';
 
 @Component({
     selector: 'app-category-list-item',
@@ -20,16 +21,16 @@ export class CategoryListItemComponent {
     @Input() set categoryItem(value: CategoryResponse) {
         this.category = value;
 
+        this.category.assets = value.assets?.sort((a, b) => b.allocation - a.allocation);
+        this.category.subCategories = value.subCategories?.sort((a, b) => b.allocation - a.allocation);
+
+
         if (this.category.subCategories.length > 0) {
-            let sortedCategories = this.category.subCategories.sort((a,b) => b.expectedAllocationInPercentage - a.expectedAllocationInPercentage)
-
-            this.allocationsChart = sortedCategories.map(category => ({ name: category.name, value: category.allocationInPercentage }));
-            this.expectedAllocationsChart = sortedCategories.map(category => ({ name: category.name, value: category.expectedAllocationInPercentage }));
+            this.allocationsChart = this.category.subCategories.map(category => ({ name: category.name, value: category.allocationInPercentage }));
+            this.expectedAllocationsChart = this.category.subCategories.map(category => ({ name: category.name, value: category.expectedAllocationInPercentage }));
         } else if (this.category.assets.length > 0) {
-            let sortedAssets = this.category.assets.sort((a,b) => b.expectedAllocationInPercentage - a.expectedAllocationInPercentage)
-
-            this.allocationsChart = sortedAssets.map(asset => ({ name: asset.name, value: asset.allocationInPercentage }));
-            this.expectedAllocationsChart = sortedAssets.map(asset => ({ name: asset.name, value: asset.expectedAllocationInPercentage }));
+            this.allocationsChart = this.category.assets.map(asset => ({ name: asset.name, value: asset.allocationInPercentage }));
+            this.expectedAllocationsChart = this.category.assets.map(asset => ({ name: asset.name, value: asset.expectedAllocationInPercentage }));
         }
     }
 
@@ -99,5 +100,27 @@ export class CategoryListItemComponent {
 
         let selectedCategory = this.category.subCategories.find(c => c.name == data.name);
         this.select.emit(selectedCategory);
+    }
+
+    sortAssets(sort: Sort) {
+        if (!sort.active || sort.direction === '')
+            return;
+
+        this.category.assets = this.sortData(this.category.assets, sort);
+    }
+
+    sortSubCategories(sort: Sort) {
+        if (!sort.active || sort.direction === '')
+            return;
+
+        this.category.subCategories = this.sortData(this.category.subCategories, sort);
+    }
+
+    sortData(array: any[], sort: Sort): any[] {
+        return array.slice().sort((a, b) => {
+            const aValue = (a as any)[sort.active];
+            const bValue = (b as any)[sort.active];
+            return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
+        });
     }
 }
