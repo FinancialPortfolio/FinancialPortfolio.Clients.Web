@@ -18,6 +18,8 @@ export class CategoryAllocationService {
     assetUpdated = new Subject<CategoryAssetResponse>();
     assetDeleted = new Subject<CategoryAssetResponse>();
 
+    readonly UncategorizedCategoryName = "Uncategorized";
+
     public get category() : CategoryResponse | null {
         return this._category;
     }
@@ -75,8 +77,12 @@ export class CategoryAllocationService {
             uncategorizedCategory.assets.splice(uncategorizedAssetIndex, 1);
     }
 
+    isUncategorized(category: CategoryResponse) {
+        return category.name == this.UncategorizedCategoryName;
+    }
+
     uncategorizedCategory(category: CategoryResponse): CategoryResponse | null {
-        if (category.name == "Uncategorized")
+        if (this.isUncategorized(category))
             return category;
 
         for (let subCategory of category.subCategories) {

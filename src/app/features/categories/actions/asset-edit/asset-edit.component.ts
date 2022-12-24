@@ -23,7 +23,7 @@ export class AssetEditComponent implements OnInit {
 
     ngOnInit(): void {
         this.assetForm = this.formBuilder.group({
-            allocation: [3, [Validators.required, Validators.maxLength(50)]]
+            expectedAllocationInPercentage: [3, [Validators.required, Validators.maxLength(50)]]
         });
 
         this.assetForm.patchValue(this.data.asset);

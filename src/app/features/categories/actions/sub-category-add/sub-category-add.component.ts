@@ -24,7 +24,7 @@ export class SubCategoryAddComponent implements OnInit {
         this.categoryForm = this.formBuilder.group({
             name: ['', [Validators.required, Validators.maxLength(25)]],
             description: ['', [Validators.maxLength(150)]],
-            allocation: [3, [Validators.required, Validators.maxLength(50)]]
+            expectedAllocationInPercentage: [3, [Validators.required, Validators.maxLength(50)]]
         });
     }
 
@@ -37,7 +37,7 @@ export class SubCategoryAddComponent implements OnInit {
             description: this.categoryForm.get('description')?.value,
             allocation: 0,
             allocationInPercentage: 0,
-            expectedAllocationInPercentage: this.categoryForm.get('allocation')?.value,
+            expectedAllocationInPercentage: this.categoryForm.get('expectedAllocationInPercentage')?.value,
             userId: "",
             id: "",
             assets: [],

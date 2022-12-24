@@ -37,7 +37,7 @@ export class AssetAddComponent implements OnInit {
 
     ngOnInit(): void {
         this.assetForm = this.formBuilder.group({
-            allocation: [3, [Validators.required, Validators.maxLength(50)]],
+            expectedAllocationInPercentage: [3, [Validators.required, Validators.maxLength(50)]],
             asset: ['', [Validators.required]],
             assetId: ['', [Validators.required]]
         });
@@ -94,7 +94,7 @@ export class AssetAddComponent implements OnInit {
             name: this.asset!.name,
             symbol: this.asset!.symbol,
             assetId: this.asset!.id,
-            expectedAllocationInPercentage: this.assetForm.get('allocation')?.value,
+            expectedAllocationInPercentage: this.assetForm.get('expectedAllocationInPercentage')?.value,
             orders: orders,
             allocation: 0,
             allocationInPercentage: 0,

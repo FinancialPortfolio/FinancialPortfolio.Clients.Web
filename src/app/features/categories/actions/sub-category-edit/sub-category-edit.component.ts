@@ -26,7 +26,7 @@ export class SubCategoryEditComponent implements OnInit {
         this.categoryForm = this.formBuilder.group({
             name: ['', [Validators.required, Validators.maxLength(25)]],
             description: ['', [Validators.maxLength(150)]],
-            allocation: [3, [Validators.required, Validators.maxLength(50)]]
+            expectedAllocationInPercentage: [3, [Validators.required, Validators.maxLength(50)]]
         });
 
         this.categoryForm.patchValue(this.subCategory);

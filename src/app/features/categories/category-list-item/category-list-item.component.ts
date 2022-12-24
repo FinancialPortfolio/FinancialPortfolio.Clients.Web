@@ -68,7 +68,7 @@ export class CategoryListItemComponent {
             this.expectedAllocationsChart = this.category.assets.map(asset => ({ name: asset.name, value: asset.expectedAllocationInPercentage }));
         }
 
-        this.isUncategorizedCategory = this.category.name == "Uncategorized";
+        this.isUncategorizedCategory = this.categoryAllocationService.isUncategorized(this.category);
 
         this.categoriesDisplayedColumns = ['name', 'description', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];
         this.assetsDisplayedColumns = ['symbol', 'name', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];

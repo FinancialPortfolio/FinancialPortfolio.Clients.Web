@@ -3,7 +3,7 @@
 <mat-dialog-content class="mat-typography add-form">
     <form (ngSubmit)="onSave()" [formGroup]="assetForm">
         <mat-form-field>
-            <input matInput placeholder="Allocation" formControlName="allocation" required>
+            <input matInput placeholder="Expected allocation" formControlName="expectedAllocationInPercentage" required>
         </mat-form-field>
 
         <input type="submit" hidden />
