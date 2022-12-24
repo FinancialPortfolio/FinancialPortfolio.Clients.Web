@@ -27,7 +27,11 @@
     display: flex;
 
     .allocation-pie {
-        width: 50%;
+        min-width: 50%;
+
+        &.full-width {
+            min-width: 100%;
+        }
 
         .allocation-pie-title {
             margin-bottom: 0;

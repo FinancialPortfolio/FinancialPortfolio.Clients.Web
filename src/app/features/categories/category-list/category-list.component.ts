@@ -11,9 +11,7 @@ import { AssetsService } from 'src/app/api/services/assets.service';
 import { AssetsUpdatedOperation } from 'src/app/core/models/operations';
 import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
 import { SignalrService } from 'src/app/core/services/signalr.service';
-import { AssetResponse as CategoryAssetResponse } from 'src/app/api/models/Categories/asset-response';
-import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
-import { OrderType } from 'src/app/api/models/Orders/order-type';
+import { CategoryAllocationService } from '../services/category-allocation.service';
 
 interface CategoryNode {
     expandable: boolean;
@@ -57,14 +55,19 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     loadedAssetStatistics = false;
 
     dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
-    category: CategoryResponse | null = null;
-    assets: CategoryAssetResponse[] | null = null;
-    selectedCategory: CategoryResponse | undefined;
+
+    get category(): CategoryResponse | null {
+        return this.categoryAllocationService.category;
+    }
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private categoriesService: CategoriesService,
-        private signalrService: SignalrService, private assetsService: AssetsService,) { }
+    constructor(private categoriesService: CategoriesService, private categoryAllocationService: CategoryAllocationService,
+        private signalrService: SignalrService, private assetsService: AssetsService) {
+            this.categoryAllocationService.assetAdded.subscribe(() => {
+                this.loadedAssetStatistics = false;
+            });
+         }
 
     ngOnInit(): void {
         this.loadCategories();
@@ -73,15 +76,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
             if (data.name != AssetsUpdatedOperation)
                 return;
 
-            if (this.assets === null)
-                return;
-
-            for (let asset of this.assets) {
-                asset.assetStatistics = data.payload.assets.find((s: AssetResponse) => s.id == asset.assetId)?.assetStatistics;
-            }
-
-            if (this.category)
-                this.calculateAllocations(this.category);
+            this.categoryAllocationService.updateAssetStatistics(data.payload.assets);
 
             this.loadedAssetStatistics = true;
         });
@@ -94,31 +89,14 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
     loadCategories(): void {
         this.categoriesService.getAll().pipe(takeUntil(this.unsubscribe)).subscribe(result => {
-            this.category = result.response;
+            this.categoryAllocationService.category = result.response;
             this.dataSource.data = [result.response];
 
-            if (this.category)
-                this.selectedCategory = this.category;
-
-            this.assets = this.retrieveAssets(this.category);
-
-            this.fetchAssetPrices(this.assets.map(s => s.assetId));
+            if (this.categoryAllocationService.assets)
+                this.fetchAssetPrices(this.categoryAllocationService.assets.map(s => s.assetId));
 
             setTimeout(() => this.setTreeWidth());
         });
-    }
-
-    retrieveAssets(category: CategoryResponse): CategoryAssetResponse[] {
-        let assets: CategoryAssetResponse[] = [];
-
-        if (category.assets)
-            assets.push(...category.assets);
-
-        for (let subCategory of category.subCategories ?? []) {
-            assets.push(...this.retrieveAssets(subCategory));
-        }
-
-        return assets;
     }
 
     fetchAssetPrices(ids: string[]): void {
@@ -127,37 +105,6 @@ export class CategoryListComponent implements OnInit, OnDestroy {
         };
 
         this.assetsService.fetchAssetStatistics(request).subscribe(() => { });
-    }
-
-    calculateAllocations(category: CategoryResponse) {
-        for (let asset of category.assets ?? []) {
-            asset.allocation = asset.assetStatistics!.currentPrice * this.numberOfShares(asset);
-        }
-
-        for (let subCategory of category.subCategories ?? []) {
-            this.calculateAllocations(subCategory);
-        }
-
-        category.allocation = category.assets?.reduce((sum, current) => sum + current.allocation, 0) ?? 0;
-        category.allocation += category.subCategories?.reduce((sum, current) => sum + current.allocation, 0) ?? 0;
-
-        for (let asset of category.assets ?? []) {
-            asset.allocationInPercentage = category.allocation ? asset.allocation / category.allocation * 100 : 0;
-        }
-
-        for (let subCategory of category.subCategories ?? []) {
-            subCategory.allocationInPercentage = category.allocation ? subCategory.allocation / category.allocation * 100 : 0;
-        }
-    }
-
-    numberOfShares(asset: CategoryAssetResponse): number {
-        return asset.orders.reduce((totalShares, order) => {
-            if (order.type == OrderType.Buy) {
-                return totalShares + order.amount;
-            }
-
-            return totalShares - order.amount;
-        }, 0);
     }
 
     setTreeWidth() {
@@ -172,11 +119,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
     hasChild = (_: number, node: CategoryNode) => node.expandable;
 
-    onSelect(category: CategoryResponse) {
-        this.selectedCategory = category
-    }
-
     onNodeSelect(categoryNode: CategoryNode) {
-        this.onSelect(categoryNode.category);
+        this.categoryAllocationService.selectedCategory.next(categoryNode.category);
     }
 }

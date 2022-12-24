@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { ApiConfiguration } from '../api-configuration';
@@ -10,8 +10,6 @@ import { ApiServiceBase } from '../api-base-service';
 
 @Injectable()
 export class CategoriesService extends ApiServiceBase {
-    selectedCategory = new Subject<CategoryResponse>();
-
     constructor(config: ApiConfiguration, http: HttpClient) {
         super(config, http, '/categories');
     }

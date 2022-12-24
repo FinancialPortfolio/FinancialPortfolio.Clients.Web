@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { LegendPosition } from '@swimlane/ngx-charts';
 
@@ -7,6 +7,8 @@ import { AssetResponse } from 'src/app/api/models/Categories/asset-response';
 import { CategoryAddComponent } from '../category-add/category-add.component';
 import { AssetAddComponent } from '../asset-add/asset-add.component';
 import { Sort } from '@angular/material/sort';
+import { CategoryAllocationService } from '../services/category-allocation.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
     selector: 'app-category-list-item',
@@ -14,32 +16,20 @@ import { Sort } from '@angular/material/sort';
     styleUrls: ['./category-list-item.component.scss']
 })
 export class CategoryListItemComponent {
-    @Output()
-    select = new EventEmitter<CategoryResponse>();
-
     category!: CategoryResponse;
-    @Input() set categoryItem(value: CategoryResponse) {
-        this.category = value;
 
-        this.category.assets = value.assets?.sort((a, b) => b.allocation - a.allocation);
-        this.category.subCategories = value.subCategories?.sort((a, b) => b.allocation - a.allocation);
+    assetsDataSource = new MatTableDataSource<AssetResponse>();
+    subCategoriesDataSource = new MatTableDataSource<CategoryResponse>();
 
-
-        if (this.category.subCategories.length > 0) {
-            this.allocationsChart = this.category.subCategories.map(category => ({ name: category.name, value: category.allocationInPercentage }));
-            this.expectedAllocationsChart = this.category.subCategories.map(category => ({ name: category.name, value: category.expectedAllocationInPercentage }));
-        } else if (this.category.assets.length > 0) {
-            this.allocationsChart = this.category.assets.map(asset => ({ name: asset.name, value: asset.allocationInPercentage }));
-            this.expectedAllocationsChart = this.category.assets.map(asset => ({ name: asset.name, value: asset.expectedAllocationInPercentage }));
-        }
-    }
-
+    // TODO: change it
     categoriesDisplayedColumns: string[] = ['name', 'description', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];
     assetsDisplayedColumns: string[] = ['symbol', 'name', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];
     comparissonDisplayedColumns: string[] = ['symbol', 'marketCapitalization', 'priceToEarningsValue', 'priceToSalesValue', 'priceToBookValue', 'dividendYield', 'beta']
 
     allocationsChart: {name: string, value: number}[] = [];
     expectedAllocationsChart: {name: string, value: number}[] = [];
+
+    isUncategorizedCategory = false;
 
     pieOptions = {
         gradient: true,
@@ -50,7 +40,43 @@ export class CategoryListItemComponent {
         colorScheme: "nightLights"
     };
 
-    constructor(private dialog: MatDialog) { }
+    constructor(private dialog: MatDialog, private categoryAllocationService: CategoryAllocationService) {
+        this.categoryAllocationService.selectedCategory.subscribe(selectedCategory => { // TODO: add unsubscribe
+            if (!selectedCategory)
+                return;
+
+            this.category = selectedCategory;
+
+            this.calculatePies();
+
+            this.assetsDataSource.data = this.category.assets;
+            this.subCategoriesDataSource.data = this.category.subCategories;
+        });
+    }
+
+    calculatePies(): void {
+        this.category.assets?.sort((a, b) => b.allocation - a.allocation);
+        this.category.subCategories?.sort((a, b) => b.allocation - a.allocation);
+
+        if (this.hasCategories()) {
+            this.allocationsChart = this.category.subCategories.map(category => ({ name: category.name, value: category.allocationInPercentage }));
+            this.expectedAllocationsChart = this.category.subCategories.map(category => ({ name: category.name, value: category.expectedAllocationInPercentage }));
+        } else if (this.hasAssets()) {
+            this.allocationsChart = this.category.assets.map(asset => ({ name: asset.name, value: asset.allocationInPercentage }));
+            this.expectedAllocationsChart = this.category.assets.map(asset => ({ name: asset.name, value: asset.expectedAllocationInPercentage }));
+        }
+
+        this.isUncategorizedCategory = this.category.name == "Uncategorized";
+
+        this.categoriesDisplayedColumns = ['name', 'description', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];
+        this.assetsDisplayedColumns = ['symbol', 'name', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];
+        this.comparissonDisplayedColumns = ['symbol', 'marketCapitalization', 'priceToEarningsValue', 'priceToSalesValue', 'priceToBookValue', 'dividendYield', 'beta'];
+
+        if (this.isUncategorizedCategory) {
+            this.categoriesDisplayedColumns.splice(this.categoriesDisplayedColumns.indexOf('expectedAllocationInPercentage'), 1);
+            this.assetsDisplayedColumns.splice(this.assetsDisplayedColumns.indexOf('expectedAllocationInPercentage'), 1);
+        }
+    }
 
     addCategory(): void {
         this.dialog.open(CategoryAddComponent, {
@@ -98,26 +124,26 @@ export class CategoryListItemComponent {
         if (this.category.subCategories.length == 0)
             return;
 
-        let selectedCategory = this.category.subCategories.find(c => c.name == data.name);
-        this.select.emit(selectedCategory);
+        let selectedCategory = this.category.subCategories.find(c => c.name == data.name) ?? null;
+        this.categoryAllocationService.selectedCategory.next(selectedCategory);
     }
 
     sortAssets(sort: Sort) {
         if (!sort.active || sort.direction === '')
             return;
 
-        this.category.assets = this.sortData(this.category.assets, sort);
+        this.assetsDataSource.data = this.sortData(this.assetsDataSource.data, sort);
     }
 
     sortSubCategories(sort: Sort) {
         if (!sort.active || sort.direction === '')
             return;
 
-        this.category.subCategories = this.sortData(this.category.subCategories, sort);
+        this.subCategoriesDataSource.data = this.sortData(this.subCategoriesDataSource.data, sort);
     }
 
     sortData(array: any[], sort: Sort): any[] {
-        return array.slice().sort((a, b) => {
+        return array.sort((a, b) => {
             const aValue = (a as any)[sort.active];
             const bValue = (b as any)[sort.active];
             return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);

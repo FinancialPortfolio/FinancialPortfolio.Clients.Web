@@ -7,7 +7,10 @@ import { CategoryResponse } from 'src/app/api/models/Categories/category-respons
 import { GetAssetsRequest } from 'src/app/api/models/Assets/get-assets-request';
 import { CategoryAddComponent } from '../category-add/category-add.component';
 import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
+import { AssetResponse as CategoryAssetResponse } from 'src/app/api/models/Categories/asset-response';
 import { AssetsService } from 'src/app/api/services/assets.service';
+import { FetchAssetStatisticsRequest } from 'src/app/api/models/Assets/fetch-asset-statistics-request';
+import { CategoryAllocationService } from '../services/category-allocation.service';
 
 @Component({
   selector: 'app-asset-add',
@@ -28,6 +31,7 @@ export class AssetAddComponent implements OnInit {
         private formBuilder: UntypedFormBuilder,
         private dialogRef: MatDialogRef<CategoryAddComponent>,
         private assetsService: AssetsService,
+        private categoryAllocationService: CategoryAllocationService,
         @Inject(MAT_DIALOG_DATA) public data: { item: CategoryResponse }) {
         this.category = data.item;
     }
@@ -75,14 +79,37 @@ export class AssetAddComponent implements OnInit {
         if (!this.assetForm.valid || !this.asset)
             return;
 
-        // this.category.assets.push({
-        //     allocation: this.assetForm.get('allocation')?.value,
-        //     expectedAllocationInPercentage: this.assetForm.get('allocation')?.value,
-        //     name: this.asset.name,
-        //     symbol: this.asset.symbol
-        // });
+        let asset = this.createAsset();
+
+        this.category.assets.push(asset);
+        this.categoryAllocationService.addAsset(asset);
+
+        this.fetchAssetPrices(this.asset.id);
 
         this.dialogRef.close();
+    }
+
+    createAsset(): CategoryAssetResponse {
+        let orders = this.categoryAllocationService.getAsset(this.asset!.id)?.orders ?? [];
+        let asset: CategoryAssetResponse = {
+            name: this.asset!.name,
+            symbol: this.asset!.symbol,
+            assetId: this.asset!.id,
+            expectedAllocationInPercentage: this.assetForm.get('allocation')?.value,
+            orders: orders,
+            allocation: 0,
+            allocationInPercentage: 0,
+            assetStatistics: undefined
+        };
+
+        return asset;
+    }
+
+    fetchAssetPrices(assetId: string) {
+        let request: FetchAssetStatisticsRequest = {
+            ids: [assetId]
+        };
+        this.assetsService.fetchAssetStatistics(request).subscribe(() => { });
     }
 
     clearSelection() {
