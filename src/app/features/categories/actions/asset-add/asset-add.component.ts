@@ -5,12 +5,11 @@ import { filter, distinctUntilChanged, debounceTime, tap, switchMap, finalize } 
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 import { GetAssetsRequest } from 'src/app/api/models/Assets/get-assets-request';
-import { CategoryAddComponent } from '../category-add/category-add.component';
 import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
 import { AssetResponse as CategoryAssetResponse } from 'src/app/api/models/Categories/asset-response';
 import { AssetsService } from 'src/app/api/services/assets.service';
 import { FetchAssetStatisticsRequest } from 'src/app/api/models/Assets/fetch-asset-statistics-request';
-import { CategoryAllocationService } from '../services/category-allocation.service';
+import { CategoryAllocationService } from '../../services/category-allocation.service';
 
 @Component({
   selector: 'app-asset-add',
@@ -29,11 +28,11 @@ export class AssetAddComponent implements OnInit {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private dialogRef: MatDialogRef<CategoryAddComponent>,
+        private dialogRef: MatDialogRef<AssetAddComponent>,
         private assetsService: AssetsService,
         private categoryAllocationService: CategoryAllocationService,
-        @Inject(MAT_DIALOG_DATA) public data: { item: CategoryResponse }) {
-        this.category = data.item;
+        @Inject(MAT_DIALOG_DATA) public data: { category: CategoryResponse }) {
+        this.category = data.category;
     }
 
     ngOnInit(): void {

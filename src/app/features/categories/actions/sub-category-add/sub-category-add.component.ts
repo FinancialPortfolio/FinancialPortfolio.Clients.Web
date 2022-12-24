@@ -5,19 +5,19 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 
 @Component({
-    selector: 'app-category-add',
-    templateUrl: './category-add.component.html',
-    styleUrls: ['./category-add.component.scss']
+    selector: 'app-sub-category-add',
+    templateUrl: './sub-category-add.component.html',
+    styleUrls: ['./sub-category-add.component.scss']
 })
-export class CategoryAddComponent implements OnInit {
+export class SubCategoryAddComponent implements OnInit {
     categoryForm!: UntypedFormGroup;
     category: CategoryResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private dialogRef: MatDialogRef<CategoryAddComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: { item: CategoryResponse }) {
-        this.category = data.item;
+        private dialogRef: MatDialogRef<SubCategoryAddComponent>,
+        @Inject(MAT_DIALOG_DATA) public data: { category: CategoryResponse }) {
+        this.category = data.category;
     }
 
     ngOnInit(): void {
@@ -32,16 +32,17 @@ export class CategoryAddComponent implements OnInit {
         if (!this.categoryForm.valid)
             return;
 
-        // this.category.subCategories.push({
-        //     allocation: this.categoryForm.get('allocation')?.value,
-        //     expectedAllocationInPercentage: this.categoryForm.get('allocation')?.value,
-        //     name: this.categoryForm.get('name')?.value,
-        //     description: this.categoryForm.get('description')?.value,
-        //     userId: "",
-        //     id: "",
-        //     assets: [],
-        //     subCategories: []
-        // });
+        this.category.subCategories.push({
+            name: this.categoryForm.get('name')?.value,
+            description: this.categoryForm.get('description')?.value,
+            allocation: 0,
+            allocationInPercentage: 0,
+            expectedAllocationInPercentage: this.categoryForm.get('allocation')?.value,
+            userId: "",
+            id: "",
+            assets: [],
+            subCategories: []
+        });
 
         this.dialogRef.close();
     }

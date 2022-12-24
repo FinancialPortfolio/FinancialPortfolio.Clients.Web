@@ -4,11 +4,13 @@ import { LegendPosition } from '@swimlane/ngx-charts';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 import { AssetResponse } from 'src/app/api/models/Categories/asset-response';
-import { CategoryAddComponent } from '../category-add/category-add.component';
-import { AssetAddComponent } from '../asset-add/asset-add.component';
+import { SubCategoryAddComponent } from '../actions/sub-category-add/sub-category-add.component';
+import { AssetAddComponent } from '../actions/asset-add/asset-add.component';
 import { Sort } from '@angular/material/sort';
 import { CategoryAllocationService } from '../services/category-allocation.service';
 import { MatTableDataSource } from '@angular/material/table';
+import { AssetEditComponent } from '../actions/asset-edit/asset-edit.component';
+import { SubCategoryEditComponent } from '../actions/sub-category-edit/sub-category-edit.component';
 
 @Component({
     selector: 'app-category-list-item',
@@ -78,20 +80,6 @@ export class CategoryListItemComponent {
         }
     }
 
-    addCategory(): void {
-        this.dialog.open(CategoryAddComponent, {
-            width: '500px',
-            data: { item: this.category }
-        });
-    }
-
-    addAsset(): void {
-        this.dialog.open(AssetAddComponent, {
-            width: '500px',
-            data: { item: this.category }
-        });
-    }
-
     hasCategories(): boolean {
         return this.category.subCategories != null && this.category.subCategories.length > 0;
     }
@@ -100,24 +88,49 @@ export class CategoryListItemComponent {
         return this.category.assets != null && this.category.assets.length > 0;
     }
 
+    addCategory(): void {
+        this.dialog.open(SubCategoryAddComponent, {
+            width: '500px',
+            data: { category: this.category }
+        });
+    }
+
     editCurrentCategory(): void {
-        alert('edit shold be here');
+        this.dialog.open(SubCategoryEditComponent, {
+            width: '500px',
+            data: { category: this.category, subCategoy: this.category }
+        });
     }
 
-    editSubCategory(category: CategoryResponse): void {
-        alert('edit shold be here');
+    editSubCategory(subCategory: CategoryResponse): void {
+        this.dialog.open(SubCategoryEditComponent, {
+            width: '500px',
+            data: { category: this.category, subCategory }
+        });
     }
 
-    deleteSubCategory(category: CategoryResponse): void {
-        alert('delete shold be here');
+    deleteSubCategory(subCategory: CategoryResponse): void {
+        let subCategoryIndex = this.category.subCategories?.findIndex(a => a == subCategory);
+        if (subCategoryIndex)
+            this.category.subCategories.splice(subCategoryIndex, 1);
+    }
+
+    addAsset(): void {
+        this.dialog.open(AssetAddComponent, {
+            width: '500px',
+            data: { category: this.category }
+        });
     }
 
     editAsset(asset: AssetResponse): void {
-        alert('edit shold be here');
+        this.dialog.open(AssetEditComponent, {
+            width: '500px',
+            data: { category: this.category, asset: asset }
+        });
     }
 
     deleteAsset(asset: AssetResponse): void {
-        alert('delete shold be here');
+        this.categoryAllocationService.deleteAsset(this.category, asset);
     }
 
     onSelect(data: any): void {

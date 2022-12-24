@@ -12,7 +12,11 @@ export class CategoryAllocationService {
     _category: CategoryResponse | null = null;
     _assets: CategoryAssetResponse[] | null = null;
     selectedCategory = new BehaviorSubject<CategoryResponse | null>(null);
+
+    // Try to get rid of these events somehow
     assetAdded = new Subject<CategoryAssetResponse>();
+    assetUpdated = new Subject<CategoryAssetResponse>();
+    assetDeleted = new Subject<CategoryAssetResponse>();
 
     public get category() : CategoryResponse | null {
         return this._category;
@@ -45,6 +49,20 @@ export class CategoryAllocationService {
         this.assetAdded.next(asset);
 
         this.removeUncategorizedAsset(asset);
+    }
+
+    updateAsset(asset: CategoryAssetResponse): void {
+        this.assetUpdated.next(asset);
+    }
+
+    deleteAsset(category: CategoryResponse, asset: CategoryAssetResponse): void {
+        let assetIndex = category.assets?.findIndex(a => a.assetId == asset.assetId);
+        if (assetIndex)
+            category.assets.splice(assetIndex, 1);
+
+        this.updateAllocation();
+
+        this.assetDeleted.next(asset);
     }
 
     private removeUncategorizedAsset(asset: CategoryAssetResponse) {
@@ -85,6 +103,14 @@ export class CategoryAllocationService {
 
         if (this.category)
             this.calculateAllocations(this.category);
+    }
+
+    private updateAllocation() {
+        if (!this.category)
+            return;
+
+        this._assets = this.retrieveAssets(this.category);
+        this.calculateAllocations(this.category);
     }
 
     private retrieveAssets(category: CategoryResponse): CategoryAssetResponse[] {

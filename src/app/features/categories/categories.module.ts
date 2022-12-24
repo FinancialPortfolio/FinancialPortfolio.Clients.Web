@@ -8,15 +8,19 @@ import { CategoryListComponent } from './category-list/category-list.component';
 import { CategoryListItemComponent } from './category-list-item/category-list-item.component';
 import { CategoriesRoutingModule } from './categories-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { CategoryAddComponent } from './category-add/category-add.component';
-import { AssetAddComponent } from './asset-add/asset-add.component';
+import { SubCategoryAddComponent } from './actions/sub-category-add/sub-category-add.component';
+import { AssetAddComponent } from './actions/asset-add/asset-add.component';
+import { AssetEditComponent } from './actions/asset-edit/asset-edit.component';
+import { SubCategoryEditComponent } from './actions/sub-category-edit/sub-category-edit.component';
 
 @NgModule({
     declarations: [
         CategoryListComponent,
         CategoryListItemComponent,
-        CategoryAddComponent,
-        AssetAddComponent
+        SubCategoryAddComponent,
+        AssetAddComponent,
+        AssetEditComponent,
+        SubCategoryEditComponent
     ],
     imports: [
         CommonModule,
