@@ -8,10 +8,11 @@ import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FetchAssetStatisticsRequest } from 'src/app/api/models/Assets/fetch-asset-statistics-request';
 import { AssetsService } from 'src/app/api/services/assets.service';
-import { AssetsUpdatedOperation } from 'src/app/core/models/operations';
+import { AssetsUpdatedOperation, CategoryUpdatedOperation } from 'src/app/core/models/operations';
 import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
 import { SignalrService } from 'src/app/core/services/signalr.service';
 import { CategoryAllocationService } from '../services/category-allocation.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 interface CategoryNode {
     expandable: boolean;
@@ -62,7 +63,10 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private categoriesService: CategoriesService, private categoryAllocationService: CategoryAllocationService,
+    constructor(
+        private categoriesService: CategoriesService,
+        private categoryAllocationService: CategoryAllocationService,
+        private notificationService: NotificationService,
         private signalrService: SignalrService, private assetsService: AssetsService) {
             this.categoryAllocationService.assetAdded.subscribe(() => {
                 this.loadedAssetStatistics = false;
@@ -73,12 +77,13 @@ export class CategoryListComponent implements OnInit, OnDestroy {
         this.loadCategories();
 
         this.signalrService.operationSucceededSubject.pipe(takeUntil(this.unsubscribe)).subscribe((data: SuccessfulOperation) => {
-            if (data.name != AssetsUpdatedOperation)
-                return;
+            if (data.name == AssetsUpdatedOperation) {
+                this.categoryAllocationService.updateAssetStatistics(data.payload.assets);
 
-            this.categoryAllocationService.updateAssetStatistics(data.payload.assets);
-
-            this.loadedAssetStatistics = true;
+                this.loadedAssetStatistics = true;
+            } else if (data.name == CategoryUpdatedOperation) {
+                this.categoryAllocationService.isChanged = false;
+            }
         });
     }
 
@@ -121,5 +126,17 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
     onNodeSelect(categoryNode: CategoryNode) {
         this.categoryAllocationService.selectedCategory.next(categoryNode.category);
+    }
+
+    onSave() {
+        if (!this.category || !this.categoryAllocationService.isChanged)
+            return;
+
+        this.categoriesService.update(this.category.id, this.category)
+            .subscribe(
+                () => {
+                    this.notificationService.success('Accepted');
+                }
+            );
     }
 }

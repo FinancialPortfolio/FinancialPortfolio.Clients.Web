@@ -18,6 +18,8 @@ export const OrderDeletedOperation = "OrderDeletedEvent";
 
 export const AssetsUpdatedOperation = "AssetsUpdatedEvent";
 
+export const CategoryUpdatedOperation = "CategoryUpdatedOperation";
+
 
 // Commands
 export const CreateAccountOperation = "CreateAccountCommand";
@@ -53,6 +55,8 @@ export function getSuccessfulMessage(operation: SuccessfulOperation): string | n
         case OrderUpdatedOperation: return "Order was updated successfully.";
         case OrderDeletedOperation: return "Order was deleted successfully.";
 
+        case CategoryUpdatedOperation: return "Category was updated successfully.";
+
         default:
             return null;
     }
@@ -75,6 +79,8 @@ export function getFailedMessage(operation: FailedOperation): string {
         case DeleteOrderOperation: return "Order wasn't deleted.";
 
         case FetchAssetStatisticsOperation: return "Asset statistics wasn't updated.";
+
+        case OrderUpdatedOperation: return "Category wasn't updated.";
 
         default:
             throw new Error(`Message for ${operation.name} is not defined.`)

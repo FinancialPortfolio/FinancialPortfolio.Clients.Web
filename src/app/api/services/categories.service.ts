@@ -7,6 +7,8 @@ import { ApiConfiguration } from '../api-configuration';
 import { CategoryResponse } from '../models/Categories/category-response';
 import { WebApiResponse } from '../models/Shared/web-api-response';
 import { ApiServiceBase } from '../api-base-service';
+import { UpdateCategoryRequest } from '../models/Categories/update-category-request';
+import { BaseWebApiResponse } from '../models/Shared/base-web-api-response';
 
 @Injectable()
 export class CategoriesService extends ApiServiceBase {
@@ -17,5 +19,10 @@ export class CategoriesService extends ApiServiceBase {
     getAll(): Observable<WebApiResponse<CategoryResponse>> {
         return this.http.get(this.apiEndpoint)
             .pipe(map((response: any) => response as WebApiResponse<CategoryResponse>));
+    }
+
+    update(id: string, request: UpdateCategoryRequest): Observable<BaseWebApiResponse> {
+        return this.http.put(`${this.apiEndpoint}/${id}`, request)
+            .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 }

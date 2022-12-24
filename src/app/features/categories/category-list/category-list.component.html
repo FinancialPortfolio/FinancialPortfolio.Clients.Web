@@ -1,6 +1,12 @@
 <div *ngIf="category != null; else emptyTable" class="categories">
     <div class="list-header">
         <h2 class="list-header-text">Categories</h2>
+
+        <div class="list-filter"> <!-- RENAME those classes -->
+            <mat-form-field class="filter-form-field">
+                <button mat-raised-button (click)="onSave()">Save</button>
+            </mat-form-field>
+        </div>
     </div>
 
     <div class="categories-details mat-elevation-z4">

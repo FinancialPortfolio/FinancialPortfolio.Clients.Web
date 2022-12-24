@@ -13,6 +13,8 @@ export class CategoryAllocationService {
     _assets: CategoryAssetResponse[] | null = null;
     selectedCategory = new BehaviorSubject<CategoryResponse | null>(null);
 
+    isChanged = false;
+
     // Try to get rid of these events somehow
     assetAdded = new Subject<CategoryAssetResponse>();
     assetUpdated = new Subject<CategoryAssetResponse>();
@@ -48,12 +50,15 @@ export class CategoryAllocationService {
     }
 
     addAsset(asset: CategoryAssetResponse): void {
-        this.assetAdded.next(asset);
+        this.isChanged = true;
 
         this.removeUncategorizedAsset(asset);
+
+        this.assetAdded.next(asset);
     }
 
     updateAsset(asset: CategoryAssetResponse): void {
+        this.isChanged = true;
         this.assetUpdated.next(asset);
     }
 
@@ -63,6 +68,8 @@ export class CategoryAllocationService {
             category.assets.splice(assetIndex, 1);
 
         this.updateAllocation();
+
+        this.isChanged = true;
 
         this.assetDeleted.next(asset);
     }
