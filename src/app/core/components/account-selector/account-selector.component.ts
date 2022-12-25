@@ -7,7 +7,7 @@ import { takeUntil } from 'rxjs/operators';
 import { SelectAccountAction } from 'src/app/features/accounts/store/accounts.actions';
 import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AppState } from 'src/app/store/app.reducers';
-import { LoadingService } from '../services/loading.service';
+import { LoadingService } from '../../services/loading.service';
 
 @Component({
     selector: 'app-account-selector',

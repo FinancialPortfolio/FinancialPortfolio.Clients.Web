@@ -16,15 +16,17 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from './layout/header/header.component';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { LayoutComponent } from './layout/layout.component';
-import { AccountSelectorComponent } from './account-selector/account-selector.component';
+import { AccountSelectorComponent } from './components/account-selector/account-selector.component';
 import { ToastrModule } from 'ngx-toastr';
+import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 
 @NgModule({
     declarations: [
         HeaderComponent,
         SidebarComponent,
         LayoutComponent,
-        AccountSelectorComponent
+        AccountSelectorComponent,
+        ConfirmDialogComponent
     ],
     imports: [
         CommonModule,

@@ -37,6 +37,8 @@ export class CategoryAllocationService {
 
         this._assets = this.retrieveAssets(category);
 
+        this.isChanged = false;
+
         this.selectedCategory.next(category);
     }
 
