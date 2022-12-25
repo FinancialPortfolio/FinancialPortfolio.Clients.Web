@@ -3,7 +3,7 @@ import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
-import { CategoryAllocationService } from '../../services/category-allocation.service';
+import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
 
 @Component({
     selector: 'app-sub-category-add',
@@ -16,7 +16,7 @@ export class SubCategoryAddComponent implements OnInit {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private categoryAllocationService: CategoryAllocationService,
+        private categoryOrchestratorService: CategoryOrchestratorService,
         private dialogRef: MatDialogRef<SubCategoryAddComponent>,
         @Inject(MAT_DIALOG_DATA) public data: { category: CategoryResponse }) {
         this.category = data.category;
@@ -47,7 +47,7 @@ export class SubCategoryAddComponent implements OnInit {
         };
         this.category.subCategories.push(subCategory);
 
-        this.categoryAllocationService.addSubCategory(subCategory);
+        this.categoryOrchestratorService.addSubCategory(subCategory);
 
         this.dialogRef.close();
     }

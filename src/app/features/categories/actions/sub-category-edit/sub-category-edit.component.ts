@@ -3,7 +3,7 @@ import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
-import { CategoryAllocationService } from '../../services/category-allocation.service';
+import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
 
 @Component({
     selector: 'app-sub-category-edit',
@@ -17,7 +17,7 @@ export class SubCategoryEditComponent implements OnInit {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private dialogRef: MatDialogRef<SubCategoryEditComponent>,
-        private categoryAllocationService: CategoryAllocationService,
+        private categoryOrchestratorService: CategoryOrchestratorService,
         @Inject(MAT_DIALOG_DATA) public data: { subCategory: CategoryResponse }) {
         this.subCategory = data.subCategory;
     }
@@ -40,7 +40,7 @@ export class SubCategoryEditComponent implements OnInit {
         this.subCategory.description = this.categoryForm.get('description')?.value;
         this.subCategory.expectedAllocationInPercentage = this.categoryForm.get('expectedAllocationInPercentage')?.value;
 
-        this.categoryAllocationService.updateSubCategory(this.subCategory);
+        this.categoryOrchestratorService.updateSubCategory(this.subCategory);
 
         this.dialogRef.close();
     }

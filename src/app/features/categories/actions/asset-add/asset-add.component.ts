@@ -9,7 +9,7 @@ import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
 import { AssetResponse as CategoryAssetResponse } from 'src/app/api/models/Categories/asset-response';
 import { AssetsService } from 'src/app/api/services/assets.service';
 import { FetchAssetStatisticsRequest } from 'src/app/api/models/Assets/fetch-asset-statistics-request';
-import { CategoryAllocationService } from '../../services/category-allocation.service';
+import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
 
 @Component({
   selector: 'app-asset-add',
@@ -30,7 +30,7 @@ export class AssetAddComponent implements OnInit {
         private formBuilder: UntypedFormBuilder,
         private dialogRef: MatDialogRef<AssetAddComponent>,
         private assetsService: AssetsService,
-        private categoryAllocationService: CategoryAllocationService,
+        private categoryOrchestratorService: CategoryOrchestratorService,
         @Inject(MAT_DIALOG_DATA) public data: { category: CategoryResponse }) {
         this.category = data.category;
     }
@@ -81,7 +81,7 @@ export class AssetAddComponent implements OnInit {
         let asset = this.createAsset();
 
         this.category.assets.push(asset);
-        this.categoryAllocationService.addAsset(asset);
+        this.categoryOrchestratorService.addAsset(asset);
 
         this.fetchAssetPrices(this.asset.id);
 
@@ -89,7 +89,7 @@ export class AssetAddComponent implements OnInit {
     }
 
     createAsset(): CategoryAssetResponse {
-        let orders = this.categoryAllocationService.getAsset(this.asset!.id)?.orders ?? [];
+        let orders = this.categoryOrchestratorService.getAsset(this.asset!.id)?.orders ?? [];
         let asset: CategoryAssetResponse = {
             name: this.asset!.name,
             symbol: this.asset!.symbol,

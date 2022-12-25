@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 import { LegendPosition } from '@swimlane/ngx-charts';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 import { AssetResponse } from 'src/app/api/models/Categories/asset-response';
 import { SubCategoryAddComponent } from '../actions/sub-category-add/sub-category-add.component';
 import { AssetAddComponent } from '../actions/asset-add/asset-add.component';
-import { Sort } from '@angular/material/sort';
-import { CategoryAllocationService } from '../services/category-allocation.service';
-import { MatTableDataSource } from '@angular/material/table';
 import { AssetEditComponent } from '../actions/asset-edit/asset-edit.component';
 import { SubCategoryEditComponent } from '../actions/sub-category-edit/sub-category-edit.component';
+import { CategoryOrchestratorService } from '../services/category-orchestrator.service';
 
 @Component({
     selector: 'app-category-list-item',
@@ -42,8 +42,8 @@ export class CategoryListItemComponent {
         colorScheme: "nightLights"
     };
 
-    constructor(private dialog: MatDialog, private categoryAllocationService: CategoryAllocationService) {
-        this.categoryAllocationService.selectedCategory.subscribe(selectedCategory => { // TODO: add unsubscribe
+    constructor(private dialog: MatDialog, private categoryOrchestratorService: CategoryOrchestratorService) {
+        this.categoryOrchestratorService.selectedCategory.subscribe(selectedCategory => { // TODO: add unsubscribe
             if (!selectedCategory)
                 return;
 
@@ -54,15 +54,15 @@ export class CategoryListItemComponent {
             this.assetsDataSource.data = this.category.assets;
             this.subCategoriesDataSource.data = this.category.subCategories;
         });
-        this.categoryAllocationService.subCategoryAdded.subscribe(() => {
+        this.categoryOrchestratorService.subCategoryAdded.subscribe(() => {
             this.subCategoriesDataSource.data = this.category.subCategories;
         });
-        this.categoryAllocationService.assetDeleted.subscribe(() => {
+        this.categoryOrchestratorService.assetDeleted.subscribe(() => {
             this.assetsDataSource.data = this.category.assets;
 
             this.calculatePies();
         });
-        this.categoryAllocationService.subCategoryDeleted.subscribe(() => {
+        this.categoryOrchestratorService.subCategoryDeleted.subscribe(() => {
             this.subCategoriesDataSource.data = this.category.subCategories;
 
             this.calculatePies();
@@ -81,7 +81,7 @@ export class CategoryListItemComponent {
             this.expectedAllocationsChart = this.category.assets.map(asset => ({ name: asset.name, value: asset.expectedAllocationInPercentage }));
         }
 
-        this.isUncategorizedCategory = this.categoryAllocationService.isUncategorized(this.category);
+        this.isUncategorizedCategory = this.categoryOrchestratorService.isUncategorized(this.category);
 
         this.categoriesDisplayedColumns = ['name', 'description', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];
         this.assetsDisplayedColumns = ['symbol', 'name', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];
@@ -113,15 +113,15 @@ export class CategoryListItemComponent {
     }
 
     deleteCurrentCategory(): void {
-        if (!this.categoryAllocationService.category)
+        if (!this.categoryOrchestratorService.globalCategory)
             return;
 
-        let parentCategory = this.categoryAllocationService.getParentCategory(this.categoryAllocationService.category, this.category);
+        let parentCategory = this.categoryOrchestratorService.getParentCategory(this.categoryOrchestratorService.globalCategory, this.category);
         if (!parentCategory)
             return;
 
-        this.categoryAllocationService.deleteSubCategory(parentCategory, this.category);
-        this.categoryAllocationService.selectedCategory.next(parentCategory);
+        this.categoryOrchestratorService.deleteSubCategory(parentCategory, this.category);
+        this.categoryOrchestratorService.selectedCategory.next(parentCategory);
     }
 
     editCurrentCategory(): void {
@@ -139,7 +139,7 @@ export class CategoryListItemComponent {
     }
 
     deleteSubCategory(subCategory: CategoryResponse): void {
-        this.categoryAllocationService.deleteSubCategory(this.category, subCategory);
+        this.categoryOrchestratorService.deleteSubCategory(this.category, subCategory);
     }
 
     addAsset(): void {
@@ -157,7 +157,7 @@ export class CategoryListItemComponent {
     }
 
     deleteAsset(asset: AssetResponse): void {
-        this.categoryAllocationService.deleteAsset(this.category, asset);
+        this.categoryOrchestratorService.deleteAsset(this.category, asset);
     }
 
     onSelect(data: any): void {
@@ -165,7 +165,7 @@ export class CategoryListItemComponent {
             return;
 
         let selectedCategory = this.category.subCategories.find(c => c.name == data.name) ?? null;
-        this.categoryAllocationService.selectedCategory.next(selectedCategory);
+        this.categoryOrchestratorService.selectedCategory.next(selectedCategory);
     }
 
     sortAssets(sort: Sort) {

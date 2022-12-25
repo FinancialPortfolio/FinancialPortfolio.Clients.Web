@@ -1,18 +1,18 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CategoriesService } from 'src/app/api/services/categories.service';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 import { FetchAssetStatisticsRequest } from 'src/app/api/models/Assets/fetch-asset-statistics-request';
 import { AssetsService } from 'src/app/api/services/assets.service';
 import { AssetsUpdatedOperation, CategoryUpdatedOperation } from 'src/app/core/models/operations';
 import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
 import { SignalrService } from 'src/app/core/services/signalr.service';
-import { CategoryAllocationService } from '../services/category-allocation.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
+import { CategoryOrchestratorService } from '../services/category-orchestrator.service';
 
 interface CategoryNode {
     expandable: boolean;
@@ -58,30 +58,30 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
     get category(): CategoryResponse | null {
-        return this.categoryAllocationService.category;
+        return this.categoryOrchestratorService.globalCategory;
     }
 
     get isChanged(): boolean {
-        return this.categoryAllocationService.isChanged;
+        return this.categoryOrchestratorService.hasChanges;
     }
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(
         private categoriesService: CategoriesService,
-        private categoryAllocationService: CategoryAllocationService,
+        private categoryOrchestratorService: CategoryOrchestratorService,
         private notificationService: NotificationService,
         private signalrService: SignalrService, private assetsService: AssetsService) {
-            this.categoryAllocationService.assetAdded.subscribe(() => {
+            this.categoryOrchestratorService.assetAdded.subscribe(() => {
                 this.loadedAssetStatistics = false;
             });
-            this.categoryAllocationService.subCategoryAdded.subscribe(() => {
+            this.categoryOrchestratorService.subCategoryAdded.subscribe(() => {
                 this.updateCategoryDataSource();
             });
-            this.categoryAllocationService.subCategoryUpdated.subscribe(() => {
+            this.categoryOrchestratorService.subCategoryUpdated.subscribe(() => {
                 this.updateCategoryDataSource();
             });
-            this.categoryAllocationService.subCategoryDeleted.subscribe(() => {
+            this.categoryOrchestratorService.subCategoryDeleted.subscribe(() => {
                 this.updateCategoryDataSource();
             });
         }
@@ -122,11 +122,11 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
         this.signalrService.operationSucceededSubject.pipe(takeUntil(this.unsubscribe)).subscribe((data: SuccessfulOperation) => {
             if (data.name == AssetsUpdatedOperation) {
-                this.categoryAllocationService.updateAssetStatistics(data.payload.assets);
+                this.categoryOrchestratorService.updateAssetStatistics(data.payload.assets);
 
                 this.loadedAssetStatistics = true;
             } else if (data.name == CategoryUpdatedOperation) {
-                this.categoryAllocationService.isChanged = false;
+                this.categoryOrchestratorService.hasChanges = false;
             }
         });
     }
@@ -138,11 +138,11 @@ export class CategoryListComponent implements OnInit, OnDestroy {
 
     loadCategories(): void {
         this.categoriesService.getAll().pipe(takeUntil(this.unsubscribe)).subscribe(result => {
-            this.categoryAllocationService.category = result.response;
+            this.categoryOrchestratorService.globalCategory = result.response;
             this.dataSource.data = [result.response];
 
-            if (this.categoryAllocationService.assets)
-                this.fetchAssetPrices(this.categoryAllocationService.assets.map(s => s.assetId));
+            if (this.categoryOrchestratorService.allAssets)
+                this.fetchAssetPrices(this.categoryOrchestratorService.allAssets.map(s => s.assetId));
 
             setTimeout(() => {
                 this.expandAllNodes();
@@ -173,7 +173,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     hasChild = (_: number, node: CategoryNode) => node.expandable;
 
     onNodeSelect(categoryNode: CategoryNode) {
-        this.categoryAllocationService.selectedCategory.next(categoryNode.category);
+        this.categoryOrchestratorService.selectedCategory.next(categoryNode.category);
     }
 
     onSave() {
