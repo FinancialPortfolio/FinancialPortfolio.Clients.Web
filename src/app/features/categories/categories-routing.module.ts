@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-import { CategoryListComponent } from './category-list/category-list.component';
+import { CategoryOrchestratorComponent } from './category-orchestrator/category-orchestrator.component';
 import { SaveCategoriesGuard } from './guards/save-categories.guard';
 
 export const routes: Routes = [
-    { path: '', component: CategoryListComponent, canDeactivate: [SaveCategoriesGuard] }
+    { path: '', component: CategoryOrchestratorComponent, canDeactivate: [SaveCategoriesGuard] }
 ];
 
 @NgModule({

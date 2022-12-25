@@ -1,0 +1,134 @@
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { FlatTreeControl } from '@angular/cdk/tree';
+import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+
+import { CategoriesService } from 'src/app/api/services/categories.service';
+import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
+import { AssetsService } from 'src/app/api/services/assets.service';
+import { SignalrService } from 'src/app/core/services/signalr.service';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { CategoryOrchestratorService } from '../services/category-orchestrator.service';
+
+interface CategoryNode {
+    expandable: boolean;
+    name: string;
+    level: number;
+    category: CategoryResponse;
+}
+
+@Component({
+    selector: 'app-category-tree',
+    templateUrl: './category-tree.component.html',
+    styleUrls: ['./category-tree.component.scss']
+})
+export class CategoryTreeComponent implements OnInit {
+    @Input()
+    set CategoryItem(category: CategoryResponse) {
+        this.category = category;
+
+        this.dataSource.data = [category];
+
+        setTimeout(() => {
+            this.expandAllNodes();
+
+            setTimeout(() => this.setTreeWidth());
+        });
+    }
+
+    @ViewChild('categoriesTree') categoriesTree: any;
+    @ViewChild('categoriesTree', { static: false, read: ElementRef }) categoriesTreeElement: any;
+
+    category!: CategoryResponse;
+
+    _transformer = (category: CategoryResponse, level: number) => {
+        return {
+            expandable: category.subCategories && category.subCategories.length > 0,
+            name: category.name,
+            level: level,
+            category: category
+        };
+    };
+
+    treeControl = new FlatTreeControl<CategoryNode>(
+        node => node.level,
+        node => node.expandable,
+    );
+
+    treeFlattener = new MatTreeFlattener(
+        this._transformer,
+        node => node.level,
+        node => node.expandable,
+        node => node.subCategories,
+    );
+
+    treeBlockWidth: string = 'fit-content';
+    contentBlockWidth: string = '100%';
+
+    dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+
+    constructor(
+        private categoriesService: CategoriesService,
+        private categoryOrchestratorService: CategoryOrchestratorService,
+        private notificationService: NotificationService,
+        private signalrService: SignalrService, private assetsService: AssetsService) {
+        this.categoryOrchestratorService.subCategoryAdded.subscribe(() => {
+            this.updateCategoryDataSource();
+        });
+        this.categoryOrchestratorService.subCategoryUpdated.subscribe(() => {
+            this.updateCategoryDataSource();
+        });
+        this.categoryOrchestratorService.subCategoryDeleted.subscribe(() => {
+            this.updateCategoryDataSource();
+        });
+    }
+
+    ngOnInit(): void {
+    }
+
+    updateCategoryDataSource() {
+        if (!this.category)
+            return;
+
+        let expandedNodes = this.saveExpandedNodes();
+        this.dataSource.data = [this.category];
+        setTimeout(() => {
+            this.setTreeWidth();
+
+            this.restoreExpandedNodes(expandedNodes);
+        });
+    }
+
+    saveExpandedNodes(): CategoryNode[] {
+        let expandedNodes = new Array<CategoryNode>();
+        this.treeControl.dataNodes.forEach(node => {
+            if (node.expandable && this.treeControl.isExpanded(node)) {
+                expandedNodes.push(node);
+            }
+        });
+        return expandedNodes;
+    }
+
+    restoreExpandedNodes(expandedNodes: CategoryNode[]) {
+        expandedNodes.forEach(node => {
+            let dataNode = this.treeControl.dataNodes.find(n => n.category === node.category);
+            if (dataNode)
+                this.treeControl.expand(dataNode);
+        });
+    }
+
+    expandAllNodes() {
+        this.categoriesTree.treeControl.expandAll();
+    }
+
+    setTreeWidth() {
+        let clientWidth = this.categoriesTreeElement.nativeElement.clientWidth;
+        this.treeBlockWidth = clientWidth + 'px';
+        this.contentBlockWidth = `calc(100% - ${clientWidth}px)`;
+    }
+
+    hasChild = (_: number, node: CategoryNode) => node.expandable;
+
+    onNodeSelect(categoryNode: CategoryNode) {
+        this.categoryOrchestratorService.selectedCategory.next(categoryNode.category);
+    }
+}

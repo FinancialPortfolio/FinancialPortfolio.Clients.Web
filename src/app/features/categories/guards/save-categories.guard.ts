@@ -4,11 +4,11 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { CategoryListComponent } from '../category-list/category-list.component';
+import { CategoryOrchestratorComponent } from '../category-orchestrator/category-orchestrator.component';
 import { CategoryCalculationService } from '../services/category-calculation.service';
 
 @Injectable()
-export class SaveCategoriesGuard implements CanDeactivate<CategoryListComponent> {
+export class SaveCategoriesGuard implements CanDeactivate<CategoryOrchestratorComponent> {
 
     constructor(private categoryAllocationService: CategoryCalculationService, private notificationService: NotificationService) { }
 

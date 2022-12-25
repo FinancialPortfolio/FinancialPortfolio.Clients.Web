@@ -13,11 +13,11 @@ import { SubCategoryEditComponent } from '../actions/sub-category-edit/sub-categ
 import { CategoryOrchestratorService } from '../services/category-orchestrator.service';
 
 @Component({
-    selector: 'app-category-list-item',
-    templateUrl: './category-list-item.component.html',
-    styleUrls: ['./category-list-item.component.scss']
+    selector: 'app-category-sub-category-item',
+    templateUrl: './category-sub-category-item.component.html',
+    styleUrls: ['./category-sub-category-item.component.scss']
 })
-export class CategoryListItemComponent {
+export class CategorySubCategoryItemComponent {
     category!: CategoryResponse;
 
     assetsDataSource = new MatTableDataSource<AssetResponse>();
