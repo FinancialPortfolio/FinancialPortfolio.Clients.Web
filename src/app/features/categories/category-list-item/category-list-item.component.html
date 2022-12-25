@@ -4,8 +4,9 @@
 
         <div class="page-action-buttons">
             <button mat-raised-button (click)="editCurrentCategory()">Edit</button>
-            <button mat-raised-button *ngIf="hasCategories()" (click)="addCategory()">Add Sub-category</button>
-            <button mat-raised-button *ngIf="hasAssets()" (click)="addAsset()">Add Asset</button>
+            <button mat-raised-button (click)="deleteCurrentCategory()">Delete</button>
+            <button mat-raised-button *ngIf="hasCategories() || empty()" (click)="addCategory()">Add Sub-category</button>
+            <button mat-raised-button *ngIf="hasAssets() || empty()" (click)="addAsset()">Add Asset</button>
         </div>
     </div>
 
@@ -151,7 +152,7 @@
         </table>
     </div>
 
-    <ng-container *ngIf="!hasAssets() && !hasCategories()">
+    <ng-container *ngIf="empty()">
         <h3 class="mt-3 text-center mat-h3">You don't have any assets or sub-cateogries.</h3>
     </ng-container>
 </div>

@@ -18,7 +18,7 @@ export const OrderDeletedOperation = "OrderDeletedEvent";
 
 export const AssetsUpdatedOperation = "AssetsUpdatedEvent";
 
-export const CategoryUpdatedOperation = "CategoryUpdatedOperation";
+export const CategoryUpdatedOperation = "CategoryUpdatedEvent";
 
 
 // Commands

@@ -20,6 +20,10 @@ export class CategoryAllocationService {
     assetUpdated = new Subject<CategoryAssetResponse>();
     assetDeleted = new Subject<CategoryAssetResponse>();
 
+    subCategoryAdded = new Subject<CategoryResponse>();
+    subCategoryUpdated = new Subject<CategoryResponse>();
+    subCategoryDeleted = new Subject<CategoryResponse>();
+
     readonly UncategorizedCategoryName = "Uncategorized";
 
     public get category() : CategoryResponse | null {
@@ -64,8 +68,10 @@ export class CategoryAllocationService {
 
     deleteAsset(category: CategoryResponse, asset: CategoryAssetResponse): void {
         let assetIndex = category.assets?.findIndex(a => a.assetId == asset.assetId);
-        if (assetIndex)
+        if (assetIndex != -1)
             category.assets.splice(assetIndex, 1);
+
+        this.addUncategorizedAsset(asset);
 
         this.updateAllocation();
 
@@ -74,13 +80,54 @@ export class CategoryAllocationService {
         this.assetDeleted.next(asset);
     }
 
+    addSubCategory(subCategory: CategoryResponse): void {
+        this.isChanged = true;
+
+        this.subCategoryAdded.next(subCategory);
+    }
+
+    updateSubCategory(subCategory: CategoryResponse): void {
+        this.isChanged = true;
+        this.subCategoryUpdated.next(subCategory);
+    }
+
+    deleteSubCategory(category: CategoryResponse, subCategory: CategoryResponse): void {
+        let subCategoryIndex = category.subCategories?.findIndex(a => a == subCategory);
+        if (subCategoryIndex != 1)
+            category.subCategories.splice(subCategoryIndex, 1);
+
+        this.addUncategorizedAssets(subCategory.assets);
+
+        this.updateAllocation();
+
+        this.isChanged = true;
+
+        this.subCategoryDeleted.next(category);
+    }
+
+    private addUncategorizedAsset(asset: CategoryAssetResponse) {
+        if (!this.category)
+            return;
+
+        let uncategorizedCategory = this.getUncategorizedCategory(this.category);
+        uncategorizedCategory?.assets?.push(asset);
+    }
+
+    private addUncategorizedAssets(assets: CategoryAssetResponse[]) {
+        if (!this.category)
+            return;
+
+        let uncategorizedCategory = this.getUncategorizedCategory(this.category);
+        uncategorizedCategory?.assets?.push(...assets);
+    }
+
     private removeUncategorizedAsset(asset: CategoryAssetResponse) {
         if (!this.category)
             return;
 
-        let uncategorizedCategory = this.uncategorizedCategory(this.category);
+        let uncategorizedCategory = this.getUncategorizedCategory(this.category);
         let uncategorizedAssetIndex = uncategorizedCategory?.assets?.findIndex(a => a.assetId == asset.assetId);
-        if (uncategorizedCategory && uncategorizedAssetIndex)
+        if (uncategorizedCategory && uncategorizedAssetIndex != undefined && uncategorizedAssetIndex != -1)
             uncategorizedCategory.assets.splice(uncategorizedAssetIndex, 1);
     }
 
@@ -88,14 +135,30 @@ export class CategoryAllocationService {
         return category.name == this.UncategorizedCategoryName;
     }
 
-    uncategorizedCategory(category: CategoryResponse): CategoryResponse | null {
+    getUncategorizedCategory(category: CategoryResponse): CategoryResponse | null {
         if (this.isUncategorized(category))
             return category;
 
         for (let subCategory of category.subCategories) {
-            let uncategorizedCategory = this.uncategorizedCategory(subCategory);
+            let uncategorizedCategory = this.getUncategorizedCategory(subCategory);
             if (uncategorizedCategory)
                 return uncategorizedCategory;
+        }
+
+        return null;
+    }
+
+    public getParentCategory(category: CategoryResponse, childCategory: CategoryResponse): CategoryResponse | null {
+        if (category == childCategory)
+            return null;
+
+        if (category.subCategories.includes(childCategory))
+            return category;
+
+        for (let subCategory of category.subCategories) {
+            let parentCategory = this.getParentCategory(subCategory, childCategory);
+            if (parentCategory)
+                return parentCategory;
         }
 
         return null;

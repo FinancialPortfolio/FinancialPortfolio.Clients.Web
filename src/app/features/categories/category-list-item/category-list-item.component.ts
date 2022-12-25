@@ -54,6 +54,19 @@ export class CategoryListItemComponent {
             this.assetsDataSource.data = this.category.assets;
             this.subCategoriesDataSource.data = this.category.subCategories;
         });
+        this.categoryAllocationService.subCategoryAdded.subscribe(() => {
+            this.subCategoriesDataSource.data = this.category.subCategories;
+        });
+        this.categoryAllocationService.assetDeleted.subscribe(() => {
+            this.assetsDataSource.data = this.category.assets;
+
+            this.calculatePies();
+        });
+        this.categoryAllocationService.subCategoryDeleted.subscribe(() => {
+            this.subCategoriesDataSource.data = this.category.subCategories;
+
+            this.calculatePies();
+        });
     }
 
     calculatePies(): void {
@@ -88,6 +101,10 @@ export class CategoryListItemComponent {
         return this.category.assets != null && this.category.assets.length > 0;
     }
 
+    empty(): boolean {
+        return !this.hasCategories() && !this.hasAssets();
+    }
+
     addCategory(): void {
         this.dialog.open(SubCategoryAddComponent, {
             width: '500px',
@@ -95,24 +112,34 @@ export class CategoryListItemComponent {
         });
     }
 
+    deleteCurrentCategory(): void {
+        if (!this.categoryAllocationService.category)
+            return;
+
+        let parentCategory = this.categoryAllocationService.getParentCategory(this.categoryAllocationService.category, this.category);
+        if (!parentCategory)
+            return;
+
+        this.categoryAllocationService.deleteSubCategory(parentCategory, this.category);
+        this.categoryAllocationService.selectedCategory.next(parentCategory);
+    }
+
     editCurrentCategory(): void {
         this.dialog.open(SubCategoryEditComponent, {
             width: '500px',
-            data: { category: this.category, subCategoy: this.category }
+            data: { subCategory: this.category }
         });
     }
 
     editSubCategory(subCategory: CategoryResponse): void {
         this.dialog.open(SubCategoryEditComponent, {
             width: '500px',
-            data: { category: this.category, subCategory }
+            data: { subCategory }
         });
     }
 
     deleteSubCategory(subCategory: CategoryResponse): void {
-        let subCategoryIndex = this.category.subCategories?.findIndex(a => a == subCategory);
-        if (subCategoryIndex)
-            this.category.subCategories.splice(subCategoryIndex, 1);
+        this.categoryAllocationService.deleteSubCategory(this.category, subCategory);
     }
 
     addAsset(): void {

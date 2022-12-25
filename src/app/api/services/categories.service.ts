@@ -21,8 +21,8 @@ export class CategoriesService extends ApiServiceBase {
             .pipe(map((response: any) => response as WebApiResponse<CategoryResponse>));
     }
 
-    update(id: string, request: UpdateCategoryRequest): Observable<BaseWebApiResponse> {
-        return this.http.put(`${this.apiEndpoint}/${id}`, request)
+    update(request: UpdateCategoryRequest): Observable<BaseWebApiResponse> {
+        return this.http.put(this.apiEndpoint, request)
             .pipe(map((response: any) => response as BaseWebApiResponse));
     }
 }

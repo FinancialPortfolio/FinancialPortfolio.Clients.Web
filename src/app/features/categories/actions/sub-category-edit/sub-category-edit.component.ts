@@ -3,6 +3,7 @@ import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
+import { CategoryAllocationService } from '../../services/category-allocation.service';
 
 @Component({
     selector: 'app-sub-category-edit',
@@ -11,14 +12,13 @@ import { CategoryResponse } from 'src/app/api/models/Categories/category-respons
 })
 export class SubCategoryEditComponent implements OnInit {
     categoryForm!: UntypedFormGroup;
-    category: CategoryResponse; // TODO: maybe I need to remove it
     subCategory: CategoryResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private dialogRef: MatDialogRef<SubCategoryEditComponent>,
-        @Inject(MAT_DIALOG_DATA) public data: { category: CategoryResponse, subCategory: CategoryResponse }) {
-        this.category = data.category;
+        private categoryAllocationService: CategoryAllocationService,
+        @Inject(MAT_DIALOG_DATA) public data: { subCategory: CategoryResponse }) {
         this.subCategory = data.subCategory;
     }
 
@@ -36,7 +36,11 @@ export class SubCategoryEditComponent implements OnInit {
         if (!this.categoryForm.valid)
             return;
 
-        // edit
+        this.subCategory.name = this.categoryForm.get('name')?.value;
+        this.subCategory.description = this.categoryForm.get('description')?.value;
+        this.subCategory.expectedAllocationInPercentage = this.categoryForm.get('expectedAllocationInPercentage')?.value;
+
+        this.categoryAllocationService.updateSubCategory(this.subCategory);
 
         this.dialogRef.close();
     }

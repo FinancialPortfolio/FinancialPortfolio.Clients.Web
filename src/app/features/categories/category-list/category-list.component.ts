@@ -61,6 +61,10 @@ export class CategoryListComponent implements OnInit, OnDestroy {
         return this.categoryAllocationService.category;
     }
 
+    get isChanged(): boolean {
+        return this.categoryAllocationService.isChanged;
+    }
+
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(
@@ -71,7 +75,47 @@ export class CategoryListComponent implements OnInit, OnDestroy {
             this.categoryAllocationService.assetAdded.subscribe(() => {
                 this.loadedAssetStatistics = false;
             });
-         }
+            this.categoryAllocationService.subCategoryAdded.subscribe(() => {
+                this.updateCategoryDataSource();
+            });
+            this.categoryAllocationService.subCategoryUpdated.subscribe(() => {
+                this.updateCategoryDataSource();
+            });
+            this.categoryAllocationService.subCategoryDeleted.subscribe(() => {
+                this.updateCategoryDataSource();
+            });
+        }
+
+    updateCategoryDataSource() {
+        if (!this.category)
+            return;
+
+        let expandedNodes = this.saveExpandedNodes();
+        this.dataSource.data = [this.category];
+        setTimeout(() => {
+            this.setTreeWidth();
+
+            this.restoreExpandedNodes(expandedNodes);
+        });
+    }
+
+    saveExpandedNodes(): CategoryNode[] {
+        let expandedNodes = new Array<CategoryNode>();
+        this.treeControl.dataNodes.forEach(node => {
+            if (node.expandable && this.treeControl.isExpanded(node)) {
+                expandedNodes.push(node);
+            }
+        });
+        return expandedNodes;
+    }
+
+    restoreExpandedNodes(expandedNodes: CategoryNode[]) {
+        expandedNodes.forEach(node => {
+            let dataNode = this.treeControl.dataNodes.find(n => n.category === node.category);
+            if (dataNode)
+                this.treeControl.expand(dataNode);
+        });
+    }
 
     ngOnInit(): void {
         this.loadCategories();
@@ -100,7 +144,11 @@ export class CategoryListComponent implements OnInit, OnDestroy {
             if (this.categoryAllocationService.assets)
                 this.fetchAssetPrices(this.categoryAllocationService.assets.map(s => s.assetId));
 
-            setTimeout(() => this.setTreeWidth());
+            setTimeout(() => {
+                this.expandAllNodes();
+
+                setTimeout(() => this.setTreeWidth());
+            });
         });
     }
 
@@ -112,14 +160,14 @@ export class CategoryListComponent implements OnInit, OnDestroy {
         this.assetsService.fetchAssetStatistics(request).subscribe(() => { });
     }
 
-    setTreeWidth() {
+    expandAllNodes() {
         this.categoriesTree.treeControl.expandAll();
+    }
 
-        setTimeout(() => {
-            let clientWidth = this.categoriesTreeElement.nativeElement.clientWidth;
-            this.treeBlockWidth = clientWidth + 'px';
-            this.contentBlockWidth = `calc(100% - ${clientWidth}px)`;
-        })
+    setTreeWidth() {
+        let clientWidth = this.categoriesTreeElement.nativeElement.clientWidth;
+        this.treeBlockWidth = clientWidth + 'px';
+        this.contentBlockWidth = `calc(100% - ${clientWidth}px)`;
     }
 
     hasChild = (_: number, node: CategoryNode) => node.expandable;
@@ -129,10 +177,10 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     }
 
     onSave() {
-        if (!this.category || !this.categoryAllocationService.isChanged)
+        if (!this.category || !this.isChanged)
             return;
 
-        this.categoriesService.update(this.category.id, this.category)
+        this.categoriesService.update(this.category)
             .subscribe(
                 () => {
                     this.notificationService.success('Accepted');
