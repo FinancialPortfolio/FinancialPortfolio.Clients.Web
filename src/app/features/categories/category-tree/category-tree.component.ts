@@ -23,7 +23,7 @@ interface CategoryNode {
 })
 export class CategoryTreeComponent implements OnInit {
     @Input()
-    set CategoryItem(category: CategoryResponse) {
+    set categoryItem(category: CategoryResponse) {
         this.category = category;
 
         this.dataSource.data = [category];
@@ -62,15 +62,10 @@ export class CategoryTreeComponent implements OnInit {
     );
 
     treeBlockWidth: string = 'fit-content';
-    contentBlockWidth: string = '100%';
 
     dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
-    constructor(
-        private categoriesService: CategoriesService,
-        private categoryOrchestratorService: CategoryOrchestratorService,
-        private notificationService: NotificationService,
-        private signalrService: SignalrService, private assetsService: AssetsService) {
+    constructor(private categoryOrchestratorService: CategoryOrchestratorService) {
         this.categoryOrchestratorService.subCategoryAdded.subscribe(() => {
             this.updateCategoryDataSource();
         });
@@ -123,7 +118,6 @@ export class CategoryTreeComponent implements OnInit {
     setTreeWidth() {
         let clientWidth = this.categoriesTreeElement.nativeElement.clientWidth;
         this.treeBlockWidth = clientWidth + 'px';
-        this.contentBlockWidth = `calc(100% - ${clientWidth}px)`;
     }
 
     hasChild = (_: number, node: CategoryNode) => node.expandable;

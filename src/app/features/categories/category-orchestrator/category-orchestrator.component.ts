@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -19,6 +19,8 @@ import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
     styleUrls: ['./category-orchestrator.component.scss']
 })
 export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
+    @ViewChild('categoryTree', { static: false, read: ElementRef }) categoryTreeElement: any;
+
     loadedAssetStatistics = false;
 
     get category(): CategoryResponse | null {
@@ -30,6 +32,10 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
     }
 
     private readonly unsubscribe: Subject<void> = new Subject();
+
+    get contentBlockWidth(): string {
+        return `calc(100% - ${this.categoryTreeElement.nativeElement.clientWidth}px)`;
+    }
 
     constructor(
         private categoriesService: CategoriesService,
