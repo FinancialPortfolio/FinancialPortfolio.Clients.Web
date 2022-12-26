@@ -21,6 +21,14 @@ export class CategoryOrchestratorService extends CategoryCalculationService {
         super();
     }
 
+    hasCategories(category: CategoryResponse): boolean {
+        return category.subCategories != null && category.subCategories.length > 0;
+    }
+
+    hasAssets(category: CategoryResponse): boolean {
+        return category.assets != null && category.assets.length > 0;
+    }
+
     addAsset(asset: CategoryAssetResponse): void {
         this.hasChanges = true;
 

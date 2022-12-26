@@ -1,0 +1,22 @@
+<div class="category-details" *ngIf="category">
+    <div class="category-header">
+        <h2 class="category-header-text">{{category.name}}</h2>
+
+        <div class="page-action-buttons">
+            <button mat-raised-button (click)="editCurrentCategory()">Edit</button>
+            <button mat-raised-button (click)="deleteCurrentCategory()">Delete</button>
+            <button mat-raised-button *ngIf="hasCategories() || empty()" (click)="addCategory()">Add Sub-category</button>
+            <button mat-raised-button *ngIf="hasAssets() || empty()" (click)="addAsset()">Add Asset</button>
+        </div>
+    </div>
+
+    <app-category-charts [categoryItem]="category" *ngIf="!empty()"></app-category-charts>
+
+    <app-category-asset-item *ngIf="hasAssets()" [categoryItem]="category"></app-category-asset-item>
+
+    <app-category-sub-category-item *ngIf="hasCategories()" [categoryItem]="category"></app-category-sub-category-item>
+
+    <ng-container *ngIf="empty()">
+        <h3 class="mt-3 text-center mat-h3">You don't have any assets or sub-cateogries.</h3>
+    </ng-container>
+</div>

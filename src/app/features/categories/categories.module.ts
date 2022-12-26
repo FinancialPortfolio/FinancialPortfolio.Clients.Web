@@ -5,24 +5,30 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { CategoryOrchestratorComponent } from './category-orchestrator/category-orchestrator.component';
-import { CategorySubCategoryItemComponent } from './category-sub-category-item/category-sub-category-item.component';
 import { CategoriesRoutingModule } from './categories-routing.module';
 import { SharedModule } from 'src/app/shared/shared.module';
-import { SubCategoryAddComponent } from './actions/sub-category-add/sub-category-add.component';
-import { AssetAddComponent } from './actions/asset-add/asset-add.component';
-import { AssetEditComponent } from './actions/asset-edit/asset-edit.component';
-import { SubCategoryEditComponent } from './actions/sub-category-edit/sub-category-edit.component';
+import { SubCategoryAddComponent } from './action-components/sub-category-add/sub-category-add.component';
+import { AssetAddComponent } from './action-components/asset-add/asset-add.component';
+import { AssetEditComponent } from './action-components/asset-edit/asset-edit.component';
+import { SubCategoryEditComponent } from './action-components/sub-category-edit/sub-category-edit.component';
 import { CategoryTreeComponent } from './category-tree/category-tree.component';
+import { CategoryItemComponent } from './category-item-components/category-item/category-item.component';
+import { CategoryAssetItemComponent } from './category-item-components/category-asset-item/category-asset-item.component';
+import { CategorySubCategoryItemComponent } from './category-item-components/category-sub-category-item/category-sub-category-item.component';
+import { CategoryChartsComponent } from './category-item-components/category-charts/category-charts.component';
 
 @NgModule({
     declarations: [
         CategoryOrchestratorComponent,
-        CategorySubCategoryItemComponent,
         SubCategoryAddComponent,
         AssetAddComponent,
         AssetEditComponent,
         SubCategoryEditComponent,
-        CategoryTreeComponent
+        CategoryTreeComponent,
+        CategoryItemComponent,
+        CategoryAssetItemComponent,
+        CategorySubCategoryItemComponent,
+        CategoryChartsComponent
     ],
     imports: [
         CommonModule,

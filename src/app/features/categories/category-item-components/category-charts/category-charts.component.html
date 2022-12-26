@@ -1,0 +1,19 @@
+<div class="charts-block">
+    <div class="allocation-pie" #allocationsCategoryChart [ngClass]="{'full-width': isUncategorizedCategory}">
+        <h3 class="allocation-pie-title">Allocation</h3>
+        <ngx-charts-pie-chart [view]="[allocationsCategoryChart.offsetWidth, 400]" [scheme]="pieOptions.colorScheme"
+            [results]="allocationsChart" [gradient]="pieOptions.gradient" [legend]="pieOptions.showLegend"
+            [legendPosition]="pieOptions.legendPosition" [labels]="pieOptions.showLabels"
+            [doughnut]="pieOptions.isDoughnut" (select)="onSelect($event)">
+        </ngx-charts-pie-chart>
+    </div>
+
+    <div class="allocation-pie" *ngIf="!isUncategorizedCategory" #expectedAllocationsCategoryChart>
+        <h3 class="allocation-pie-title">Expected allocation</h3>
+        <ngx-charts-pie-chart [view]="[expectedAllocationsCategoryChart.offsetWidth, 400]"
+            [scheme]="pieOptions.colorScheme" [results]="expectedAllocationsChart" [gradient]="pieOptions.gradient"
+            [legend]="pieOptions.showLegend" [legendPosition]="pieOptions.legendPosition"
+            [labels]="pieOptions.showLabels" [doughnut]="pieOptions.isDoughnut" (select)="onSelect($event)">
+        </ngx-charts-pie-chart>
+    </div>
+</div>
