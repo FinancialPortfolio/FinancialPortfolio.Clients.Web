@@ -8,6 +8,7 @@ import { SubCategoryEditComponent } from '../../action-components/sub-category-e
 import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
     selector: 'app-category-item',
@@ -17,17 +18,19 @@ import { takeUntil } from 'rxjs/operators';
 export class CategoryItemComponent implements OnDestroy {
     category!: CategoryResponse;
 
+    hasParentCategory = false;
     isUncategorizedCategory = false;
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private dialog: MatDialog, private categoryOrchestratorService: CategoryOrchestratorService) {
+    constructor(private dialog: MatDialog, private categoryOrchestratorService: CategoryOrchestratorService, private notificationService: NotificationService) {
         this.categoryOrchestratorService.selectedCategory.pipe(takeUntil(this.unsubscribe)).subscribe(selectedCategory => {
             if (!selectedCategory)
                 return;
 
             this.category = selectedCategory;
 
+            this.hasParentCategory = this.category != this.categoryOrchestratorService.globalCategory;
             this.isUncategorizedCategory = this.categoryOrchestratorService.isUncategorized(this.category);
         });
     }
@@ -60,12 +63,17 @@ export class CategoryItemComponent implements OnDestroy {
         if (!this.categoryOrchestratorService.globalCategory)
             return;
 
-        let parentCategory = this.categoryOrchestratorService.getParentCategory(this.categoryOrchestratorService.globalCategory, this.category);
-        if (!parentCategory)
-            return;
+        this.notificationService.confirm("Confirm action", "Do you want to delete current category?").subscribe(result => {
+            if (!result)
+                return;
 
-        this.categoryOrchestratorService.deleteSubCategory(parentCategory, this.category);
-        this.categoryOrchestratorService.selectedCategory.next(parentCategory);
+            let parentCategory = this.categoryOrchestratorService.getParentCategory(this.category);
+            if (!parentCategory)
+                return;
+
+            this.categoryOrchestratorService.deleteSubCategory(parentCategory, this.category);
+            this.categoryOrchestratorService.selectedCategory.next(parentCategory);
+        });
     }
 
     editCurrentCategory(): void {
@@ -80,5 +88,10 @@ export class CategoryItemComponent implements OnDestroy {
             width: '500px',
             data: { category: this.category }
         });
+    }
+
+    back(): void {
+        let parentCategory = this.categoryOrchestratorService.getParentCategory(this.category);
+        this.categoryOrchestratorService.selectedCategory.next(parentCategory);
     }
 }

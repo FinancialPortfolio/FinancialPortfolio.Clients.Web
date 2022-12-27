@@ -10,6 +10,8 @@ import { CategoryResponse } from 'src/app/api/models/Categories/category-respons
 import { AssetEditComponent } from '../../action-components/asset-edit/asset-edit.component';
 import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
 import { StockAsset } from 'src/app/api/models/Assets/asset-type';
+import { sortArray } from 'src/app/shared/helpers/sorting.helper';
+import { NotificationService } from 'src/app/core/services/notification.service';
 
 @Component({
     selector: 'app-category-asset-item',
@@ -41,7 +43,7 @@ export class CategoryAssetItemComponent implements OnInit, OnDestroy {
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private dialog: MatDialog, private categoryOrchestratorService: CategoryOrchestratorService) {
+    constructor(private dialog: MatDialog, private categoryOrchestratorService: CategoryOrchestratorService, private notificationService: NotificationService) {
         this.categoryOrchestratorService.assetDeleted.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.setAssetsDataSource(this.category.assets);
         });
@@ -65,16 +67,8 @@ export class CategoryAssetItemComponent implements OnInit, OnDestroy {
         if (!sort.active || sort.direction === '')
             return;
 
-        let sortedAssets = this.sortData(this.assetsDataSource.data, sort);
+        let sortedAssets = sortArray(this.assetsDataSource.data, sort.active, sort.direction === "asc");
         this.setAssetsDataSource(sortedAssets);
-    }
-
-    sortData(array: any[], sort: Sort): any[] {
-        return array.sort((a, b) => {
-            const aValue = (a as any)[sort.active];
-            const bValue = (b as any)[sort.active];
-            return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
-        });
     }
 
     editAsset(asset: AssetResponse): void {
@@ -85,6 +79,11 @@ export class CategoryAssetItemComponent implements OnInit, OnDestroy {
     }
 
     deleteAsset(asset: AssetResponse): void {
-        this.categoryOrchestratorService.deleteAsset(this.category, asset);
+        this.notificationService.confirm("Confirm action", "Do you want to delete this asset?").subscribe(result => {
+            if (!result)
+                return;
+
+            this.categoryOrchestratorService.deleteAsset(this.category, asset);
+        });
     }
 }

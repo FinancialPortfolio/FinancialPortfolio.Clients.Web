@@ -12,6 +12,7 @@ import { SignalrService } from 'src/app/core/services/signalr.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { CategoryOrchestratorService } from '../services/category-orchestrator.service';
 import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
+import { FailedOperation } from 'src/app/core/models/failed-operation';
 
 @Component({
     selector: 'app-category-orchestrator',
@@ -22,6 +23,7 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
     @ViewChild('categoryTree', { static: false, read: ElementRef }) categoryTreeElement: any;
 
     loadedAssetStatistics = false;
+    isSaving = false;
 
     get category(): CategoryResponse | null {
         return this.categoryOrchestratorService.globalCategory;
@@ -55,12 +57,21 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
                 case AssetsUpdatedOperation:
                     this.AssetsUpdated(data.payload.assets)
                    break;
-                case CategoryUpdatedOperation:
+                case CategoryUpdatedOperation: {
+                    this.isSaving = false;
                     this.categoryOrchestratorService.hasChanges = false;
+
                     break;
+                }
                 default:
                    break;
              }
+        });
+
+        this.signalrService.operationFailedSubject.pipe(takeUntil(this.unsubscribe)).subscribe((data: FailedOperation) => {
+            if (data.name == CategoryUpdatedOperation) {
+                this.isSaving = false;
+            }
         });
     }
 
@@ -73,10 +84,15 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
         if (!this.category || !this.isChanged)
             return;
 
+        this.isSaving = true;
+
         this.categoriesService.update(this.category)
             .subscribe(
                 () => {
                     this.notificationService.success('Accepted');
+                },
+                () => {
+                    this.isSaving = false;
                 }
             );
     }

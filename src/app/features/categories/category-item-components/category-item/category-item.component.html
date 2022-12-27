@@ -1,5 +1,9 @@
 <div class="category-details" *ngIf="category">
     <div class="category-header">
+        <button mat-raised-button *ngIf="hasParentCategory" class="back-button" (click)="back()">
+            <i class="fa fa-arrow-left"></i>
+        </button>
+
         <h2 class="category-header-text">{{category.name}}</h2>
 
         <div class="page-action-buttons">

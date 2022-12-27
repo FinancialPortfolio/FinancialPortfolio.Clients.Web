@@ -80,7 +80,7 @@ export function getFailedMessage(operation: FailedOperation): string {
 
         case FetchAssetStatisticsOperation: return "Asset statistics wasn't updated.";
 
-        case OrderUpdatedOperation: return "Category wasn't updated.";
+        case CategoryUpdatedOperation: return "Category wasn't updated.";
 
         default:
             throw new Error(`Message for ${operation.name} is not defined.`)

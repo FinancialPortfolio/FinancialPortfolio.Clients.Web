@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
+import { NotificationService } from 'src/app/core/services/notification.service';
+import { sortArray } from 'src/app/shared/helpers/sorting.helper';
 import { SubCategoryEditComponent } from '../../action-components/sub-category-edit/sub-category-edit.component';
 import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
 
@@ -32,7 +34,7 @@ export class CategorySubCategoryItemComponent implements OnInit, OnDestroy {
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private dialog: MatDialog, private categoryOrchestratorService: CategoryOrchestratorService) {
+    constructor(private dialog: MatDialog, private categoryOrchestratorService:  CategoryOrchestratorService, private notificationService: NotificationService) {
         this.categoryOrchestratorService.subCategoryAdded.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.subCategoriesDataSource.data = this.category.subCategories;
         });
@@ -53,26 +55,27 @@ export class CategorySubCategoryItemComponent implements OnInit, OnDestroy {
         if (!sort.active || sort.direction === '')
             return;
 
-        this.subCategoriesDataSource.data = this.sortData(this.subCategoriesDataSource.data, sort);
+        this.subCategoriesDataSource.data = sortArray(this.subCategoriesDataSource.data, sort.active, sort.direction === "asc");
     }
 
-    sortData(array: any[], sort: Sort): any[] {
-        return array.sort((a, b) => {
-            const aValue = (a as any)[sort.active];
-            const bValue = (b as any)[sort.active];
-            return (aValue < bValue ? -1 : 1) * (sort.direction === 'asc' ? 1 : -1);
-        });
-    }
-
-    editSubCategory(subCategory: CategoryResponse): void {
+    editSubCategory(subCategory: CategoryResponse, event: Event): void {
         this.dialog.open(SubCategoryEditComponent, {
             width: '500px',
             data: { subCategory }
         });
+
+        event.stopPropagation();
     }
 
-    deleteSubCategory(subCategory: CategoryResponse): void {
-        this.categoryOrchestratorService.deleteSubCategory(this.category, subCategory);
+    deleteSubCategory(subCategory: CategoryResponse, event: Event): void {
+        this.notificationService.confirm("Confirm action", "Do you want to delete this category?").subscribe(result => {
+            if (!result)
+                return;
+
+            this.categoryOrchestratorService.deleteSubCategory(this.category, subCategory);
+        });
+
+        event.stopPropagation();
     }
 
     onSelect(category: CategoryResponse) {

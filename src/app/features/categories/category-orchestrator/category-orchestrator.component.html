@@ -3,7 +3,7 @@
         <h2 class="list-header-text">Categories</h2>
 
         <div class="list-actions">
-            <button mat-raised-button (click)="onSave()" [disabled]="!isChanged">Save</button>
+            <button mat-raised-button (click)="onSave()" [disabled]="!isChanged || isSaving">Save</button>
         </div>
     </div>
 

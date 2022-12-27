@@ -64,7 +64,14 @@ export class CategoryCalculationService {
         return null;
     }
 
-    public getParentCategory(category: CategoryResponse, childCategory: CategoryResponse): CategoryResponse | null {
+    public getParentCategory(childCategory: CategoryResponse): CategoryResponse | null {
+        if (!this.globalCategory)
+            return null;
+
+        return this.getParent(this.globalCategory, childCategory);
+    }
+
+    getParent(category: CategoryResponse, childCategory: CategoryResponse): CategoryResponse | null {
         if (category == childCategory)
             return null;
 
@@ -72,7 +79,7 @@ export class CategoryCalculationService {
             return category;
 
         for (let subCategory of category.subCategories) {
-            let parentCategory = this.getParentCategory(subCategory, childCategory);
+            let parentCategory = this.getParent(subCategory, childCategory);
             if (parentCategory)
                 return parentCategory;
         }

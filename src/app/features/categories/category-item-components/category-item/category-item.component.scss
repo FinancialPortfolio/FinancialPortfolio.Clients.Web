@@ -7,9 +7,22 @@
     .category-header {
         padding: 10px 10px 0;
         display: flex;
+        margin-bottom: 16px;
+
+        .back-button {
+            margin-right: 20px;
+            font-size: 20px;
+            width: 36px;
+            display: flex;
+            justify-content: center;
+            min-width: unset;
+        }
 
         .category-header-text {
             font-size: 22px;
+            margin-bottom: 0;
+            display: flex;
+            align-items: center;
         }
     }
 
