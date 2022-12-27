@@ -93,6 +93,7 @@ export class AssetAddComponent implements OnInit {
         let asset: CategoryAssetResponse = {
             name: this.asset!.name,
             symbol: this.asset!.symbol,
+            type: this.asset!.type,
             assetId: this.asset!.id,
             expectedAllocationInPercentage: this.assetForm.get('expectedAllocationInPercentage')?.value,
             orders: orders,

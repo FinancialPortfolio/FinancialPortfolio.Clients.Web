@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
@@ -6,19 +6,23 @@ import { SubCategoryAddComponent } from '../../action-components/sub-category-ad
 import { AssetAddComponent } from '../../action-components/asset-add/asset-add.component';
 import { SubCategoryEditComponent } from '../../action-components/sub-category-edit/sub-category-edit.component';
 import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'app-category-item',
     templateUrl: './category-item.component.html',
     styleUrls: ['./category-item.component.scss']
 })
-export class CategoryItemComponent {
+export class CategoryItemComponent implements OnDestroy {
     category!: CategoryResponse;
 
     isUncategorizedCategory = false;
 
+    private readonly unsubscribe: Subject<void> = new Subject();
+
     constructor(private dialog: MatDialog, private categoryOrchestratorService: CategoryOrchestratorService) {
-        this.categoryOrchestratorService.selectedCategory.subscribe(selectedCategory => { // TODO: add unsubscribe
+        this.categoryOrchestratorService.selectedCategory.pipe(takeUntil(this.unsubscribe)).subscribe(selectedCategory => {
             if (!selectedCategory)
                 return;
 
@@ -26,6 +30,11 @@ export class CategoryItemComponent {
 
             this.isUncategorizedCategory = this.categoryOrchestratorService.isUncategorized(this.category);
         });
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     hasCategories(): boolean {

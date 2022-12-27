@@ -1,13 +1,11 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
 
-import { CategoriesService } from 'src/app/api/services/categories.service';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
-import { AssetsService } from 'src/app/api/services/assets.service';
-import { SignalrService } from 'src/app/core/services/signalr.service';
-import { NotificationService } from 'src/app/core/services/notification.service';
 import { CategoryOrchestratorService } from '../services/category-orchestrator.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 interface CategoryNode {
     expandable: boolean;
@@ -21,7 +19,7 @@ interface CategoryNode {
     templateUrl: './category-tree.component.html',
     styleUrls: ['./category-tree.component.scss']
 })
-export class CategoryTreeComponent implements OnInit {
+export class CategoryTreeComponent implements OnInit, OnDestroy {
     @Input()
     set categoryItem(category: CategoryResponse) {
         this.category = category;
@@ -65,19 +63,26 @@ export class CategoryTreeComponent implements OnInit {
 
     dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
 
+    private readonly unsubscribe: Subject<void> = new Subject();
+
     constructor(private categoryOrchestratorService: CategoryOrchestratorService) {
-        this.categoryOrchestratorService.subCategoryAdded.subscribe(() => {
+        this.categoryOrchestratorService.subCategoryAdded.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.updateCategoryDataSource();
         });
-        this.categoryOrchestratorService.subCategoryUpdated.subscribe(() => {
+        this.categoryOrchestratorService.subCategoryUpdated.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.updateCategoryDataSource();
         });
-        this.categoryOrchestratorService.subCategoryDeleted.subscribe(() => {
+        this.categoryOrchestratorService.subCategoryDeleted.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.updateCategoryDataSource();
         });
     }
 
     ngOnInit(): void {
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     updateCategoryDataSource() {

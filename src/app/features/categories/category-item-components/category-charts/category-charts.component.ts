@@ -1,5 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { LegendPosition } from '@swimlane/ngx-charts';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
@@ -9,21 +11,21 @@ import { CategoryOrchestratorService } from '../../services/category-orchestrato
     templateUrl: './category-charts.component.html',
     styleUrls: ['./category-charts.component.scss']
 })
-export class CategoryChartsComponent implements OnInit {
+export class CategoryChartsComponent implements OnInit, OnDestroy {
     @Input()
     set categoryItem(category: CategoryResponse) {
         this.category = category;
-
-        this.isUncategorizedCategory = this.categoryOrchestratorService.isUncategorized(this.category);
 
         this.calculatePies();
     }
 
     category!: CategoryResponse;
-    isUncategorizedCategory = false;
 
     allocationsChart: { name: string, value: number }[] = [];
+    isAllocationChartExist: boolean = true;
+
     expectedAllocationsChart: { name: string, value: number }[] = [];
+    isExpectedllocationChartExist: boolean = true;
 
     pieOptions = {
         gradient: true,
@@ -34,16 +36,26 @@ export class CategoryChartsComponent implements OnInit {
         colorScheme: "nightLights"
     };
 
+    private readonly unsubscribe: Subject<void> = new Subject();
+
     constructor(private categoryOrchestratorService: CategoryOrchestratorService) {
-        this.categoryOrchestratorService.assetDeleted.subscribe(() => {
+        this.categoryOrchestratorService.assetDeleted.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.calculatePies();
         });
-        this.categoryOrchestratorService.subCategoryDeleted.subscribe(() => {
+        this.categoryOrchestratorService.assetUpdated.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
+            this.calculatePies();
+        });
+        this.categoryOrchestratorService.subCategoryDeleted.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.calculatePies();
         });
     }
 
     ngOnInit(): void {
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     calculatePies(): void {
@@ -54,7 +66,8 @@ export class CategoryChartsComponent implements OnInit {
         this.allocationsChart = pieData.map(category => ({ name: category.name, value: category.allocationInPercentage }));
         this.expectedAllocationsChart = pieData.map(category => ({ name: category.name, value: category.expectedAllocationInPercentage }));
 
-        this.isUncategorizedCategory = this.categoryOrchestratorService.isUncategorized(this.category);
+        this.isAllocationChartExist = this.allocationsChart.filter(item => item.value != 0).length > 0;
+        this.isExpectedllocationChartExist = this.expectedAllocationsChart.filter(item => item.value != 0).length > 0;
     }
 
     onSelect(data: any): void {

@@ -34,6 +34,6 @@
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="categoriesDisplayedColumns"></tr>
-        <tr mat-row *matRowDef="let row; columns: categoriesDisplayedColumns;"></tr>
+        <tr mat-row class="sub-category-row" *matRowDef="let row; columns: categoriesDisplayedColumns;" (click)="onSelect(row)"></tr>
     </table>
 </div>

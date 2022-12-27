@@ -1,7 +1,9 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 import { SubCategoryEditComponent } from '../../action-components/sub-category-edit/sub-category-edit.component';
@@ -12,7 +14,7 @@ import { CategoryOrchestratorService } from '../../services/category-orchestrato
     templateUrl: './category-sub-category-item.component.html',
     styleUrls: ['./category-sub-category-item.component.scss']
 })
-export class CategorySubCategoryItemComponent implements OnInit {
+export class CategorySubCategoryItemComponent implements OnInit, OnDestroy {
     @Input()
     set categoryItem(category: CategoryResponse) {
         this.category = category;
@@ -28,16 +30,23 @@ export class CategorySubCategoryItemComponent implements OnInit {
     subCategoriesDataSource = new MatTableDataSource<CategoryResponse>();
     categoriesDisplayedColumns: string[] = ['name', 'description', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'actions'];
 
+    private readonly unsubscribe: Subject<void> = new Subject();
+
     constructor(private dialog: MatDialog, private categoryOrchestratorService: CategoryOrchestratorService) {
-        this.categoryOrchestratorService.subCategoryAdded.subscribe(() => {
+        this.categoryOrchestratorService.subCategoryAdded.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.subCategoriesDataSource.data = this.category.subCategories;
         });
-        this.categoryOrchestratorService.subCategoryDeleted.subscribe(() => {
+        this.categoryOrchestratorService.subCategoryDeleted.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.subCategoriesDataSource.data = this.category.subCategories;
         });
     }
 
     ngOnInit(): void {
+    }
+
+    ngOnDestroy(): void {
+        this.unsubscribe.next();
+        this.unsubscribe.complete();
     }
 
     sortSubCategories(sort: Sort) {
@@ -64,5 +73,9 @@ export class CategorySubCategoryItemComponent implements OnInit {
 
     deleteSubCategory(subCategory: CategoryResponse): void {
         this.categoryOrchestratorService.deleteSubCategory(this.category, subCategory);
+    }
+
+    onSelect(category: CategoryResponse) {
+        this.categoryOrchestratorService.selectedCategory.next(category);
     }
 }

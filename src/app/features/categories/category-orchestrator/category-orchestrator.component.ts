@@ -88,7 +88,7 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
     }
 
     private loadCategories(): void {
-        this.categoriesService.getAll().pipe(takeUntil(this.unsubscribe)).subscribe(result => {
+        this.categoriesService.getAll().subscribe(result => {
             this.categoryOrchestratorService.globalCategory = result.response;
 
             if (this.categoryOrchestratorService.allAssets)

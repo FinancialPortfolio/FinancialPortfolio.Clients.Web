@@ -5,15 +5,15 @@ import { map } from 'rxjs/operators';
 
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { CategoryOrchestratorComponent } from '../category-orchestrator/category-orchestrator.component';
-import { CategoryCalculationService } from '../services/category-calculation.service';
+import { CategoryOrchestratorService } from '../services/category-orchestrator.service';
 
 @Injectable()
 export class SaveCategoriesGuard implements CanDeactivate<CategoryOrchestratorComponent> {
 
-    constructor(private categoryAllocationService: CategoryCalculationService, private notificationService: NotificationService) { }
+    constructor(private categoryOrchestratorService: CategoryOrchestratorService, private notificationService: NotificationService) { }
 
     canDeactivate(): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-        return this.categoryAllocationService.hasChanges ?
+        return this.categoryOrchestratorService.hasChanges ?
             this.notificationService.confirm("Confirm action", "You have unsaved changes. Do you want to stay on the page to save changes?").pipe(map(result => !result)) :
             true;
     }
