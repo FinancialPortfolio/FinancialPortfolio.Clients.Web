@@ -6,7 +6,7 @@ import { CategoriesService } from 'src/app/api/services/categories.service';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 import { FetchAssetStatisticsRequest } from 'src/app/api/models/Assets/fetch-asset-statistics-request';
 import { AssetsService } from 'src/app/api/services/assets.service';
-import { AssetsUpdatedOperation, CategoryUpdatedOperation } from 'src/app/core/models/operations';
+import { AssetsUpdatedOperation, CategoryUpdatedOperation, UpdateCategoryOperation } from 'src/app/core/models/operations';
 import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
 import { SignalrService } from 'src/app/core/services/signalr.service';
 import { NotificationService } from 'src/app/core/services/notification.service';
@@ -44,9 +44,6 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
         private categoryOrchestratorService: CategoryOrchestratorService,
         private notificationService: NotificationService,
         private signalrService: SignalrService, private assetsService: AssetsService) {
-            this.categoryOrchestratorService.assetAdded.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
-                this.loadedAssetStatistics = false;
-            });
         }
 
     ngOnInit(): void {
@@ -69,7 +66,7 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
         });
 
         this.signalrService.operationFailedSubject.pipe(takeUntil(this.unsubscribe)).subscribe((data: FailedOperation) => {
-            if (data.name == CategoryUpdatedOperation) {
+            if (data.name == UpdateCategoryOperation) {
                 this.isSaving = false;
             }
         });

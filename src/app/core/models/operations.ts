@@ -38,6 +38,8 @@ export const DeleteOrderOperation = "DeleteOrderCommand";
 
 export const FetchAssetStatisticsOperation = "FetchAssetStatisticsCommand";
 
+export const UpdateCategoryOperation = "UpdateCategoryCommand";
+
 
 export function getSuccessfulMessage(operation: SuccessfulOperation): string | null {
     switch (operation.name) {
@@ -80,7 +82,7 @@ export function getFailedMessage(operation: FailedOperation): string {
 
         case FetchAssetStatisticsOperation: return "Asset statistics wasn't updated.";
 
-        case CategoryUpdatedOperation: return "Category wasn't updated.";
+        case UpdateCategoryOperation: return "Category wasn't updated.";
 
         default:
             throw new Error(`Message for ${operation.name} is not defined.`)

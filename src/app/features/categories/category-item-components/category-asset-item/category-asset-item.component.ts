@@ -47,6 +47,9 @@ export class CategoryAssetItemComponent implements OnInit, OnDestroy {
         this.categoryOrchestratorService.assetDeleted.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.setAssetsDataSource(this.category.assets);
         });
+        this.categoryOrchestratorService.assetAdded.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
+            this.setAssetsDataSource(this.category.assets);
+        });
     }
 
     setAssetsDataSource(assets: AssetResponse[]) {

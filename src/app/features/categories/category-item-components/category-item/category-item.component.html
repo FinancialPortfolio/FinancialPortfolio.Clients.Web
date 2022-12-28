@@ -4,7 +4,7 @@
             <i class="fa fa-arrow-left"></i>
         </button>
 
-        <h2 class="category-header-text">{{category.name}}</h2>
+        <h2 class="category-header-text" [matTooltip]="category.description">{{category.name}}</h2>
 
         <div class="page-action-buttons">
             <button mat-raised-button (click)="editCurrentCategory()">Edit</button>

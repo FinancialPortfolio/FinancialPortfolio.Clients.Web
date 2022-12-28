@@ -14,6 +14,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIconModule } from '@angular/material/icon';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatListModule } from '@angular/material/list';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
     imports: [
@@ -31,7 +32,8 @@ import { MatListModule } from '@angular/material/list';
         MatAutocompleteModule,
         MatIconModule,
         MatExpansionModule,
-        MatListModule
+        MatListModule,
+        MatTooltipModule
     ],
     exports: [
         NgxSpinnerModule,
@@ -47,7 +49,8 @@ import { MatListModule } from '@angular/material/list';
         MatAutocompleteModule,
         MatIconModule,
         MatExpansionModule,
-        MatListModule
+        MatListModule,
+        MatTooltipModule
     ],
     providers: []
 })

@@ -4,6 +4,9 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
+import { AssetsUpdatedOperation } from 'src/app/core/models/operations';
+import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
+import { SignalrService } from 'src/app/core/services/signalr.service';
 import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
 
 @Component({
@@ -38,7 +41,10 @@ export class CategoryChartsComponent implements OnInit, OnDestroy {
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private categoryOrchestratorService: CategoryOrchestratorService) {
+    constructor(private categoryOrchestratorService: CategoryOrchestratorService, private signalrService: SignalrService) {
+        this.categoryOrchestratorService.assetAdded.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
+            this.calculatePies();
+        });
         this.categoryOrchestratorService.assetDeleted.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.calculatePies();
         });
@@ -47,6 +53,10 @@ export class CategoryChartsComponent implements OnInit, OnDestroy {
         });
         this.categoryOrchestratorService.subCategoryDeleted.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.calculatePies();
+        });
+        this.signalrService.operationSucceededSubject.pipe(takeUntil(this.unsubscribe)).subscribe((data: SuccessfulOperation) => {
+            if (data.name == AssetsUpdatedOperation)
+                this.calculatePies();
         });
     }
 
