@@ -1,0 +1,9 @@
+.categories-tree {
+    padding: 10px;
+    flex-shrink: 0;
+
+    mat-tree-node {
+        padding-right: 10px;
+        cursor: pointer;
+    }
+}

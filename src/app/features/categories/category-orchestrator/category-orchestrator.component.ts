@@ -1,6 +1,7 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MatDialog } from '@angular/material/dialog';
 
 import { CategoriesService } from 'src/app/api/services/categories.service';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
@@ -13,6 +14,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { CategoryOrchestratorService } from '../services/category-orchestrator.service';
 import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
 import { FailedOperation } from 'src/app/core/models/failed-operation';
+import { CategorySelectorComponent } from '../asset-comparison-components/category-selector/category-selector.component';
 
 @Component({
     selector: 'app-category-orchestrator',
@@ -40,10 +42,12 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
     }
 
     constructor(
+        private dialog: MatDialog,
         private categoriesService: CategoriesService,
         private categoryOrchestratorService: CategoryOrchestratorService,
         private notificationService: NotificationService,
-        private signalrService: SignalrService, private assetsService: AssetsService) {
+        private signalrService: SignalrService,
+        private assetsService: AssetsService) {
         }
 
     ngOnInit(): void {
@@ -92,6 +96,15 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
                     this.isSaving = false;
                 }
             );
+    }
+
+    onCompareCategories() {
+        this.dialog.open(CategorySelectorComponent, {
+            width: '550px',
+            data: {
+                category: this.category
+            }
+        });
     }
 
     private AssetsUpdated(assets: AssetResponse[]) {

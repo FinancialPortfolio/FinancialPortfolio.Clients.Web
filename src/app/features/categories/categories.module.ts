@@ -16,6 +16,8 @@ import { CategoryItemComponent } from './category-item-components/category-item/
 import { CategoryAssetItemComponent } from './category-item-components/category-asset-item/category-asset-item.component';
 import { CategorySubCategoryItemComponent } from './category-item-components/category-sub-category-item/category-sub-category-item.component';
 import { CategoryChartsComponent } from './category-item-components/category-charts/category-charts.component';
+import { CategorySelectorComponent } from './asset-comparison-components/category-selector/category-selector.component';
+import { AssetComparisonComponent } from './asset-comparison-components/asset-comparison/asset-comparison.component';
 
 @NgModule({
     declarations: [
@@ -28,7 +30,9 @@ import { CategoryChartsComponent } from './category-item-components/category-cha
         CategoryItemComponent,
         CategoryAssetItemComponent,
         CategorySubCategoryItemComponent,
-        CategoryChartsComponent
+        CategoryChartsComponent,
+        CategorySelectorComponent,
+        AssetComparisonComponent
     ],
     imports: [
         CommonModule,

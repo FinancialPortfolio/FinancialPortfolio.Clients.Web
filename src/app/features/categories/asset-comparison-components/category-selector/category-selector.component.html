@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Select categories</h2>
+
+<mat-dialog-content class="mat-typography">
+    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="categories-tree">
+        <mat-tree-node *matTreeNodeDef="let category" matTreeNodePadding>
+            <button mat-icon-button disabled></button>
+            {{category.name}}
+        </mat-tree-node>
+
+        <mat-tree-node *matTreeNodeDef="let category; when: hasChild" matTreeNodePadding matTreeNodeToggle [attr.aria-label]="'Toggle ' + category.name">
+            <button mat-icon-button>
+                <mat-icon class="mat-icon-rtl-mirror">{{treeControl.isExpanded(category) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+            </button>
+
+            {{category.name}}
+        </mat-tree-node>
+    </mat-tree>
+
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="dialog-actions">
+    <button mat-button mat-dialog-close>Close</button>
+    <button mat-button (click)="onCompare()">Compare</button>
+</mat-dialog-actions>

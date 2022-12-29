@@ -7,8 +7,7 @@
 
     <mat-tree-node *matTreeNodeDef="let category; when: hasChild" matTreeNodePadding (click)="onNodeSelect(category)">
         <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + category.name">
-            <mat-icon class="mat-icon-rtl-mirror">{{treeControl.isExpanded(category) ? 'expand_more' :
-                'chevron_right'}}
+            <mat-icon class="mat-icon-rtl-mirror">{{treeControl.isExpanded(category) ? 'expand_more' : 'chevron_right'}}
             </mat-icon>
         </button>
         {{category.name}}
