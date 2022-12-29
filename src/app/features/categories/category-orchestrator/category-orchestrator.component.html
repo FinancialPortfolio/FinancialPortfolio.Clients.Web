@@ -3,17 +3,24 @@
         <h2 class="list-header-text">Categories</h2>
 
         <div class="list-actions">
-            <button mat-raised-button (click)="onCompareCategories()">Compare</button>
-            <button mat-raised-button (click)="onSave()" [disabled]="!isChanged || isSaving">Save</button>
+            <button mat-raised-button *ngIf="!showComparision" (click)="onCompareCategories()">Compare</button>
+            <button mat-raised-button *ngIf="!showComparision" (click)="onSave()" [disabled]="!isChanged || isSaving">Save</button>
+
+            <button mat-raised-button *ngIf="showComparision" (click)="onCompareCategories()">Selection</button>
+            <button mat-raised-button *ngIf="showComparision" (click)="onShowCategories()">Categories</button>
         </div>
     </div>
 
-    <div class="categories-details mat-elevation-z4">
-        <app-category-tree [categoryItem]="category" #categoryTree></app-category-tree>
+    <div class="categories-details mat-elevation-z4" *ngIf="!showComparision">
+        <app-category-tree [categoryItem]="category" (categoryTreeWidthSet)="setCategoryTreeWidth($event)"></app-category-tree>
 
         <div class="category-item-details" *ngIf="loadedAssetStatistics" [ngStyle]="{'width': contentBlockWidth}">
             <app-category-item></app-category-item>
         </div>
+    </div>
+
+    <div *ngIf="showComparision">
+        <app-asset-comparison [category]="category"></app-asset-comparison>
     </div>
 </div>
 

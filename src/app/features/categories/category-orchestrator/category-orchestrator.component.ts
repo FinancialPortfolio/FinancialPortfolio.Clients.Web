@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
@@ -22,10 +22,9 @@ import { CategorySelectorComponent } from '../asset-comparison-components/catego
     styleUrls: ['./category-orchestrator.component.scss']
 })
 export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
-    @ViewChild('categoryTree', { static: false, read: ElementRef }) categoryTreeElement: any;
-
     loadedAssetStatistics = false;
     isSaving = false;
+    contentBlockWidth = '100%';
 
     get category(): CategoryResponse | null {
         return this.categoryOrchestratorService.globalCategory;
@@ -37,8 +36,8 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    get contentBlockWidth(): string {
-        return `calc(100% - ${this.categoryTreeElement.nativeElement.clientWidth}px)`;
+    get showComparision(): boolean {
+        return this.categoryOrchestratorService.showComparision;
     }
 
     constructor(
@@ -81,6 +80,10 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
         this.unsubscribe.complete();
     }
 
+    setCategoryTreeWidth(width: number): void {
+        this.contentBlockWidth = `calc(100% - ${width}px)`;
+    }
+
     onSave() {
         if (!this.category || !this.isChanged)
             return;
@@ -100,11 +103,15 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
 
     onCompareCategories() {
         this.dialog.open(CategorySelectorComponent, {
-            width: '550px',
+            width: '450px',
             data: {
                 category: this.category
             }
         });
+    }
+
+    onShowCategories() {
+        this.categoryOrchestratorService.showComparision = false;
     }
 
     private AssetsUpdated(assets: AssetResponse[]) {

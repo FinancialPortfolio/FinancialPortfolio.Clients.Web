@@ -3,11 +3,9 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CategoryOrchestratorComponent } from './category-orchestrator/category-orchestrator.component';
 import { SaveCategoriesGuard } from './guards/save-categories.guard';
-import { AssetComparisonComponent } from './asset-comparison-components/asset-comparison/asset-comparison.component';
 
 export const routes: Routes = [
-    { path: '', component: CategoryOrchestratorComponent, canDeactivate: [SaveCategoriesGuard] },
-    { path: 'comparison', component: AssetComparisonComponent }
+    { path: '', component: CategoryOrchestratorComponent, canDeactivate: [SaveCategoriesGuard] }
 ];
 
 @NgModule({

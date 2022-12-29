@@ -11,9 +11,13 @@ export function sortArray(array: any[], key: string, asc: boolean): any[] {
 }
 
 function getValue(item: any, key: string) {
-    let result = item[key];
+    let result = getValueByPath(item, key);
     if (isNaN(result))
         return result;
 
     return Number(result);
+}
+
+function getValueByPath(item: any, key: string) {
+    return key.split('.').reduce((previous, current) => previous[current], item);
 }

@@ -1,8 +1,7 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
-import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
@@ -10,9 +9,9 @@ import { CategoryOrchestratorService } from '../../services/category-orchestrato
 // TODO: move to shared place
 interface CategoryNode {
     expandable: boolean;
-    name: string;
     level: number;
     category: CategoryResponse;
+    subCategories: CategoryResponse[];
 }
 
 @Component({
@@ -20,16 +19,17 @@ interface CategoryNode {
     templateUrl: './category-selector.component.html',
     styleUrls: ['./category-selector.component.scss']
 })
-export class CategorySelectorComponent implements OnInit, OnDestroy {
+export class CategorySelectorComponent implements OnInit, OnDestroy, AfterViewInit {
     category: CategoryResponse | null = null;
+    @ViewChild('categoriesTree') categoriesTree: any;
 
     // TODO: move to shared place
-    _transformer = (category: CategoryResponse, level: number) => {
+    _transformer = (category: CategoryResponse, level: number): CategoryNode => {
         return {
             expandable: category.subCategories && category.subCategories.length > 0,
-            name: category.name,
             level: level,
-            category: category
+            category: category,
+            subCategories: category.subCategories
         };
     };
 
@@ -42,7 +42,7 @@ export class CategorySelectorComponent implements OnInit, OnDestroy {
         this._transformer,
         node => node.level,
         node => node.expandable,
-        node => node.subCategories,
+        node => node.subCategories
     );
 
     dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
@@ -52,11 +52,10 @@ export class CategorySelectorComponent implements OnInit, OnDestroy {
     constructor(
         private categoryOrchestratorService: CategoryOrchestratorService,
         private dialogRef: MatDialogRef<CategorySelectorComponent>,
-        private router: Router,
         @Inject(MAT_DIALOG_DATA) data: { category: CategoryResponse }) {
-            this.category = data.category;
-            this.dataSource.data = [data.category];
-        }
+        this.category = data.category;
+        this.dataSource.data = [data.category];
+    }
 
     ngOnInit(): void {
 
@@ -67,11 +66,73 @@ export class CategorySelectorComponent implements OnInit, OnDestroy {
         this.unsubscribe.complete();
     }
 
+    ngAfterViewInit(): void {
+        this.expandAllNodes();
+    }
+
     hasChild = (_: number, node: CategoryNode) => node.expandable;
+
+    getLevel = (node: CategoryNode) => node.level;
 
     onCompare(): void {
         this.dialogRef.close();
 
-        this.router.navigate(['/categories/comparison']);
+        this.categoryOrchestratorService.showComparision = true;
+    }
+
+    expandAllNodes() {
+        this.categoriesTree.treeControl.expandAll();
+    }
+
+    selectCategory(category: CategoryResponse, event: any): void {
+        let value = category.isPartiallySelected ? false : !category.isSelected;
+
+        category.isSelected = value;
+        category.isPartiallySelected = false;
+
+        this.setChildCategories(category, value);
+        this.setParentCategories(category);
+
+        event.preventDefault();
+    }
+
+    setChildCategories(category: CategoryResponse, value: boolean) {
+        for (let subCategory of category.subCategories) {
+            subCategory.isSelected = value;
+            category.isPartiallySelected = false;
+
+            this.setChildCategories(subCategory, value);
+        }
+    }
+
+    setParentCategories(category: CategoryResponse) {
+        let parent = this.categoryOrchestratorService.getParentCategory(category);
+        while (parent) {
+            parent.isSelected = this.descendantsAllSelected(parent);
+            parent.isPartiallySelected = this.descendantsPartiallySelected(parent);
+
+            parent = this.categoryOrchestratorService.getParentCategory(parent);
+        }
+    }
+
+    private descendantsAllSelected(category: CategoryResponse): boolean {
+        if (!this.categoryOrchestratorService.hasCategories(category))
+            return category.isSelected;
+
+        return category.subCategories.every(subCategory => this.descendantsAllSelected(subCategory));
+    }
+
+    private descendantsPartiallySelected(category: CategoryResponse): boolean {
+        if (!this.categoryOrchestratorService.hasCategories(category))
+            return false;
+
+        return category.subCategories.some(subCategory => this.anyDescendantsSelected(subCategory)) && !this.descendantsAllSelected(category);
+    }
+
+    private anyDescendantsSelected(category: CategoryResponse): boolean {
+        if (!this.categoryOrchestratorService.hasCategories(category))
+            return category.isSelected;
+
+        return category.subCategories.some(subCategory => this.anyDescendantsSelected(subCategory));
     }
 }

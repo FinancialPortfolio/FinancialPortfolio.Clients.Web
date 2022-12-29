@@ -64,6 +64,20 @@ export class CategoryCalculationService {
         return null;
     }
 
+    public getTreeLevel(category: CategoryResponse, level = 1): number {
+        if (!category.subCategories.length)
+            return level;
+
+        let maxTreeLevels = [];
+
+        for (let subCategory of category.subCategories) {
+            let treeLevel = this.getTreeLevel(subCategory, level + 1);
+            maxTreeLevels.push(treeLevel);
+        }
+
+        return Math.max(...maxTreeLevels);
+    }
+
     public getParentCategory(childCategory: CategoryResponse): CategoryResponse | null {
         if (!this.globalCategory)
             return null;
@@ -71,7 +85,7 @@ export class CategoryCalculationService {
         return this.getParent(this.globalCategory, childCategory);
     }
 
-    getParent(category: CategoryResponse, childCategory: CategoryResponse): CategoryResponse | null {
+    private getParent(category: CategoryResponse, childCategory: CategoryResponse): CategoryResponse | null {
         if (category == childCategory)
             return null;
 

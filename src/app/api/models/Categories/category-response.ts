@@ -10,4 +10,6 @@ export interface CategoryResponse {
     userId: string;
     subCategories: CategoryResponse[];
     assets: AssetResponse[];
+    isSelected: boolean;
+    isPartiallySelected: boolean;
 }

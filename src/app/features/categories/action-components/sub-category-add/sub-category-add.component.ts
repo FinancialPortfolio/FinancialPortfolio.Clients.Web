@@ -43,7 +43,9 @@ export class SubCategoryAddComponent implements OnInit {
             userId: "",
             id: "",
             assets: [],
-            subCategories: []
+            subCategories: [],
+            isSelected: false,
+            isPartiallySelected: false
         };
         this.category.subCategories.push(subCategory);
 

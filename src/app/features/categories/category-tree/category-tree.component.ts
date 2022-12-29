@@ -1,15 +1,14 @@
-import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
-
-import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
-import { CategoryOrchestratorService } from '../services/category-orchestrator.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
+import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
+import { CategoryOrchestratorService } from '../services/category-orchestrator.service';
+
 interface CategoryNode {
     expandable: boolean;
-    name: string;
     level: number;
     category: CategoryResponse;
 }
@@ -32,16 +31,17 @@ export class CategoryTreeComponent implements OnInit, OnDestroy {
             setTimeout(() => this.setTreeWidth());
         });
     }
+    @Output()
+    categoryTreeWidthSet = new EventEmitter<number>();
 
     @ViewChild('categoriesTree') categoriesTree: any;
     @ViewChild('categoriesTree', { static: false, read: ElementRef }) categoriesTreeElement: any;
 
     category!: CategoryResponse;
 
-    _transformer = (category: CategoryResponse, level: number) => {
+    _transformer = (category: CategoryResponse, level: number): CategoryNode => {
         return {
             expandable: category.subCategories && category.subCategories.length > 0,
-            name: category.name,
             level: level,
             category: category
         };
@@ -123,6 +123,8 @@ export class CategoryTreeComponent implements OnInit, OnDestroy {
     setTreeWidth() {
         let clientWidth = this.categoriesTreeElement.nativeElement.clientWidth;
         this.treeBlockWidth = clientWidth + 'px';
+
+        this.categoryTreeWidthSet.next(clientWidth);
     }
 
     hasChild = (_: number, node: CategoryNode) => node.expandable;
