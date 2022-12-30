@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
@@ -15,7 +15,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
     templateUrl: './category-item.component.html',
     styleUrls: ['./category-item.component.scss']
 })
-export class CategoryItemComponent implements OnDestroy {
+export class CategoryItemComponent implements OnInit, OnDestroy {
     category!: CategoryResponse;
 
     hasParentCategory = false;
@@ -24,6 +24,9 @@ export class CategoryItemComponent implements OnDestroy {
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(private dialog: MatDialog, private categoryOrchestratorService: CategoryOrchestratorService, private notificationService: NotificationService) {
+    }
+
+    ngOnInit(): void {
         this.categoryOrchestratorService.selectedCategory.pipe(takeUntil(this.unsubscribe)).subscribe(selectedCategory => {
             if (!selectedCategory)
                 return;

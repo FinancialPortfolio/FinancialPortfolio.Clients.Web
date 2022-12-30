@@ -42,6 +42,9 @@ export class CategoryChartsComponent implements OnInit, OnDestroy {
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(private categoryOrchestratorService: CategoryOrchestratorService, private signalrService: SignalrService) {
+    }
+
+    ngOnInit(): void {
         this.categoryOrchestratorService.assetAdded.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.calculatePies();
         });
@@ -58,9 +61,6 @@ export class CategoryChartsComponent implements OnInit, OnDestroy {
             if (data.name == AssetsUpdatedOperation)
                 this.calculatePies();
         });
-    }
-
-    ngOnInit(): void {
     }
 
     ngOnDestroy(): void {

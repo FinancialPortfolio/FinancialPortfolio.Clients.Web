@@ -47,6 +47,9 @@ export class CategoryTreeComponent implements OnInit, OnDestroy {
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(private categoryOrchestratorService: CategoryOrchestratorService, private treeService: TreeService) {
+    }
+
+    ngOnInit(): void {
         this.categoryOrchestratorService.subCategoryAdded.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.updateCategoryDataSource();
         });
@@ -56,9 +59,6 @@ export class CategoryTreeComponent implements OnInit, OnDestroy {
         this.categoryOrchestratorService.subCategoryDeleted.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.updateCategoryDataSource();
         });
-    }
-
-    ngOnInit(): void {
     }
 
     ngOnDestroy(): void {

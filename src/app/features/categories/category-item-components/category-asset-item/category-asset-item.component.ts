@@ -44,6 +44,10 @@ export class CategoryAssetItemComponent implements OnInit, OnDestroy {
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(private dialog: MatDialog, private categoryOrchestratorService: CategoryOrchestratorService, private notificationService: NotificationService) {
+
+    }
+
+    ngOnInit(): void {
         this.categoryOrchestratorService.assetDeleted.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.setAssetsDataSource(this.category.assets);
         });
@@ -56,10 +60,6 @@ export class CategoryAssetItemComponent implements OnInit, OnDestroy {
         this.assetsDataSource.data = assets;
         this.assetComparissonDataSource.data = assets.filter(asset => asset.type == StockAsset);
     }
-
-    ngOnInit(): void {
-    }
-
 
     ngOnDestroy(): void {
         this.unsubscribe.next();

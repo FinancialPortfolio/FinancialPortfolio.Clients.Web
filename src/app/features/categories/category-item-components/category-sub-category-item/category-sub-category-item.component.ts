@@ -35,15 +35,15 @@ export class CategorySubCategoryItemComponent implements OnInit, OnDestroy {
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(private dialog: MatDialog, private categoryOrchestratorService:  CategoryOrchestratorService, private notificationService: NotificationService) {
+    }
+
+    ngOnInit(): void {
         this.categoryOrchestratorService.subCategoryAdded.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.subCategoriesDataSource.data = this.category.subCategories;
         });
         this.categoryOrchestratorService.subCategoryDeleted.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.subCategoriesDataSource.data = this.category.subCategories;
         });
-    }
-
-    ngOnInit(): void {
     }
 
     ngOnDestroy(): void {
