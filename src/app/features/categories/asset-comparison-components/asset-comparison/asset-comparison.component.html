@@ -1,5 +1,5 @@
-<div *ngIf="category.isSelected || category.isPartiallySelected">
-    <div *ngIf="!empty; else emptyCategory" class="categories-block">
+<div *ngIf="isShown">
+    <div *ngIf="!isEmpty; else emptyCategory" class="categories-block">
         <mat-accordion hideToggle multi *ngIf="hasCategories()">
             <mat-expansion-panel [expanded]="true">
                 <mat-expansion-panel-header class="asset-header">

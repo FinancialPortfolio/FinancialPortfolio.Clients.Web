@@ -17,6 +17,8 @@ export class CategoryOrchestratorService extends CategoryCalculationService {
     subCategoryUpdated = new Subject<CategoryResponse>();
     subCategoryDeleted = new Subject<CategoryResponse>();
 
+    comparisonSelectionUpdated = new Subject<void>();
+
     showComparision = false;
 
     constructor() {

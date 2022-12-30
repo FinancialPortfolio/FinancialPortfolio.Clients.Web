@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Sort } from '@angular/material/sort';
 import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 import { StockAsset } from 'src/app/api/models/Assets/asset-type';
 import { AssetResponse } from 'src/app/api/models/Categories/asset-response';
@@ -18,7 +19,8 @@ export class AssetComparisonComponent implements OnInit, OnDestroy {
     category!: CategoryResponse;
 
     assets: AssetResponse[] = [];
-    empty = false;
+    isEmpty = false;
+    isShown = false;
 
     assetsDisplayedColumns: string[] = ['symbol', 'name', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'assetStatistics.marketCapitalization',
     'assetStatistics.priceToEarningsValue', 'assetStatistics.priceToSalesValue', 'assetStatistics.priceToBookValue', 'assetStatistics.dividendYield', 'assetStatistics.beta'];
@@ -37,9 +39,15 @@ export class AssetComparisonComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.assets = this.getAssets(this.category);
+        this.categoryOrchestratorService.comparisonSelectionUpdated.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
+            this.isEmpty = this.isEmptyCategory();
+            this.isShown = this.isShownCategory();
+        });
 
-        this.empty = this.isEmpty();
+        this.assets = this.getAssets(this.category).sort((a, b) => b.allocation - a.allocation);
+
+        this.isEmpty = this.isEmptyCategory();
+        this.isShown = this.isShownCategory();
     }
 
     ngOnDestroy(): void {
@@ -59,7 +67,7 @@ export class AssetComparisonComponent implements OnInit, OnDestroy {
         this.categoryOrchestratorService.showComparision = false;
     }
 
-    isEmpty(): boolean {
+    isEmptyCategory(): boolean {
         if (this.assets?.length > 0)
             return false;
 
@@ -73,6 +81,10 @@ export class AssetComparisonComponent implements OnInit, OnDestroy {
         }
 
         return true;
+    }
+
+    isShownCategory(): boolean {
+        return this.category.isSelected || this.category.isPartiallySelected;
     }
 
     getAssets(category: CategoryResponse): AssetResponse[] {

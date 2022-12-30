@@ -101,7 +101,7 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
             );
     }
 
-    onCompareCategories() {
+    selectCategories() {
         this.dialog.open(CategorySelectorComponent, {
             width: '450px',
             data: {
@@ -110,8 +110,12 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
         });
     }
 
-    onShowCategories() {
+    showCategories() {
         this.categoryOrchestratorService.showComparision = false;
+    }
+
+    showComparisson() {
+        this.categoryOrchestratorService.showComparision = true;
     }
 
     private AssetsUpdated(assets: AssetResponse[]) {

@@ -3,11 +3,11 @@
         <h2 class="list-header-text">Categories</h2>
 
         <div class="list-actions">
-            <button mat-raised-button *ngIf="!showComparision" (click)="onCompareCategories()">Compare</button>
+            <button mat-raised-button *ngIf="!showComparision" (click)="showComparisson()">Compare</button>
             <button mat-raised-button *ngIf="!showComparision" (click)="onSave()" [disabled]="!isChanged || isSaving">Save</button>
 
-            <button mat-raised-button *ngIf="showComparision" (click)="onCompareCategories()">Selection</button>
-            <button mat-raised-button *ngIf="showComparision" (click)="onShowCategories()">Categories</button>
+            <button mat-raised-button *ngIf="showComparision" (click)="showCategories()">Categories</button>
+            <button mat-raised-button *ngIf="showComparision" (click)="selectCategories()">Selection</button>
         </div>
     </div>
 

@@ -29,6 +29,8 @@ export class CategoryCalculationService {
 
         this._allAssets = this.retrieveAssets(category);
 
+        this.setSelectedCategories(category);
+
         this.hasChanges = false;
 
         this.selectedCategory.next(category);
@@ -129,6 +131,14 @@ export class CategoryCalculationService {
         }
 
         return assets;
+    }
+
+    protected setSelectedCategories(category: CategoryResponse): void {
+        category.isSelected = true;
+
+        for (let subCategory of category.subCategories ?? []) {
+            this.setSelectedCategories(subCategory);
+        }
     }
 
     protected calculateAllocations(category: CategoryResponse) {

@@ -1,6 +1,6 @@
 import { FlatTreeControl } from '@angular/cdk/tree';
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
 import { Subject } from 'rxjs';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
@@ -51,7 +51,6 @@ export class CategorySelectorComponent implements OnInit, OnDestroy, AfterViewIn
 
     constructor(
         private categoryOrchestratorService: CategoryOrchestratorService,
-        private dialogRef: MatDialogRef<CategorySelectorComponent>,
         @Inject(MAT_DIALOG_DATA) data: { category: CategoryResponse }) {
         this.category = data.category;
         this.dataSource.data = [data.category];
@@ -74,12 +73,6 @@ export class CategorySelectorComponent implements OnInit, OnDestroy, AfterViewIn
 
     getLevel = (node: CategoryNode) => node.level;
 
-    onCompare(): void {
-        this.dialogRef.close();
-
-        this.categoryOrchestratorService.showComparision = true;
-    }
-
     expandAllNodes() {
         this.categoriesTree.treeControl.expandAll();
     }
@@ -94,6 +87,8 @@ export class CategorySelectorComponent implements OnInit, OnDestroy, AfterViewIn
         this.setParentCategories(category);
 
         event.preventDefault();
+
+        this.categoryOrchestratorService.comparisonSelectionUpdated.next();
     }
 
     setChildCategories(category: CategoryResponse, value: boolean) {
