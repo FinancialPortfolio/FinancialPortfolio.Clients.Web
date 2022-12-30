@@ -1,56 +1,38 @@
-import { FlatTreeControl } from '@angular/cdk/tree';
+import { TreeControl } from '@angular/cdk/tree';
 import { AfterViewInit, Component, Inject, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatTreeFlattener, MatTreeFlatDataSource } from '@angular/material/tree';
+import { MatTreeFlatDataSource } from '@angular/material/tree';
 import { Subject } from 'rxjs';
-import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
-import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
 
-// TODO: move to shared place
-interface CategoryNode {
-    expandable: boolean;
-    level: number;
-    category: CategoryResponse;
-    subCategories: CategoryResponse[];
-}
+import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
+import { CategoryNode } from '../../models/category-node.model';
+import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
+import { TreeService } from '../../services/tree.service';
 
 @Component({
     selector: 'app-category-selector',
     templateUrl: './category-selector.component.html',
-    styleUrls: ['./category-selector.component.scss']
+    styleUrls: ['./category-selector.component.scss'],
+    providers: [TreeService]
 })
 export class CategorySelectorComponent implements OnInit, OnDestroy, AfterViewInit {
-    category: CategoryResponse | null = null;
     @ViewChild('categoriesTree') categoriesTree: any;
 
-    // TODO: move to shared place
-    _transformer = (category: CategoryResponse, level: number): CategoryNode => {
-        return {
-            expandable: category.subCategories && category.subCategories.length > 0,
-            level: level,
-            category: category,
-            subCategories: category.subCategories
-        };
-    };
+    category: CategoryResponse | null = null;
+    dataSource = new MatTreeFlatDataSource(this.treeService.treeControl, this.treeService.treeFlattener);
 
-    treeControl = new FlatTreeControl<CategoryNode>(
-        node => node.level,
-        node => node.expandable,
-    );
+    get treeControl(): TreeControl<CategoryNode> {
+        return this.treeService.treeControl;
+    }
 
-    treeFlattener = new MatTreeFlattener(
-        this._transformer,
-        node => node.level,
-        node => node.expandable,
-        node => node.subCategories
-    );
-
-    dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    hasChild = this.treeService.hasChild;
+    getLevel = this.treeService.getLevel;
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
     constructor(
         private categoryOrchestratorService: CategoryOrchestratorService,
+        private treeService: TreeService,
         @Inject(MAT_DIALOG_DATA) data: { category: CategoryResponse }) {
         this.category = data.category;
         this.dataSource.data = [data.category];
@@ -69,10 +51,6 @@ export class CategorySelectorComponent implements OnInit, OnDestroy, AfterViewIn
         this.expandAllNodes();
     }
 
-    hasChild = (_: number, node: CategoryNode) => node.expandable;
-
-    getLevel = (node: CategoryNode) => node.level;
-
     expandAllNodes() {
         this.categoriesTree.treeControl.expandAll();
     }
@@ -86,9 +64,9 @@ export class CategorySelectorComponent implements OnInit, OnDestroy, AfterViewIn
         this.setChildCategories(category, value);
         this.setParentCategories(category);
 
-        event.preventDefault();
-
         this.categoryOrchestratorService.comparisonSelectionUpdated.next();
+
+        event.preventDefault();
     }
 
     setChildCategories(category: CategoryResponse, value: boolean) {

@@ -1,22 +1,19 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
-import { FlatTreeControl } from '@angular/cdk/tree';
-import { MatTreeFlatDataSource, MatTreeFlattener } from '@angular/material/tree';
+import { MatTreeFlatDataSource } from '@angular/material/tree';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 import { CategoryOrchestratorService } from '../services/category-orchestrator.service';
-
-interface CategoryNode {
-    expandable: boolean;
-    level: number;
-    category: CategoryResponse;
-}
+import { CategoryNode } from '../models/category-node.model';
+import { TreeService } from '../services/tree.service';
+import { TreeControl } from '@angular/cdk/tree';
 
 @Component({
     selector: 'app-category-tree',
     templateUrl: './category-tree.component.html',
-    styleUrls: ['./category-tree.component.scss']
+    styleUrls: ['./category-tree.component.scss'],
+    providers: [TreeService]
 })
 export class CategoryTreeComponent implements OnInit, OnDestroy {
     @Input()
@@ -38,34 +35,18 @@ export class CategoryTreeComponent implements OnInit, OnDestroy {
     @ViewChild('categoriesTree', { static: false, read: ElementRef }) categoriesTreeElement: any;
 
     category!: CategoryResponse;
-
-    _transformer = (category: CategoryResponse, level: number): CategoryNode => {
-        return {
-            expandable: category.subCategories && category.subCategories.length > 0,
-            level: level,
-            category: category
-        };
-    };
-
-    treeControl = new FlatTreeControl<CategoryNode>(
-        node => node.level,
-        node => node.expandable,
-    );
-
-    treeFlattener = new MatTreeFlattener(
-        this._transformer,
-        node => node.level,
-        node => node.expandable,
-        node => node.subCategories,
-    );
-
+    dataSource = new MatTreeFlatDataSource(this.treeService.treeControl, this.treeService.treeFlattener);
     treeBlockWidth: string = 'fit-content';
 
-    dataSource = new MatTreeFlatDataSource(this.treeControl, this.treeFlattener);
+    hasChild = this.treeService.hasChild;
+
+    get treeControl(): TreeControl<CategoryNode> {
+        return this.treeService.treeControl;
+    }
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
-    constructor(private categoryOrchestratorService: CategoryOrchestratorService) {
+    constructor(private categoryOrchestratorService: CategoryOrchestratorService, private treeService: TreeService) {
         this.categoryOrchestratorService.subCategoryAdded.pipe(takeUntil(this.unsubscribe)).subscribe(() => {
             this.updateCategoryDataSource();
         });
@@ -89,30 +70,13 @@ export class CategoryTreeComponent implements OnInit, OnDestroy {
         if (!this.category)
             return;
 
-        let expandedNodes = this.saveExpandedNodes();
+        let expandedNodes = this.treeService.saveExpandedNodes();
         this.dataSource.data = [this.category];
+
         setTimeout(() => {
             this.setTreeWidth();
 
-            this.restoreExpandedNodes(expandedNodes);
-        });
-    }
-
-    saveExpandedNodes(): CategoryNode[] {
-        let expandedNodes = new Array<CategoryNode>();
-        this.treeControl.dataNodes.forEach(node => {
-            if (node.expandable && this.treeControl.isExpanded(node)) {
-                expandedNodes.push(node);
-            }
-        });
-        return expandedNodes;
-    }
-
-    restoreExpandedNodes(expandedNodes: CategoryNode[]) {
-        expandedNodes.forEach(node => {
-            let dataNode = this.treeControl.dataNodes.find(n => n.category === node.category);
-            if (dataNode)
-                this.treeControl.expand(dataNode);
+            this.treeService.restoreExpandedNodes(expandedNodes);
         });
     }
 
@@ -126,8 +90,6 @@ export class CategoryTreeComponent implements OnInit, OnDestroy {
 
         this.categoryTreeWidthSet.next(clientWidth);
     }
-
-    hasChild = (_: number, node: CategoryNode) => node.expandable;
 
     onNodeSelect(categoryNode: CategoryNode) {
         this.categoryOrchestratorService.selectedCategory.next(categoryNode.category);
