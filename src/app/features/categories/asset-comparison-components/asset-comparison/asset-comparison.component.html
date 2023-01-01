@@ -72,6 +72,26 @@
                         <td mat-cell *matCellDef="let element"> {{element.assetStatistics.beta | number: '1.0-2'}} </td>
                     </ng-container>
 
+                    <ng-container matColumnDef="numberOfShares">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Number of shares </th>
+                        <td mat-cell *matCellDef="let element"> {{numberOfShares(element) | number: '1.0-2'}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="averageSharePrice">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Average share price </th>
+                        <td mat-cell *matCellDef="let element"> {{averageSharePrice(element) | number: '1.0-2'}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="invested">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Invested </th>
+                        <td mat-cell *matCellDef="let element"> {{invested(element) | number: '1.0-2'}} </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="totalPrice">
+                        <th mat-header-cell mat-sort-header *matHeaderCellDef> Total price </th>
+                        <td mat-cell *matCellDef="let element"> {{totalPrice(element) | number: '1.0-2'}} </td>
+                    </ng-container>
+
                     <tr mat-header-row *matHeaderRowDef="assetsDisplayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: assetsDisplayedColumns;"></tr>
                 </table>

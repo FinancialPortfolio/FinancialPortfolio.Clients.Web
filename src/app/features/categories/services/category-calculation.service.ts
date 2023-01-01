@@ -5,6 +5,7 @@ import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
 import { AssetResponse as CategoryAssetResponse } from 'src/app/api/models/Categories/asset-response';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
 import { OrderType } from 'src/app/api/models/Orders/order-type';
+import { numberOfShares } from 'src/app/shared/helpers/asset-calculation.helper';
 
 @Injectable({
     providedIn: 'root'
@@ -144,7 +145,7 @@ export class CategoryCalculationService {
     protected calculateAllocations(category: CategoryResponse) {
         for (let asset of category.assets ?? []) {
             let price = asset.assetStatistics?.currentPrice ?? 0;
-            asset.allocation = price * this.numberOfShares(asset);
+            asset.allocation = price * numberOfShares(asset);
         }
 
         for (let subCategory of category.subCategories ?? []) {
@@ -161,15 +162,5 @@ export class CategoryCalculationService {
         for (let subCategory of category.subCategories ?? []) {
             subCategory.allocationInPercentage = category.allocation ? subCategory.allocation / category.allocation * 100 : 0;
         }
-    }
-
-    protected numberOfShares(asset: CategoryAssetResponse): number {
-        return asset.orders.reduce((totalShares, order) => {
-            if (order.type == OrderType.Buy) {
-                return totalShares + order.amount;
-            }
-
-            return totalShares - order.amount;
-        }, 0);
     }
 }
