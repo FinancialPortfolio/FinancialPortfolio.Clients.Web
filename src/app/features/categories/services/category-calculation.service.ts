@@ -68,7 +68,7 @@ export class CategoryCalculationService {
     }
 
     public getTreeLevel(category: CategoryResponse, level = 1): number {
-        if (!category.subCategories.length)
+        if (!category.subCategories?.length)
             return level;
 
         let maxTreeLevels = [];

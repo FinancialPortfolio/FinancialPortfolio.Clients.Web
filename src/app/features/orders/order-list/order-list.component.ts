@@ -27,8 +27,8 @@ import { OrderCreatedOperation, OrderDeletedOperation, OrderUpdatedOperation } f
 export class OrderListComponent implements OnInit {
     orders: OrderResponse[] = [];
     displayedColumns: string[] = ['name', 'symbol', 'type', 'amount', 'price', 'dateTime', 'commission', 'actions'];
-    totalSize = 0;
 
+    totalSize = 0;
     pageNumber = 0;
     pageSize = 10;
 

@@ -70,6 +70,9 @@ export class CategorySelectorComponent implements OnInit, OnDestroy, AfterViewIn
     }
 
     setChildCategories(category: CategoryResponse, value: boolean) {
+        if (!category.subCategories)
+            return;
+
         for (let subCategory of category.subCategories) {
             subCategory.isSelected = value;
             category.isPartiallySelected = false;

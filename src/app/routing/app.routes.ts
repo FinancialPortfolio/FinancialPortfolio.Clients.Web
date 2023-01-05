@@ -9,5 +9,6 @@ export const APP_ROUTES: Routes = [
     { path: 'assets', loadChildren: () => import('../features/assets/assets.module').then(m => m.AssetsModule), canActivate: [AuthGuard] },
     { path: 'account-assets', loadChildren: () => import('../features/account-assets/account-assets.module').then(m => m.AccountAssetsModule), canActivate: [AuthGuard] },
     { path: 'orders', loadChildren: () => import('../features/orders/orders.module').then(m => m.OrdersModule), canActivate: [AuthGuard] },
+    { path: 'dividends', loadChildren: () => import('../features/dividends/dividends.module').then(m => m.DividendsModule), canActivate: [AuthGuard] },
     { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
