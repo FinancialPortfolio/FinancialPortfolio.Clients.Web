@@ -1,3 +1,5 @@
+import * as moment from "moment";
+
 export function sortArray(array: any[], key: string, asc: boolean): any[] {
     return array.sort((a, b) => {
         let aValue = getValue(a, key);
@@ -12,6 +14,11 @@ export function sortArray(array: any[], key: string, asc: boolean): any[] {
 
 function getValue(item: any, key: string) {
     let result = getValueByPath(item, key);
+
+    var date = moment(result);
+    if (date.isValid())
+        return date;
+
     if (isNaN(result))
         return result;
 

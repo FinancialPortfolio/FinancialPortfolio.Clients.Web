@@ -99,7 +99,13 @@ export class AssetAddComponent implements OnInit {
             orders: orders,
             allocation: 0,
             allocationInPercentage: 0,
-            assetStatistics: undefined
+            assetStatistics: undefined,
+            numberOfShares: null,
+            invested: null,
+            averageSharePrice: null,
+            dividendYieldPerShare: null,
+            unrealizedPL: null,
+            unrealizedPLInPercentage: null
         };
 
         return asset;

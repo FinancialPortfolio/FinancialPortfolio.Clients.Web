@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -10,6 +10,7 @@ import { AccountResponse } from 'src/app/api/models/Accounts/account-response';
 import { AccountDividendResponse } from 'src/app/api/models/Dividends/account-dividend-response';
 import { GetAccountDividendsRequest } from 'src/app/api/models/Dividends/get-account-dividends-request';
 import { DividendsService } from 'src/app/api/services/dividends.service';
+import { sortArray } from 'src/app/shared/helpers/sorting.helper';
 import { AppState } from 'src/app/store/app.reducers';
 
 @Component({
@@ -23,13 +24,6 @@ export class DividendListComponent implements OnInit {
             return;
 
         this.dividendsDataSource.paginator = paginator;
-    }
-
-    @ViewChild(MatSort) set sort(sort: MatSort) {
-        if (!sort)
-            return;
-
-        this.dividendsDataSource.sort = sort;
     }
 
     dividends: AccountDividendResponse[] = [];
@@ -71,6 +65,13 @@ export class DividendListComponent implements OnInit {
         this.unsubscribe.complete();
     }
 
+    sort(sort: Sort) {
+        if (!sort.active || sort.direction === '')
+            return;
+
+        this.dividendsDataSource.data = sortArray(this.dividends, sort.active, sort.direction === "asc");
+    }
+
     loadDividends(): void {
         if (!this.selectedAccount)
             return;
@@ -84,7 +85,7 @@ export class DividendListComponent implements OnInit {
         this.dividendsService.getAll(this.selectedAccount.id, request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.dividends = result.response;
 
-            this.dividendsDataSource.data = result.response;
+            this.dividendsDataSource.data = sortArray(result.response, "paymentDate", true);
             this.fillAssets(result.response);
             this.fillSummary(result.response);
         });

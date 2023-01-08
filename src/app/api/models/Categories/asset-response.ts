@@ -11,4 +11,11 @@ export interface AssetResponse {
     expectedAllocationInPercentage: number;
     assetStatistics: AssetStatisticsResponse | undefined;
     orders: OrderResponse[];
+
+    numberOfShares: number | null;
+    invested: number | null;
+    averageSharePrice: number | null;
+    dividendYieldPerShare: number | null;
+    unrealizedPL: number | null;
+    unrealizedPLInPercentage: number | null;
 }

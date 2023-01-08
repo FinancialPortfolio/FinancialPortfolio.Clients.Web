@@ -11,7 +11,19 @@ export function numberOfShares(asset: any): number {
 }
 
 export function invested(asset: any): number {
-    return averageSharePrice(asset) * numberOfShares(asset);
+    let invested = 0;
+
+    for (let order of asset.orders) {
+        if (order.type === OrderType.Buy) {
+            invested += order.price * order.amount;
+        } else {
+            invested -= order.price * order.amount;
+        }
+
+        invested += order.commission;
+    }
+
+    return invested;
 }
 
 export function totalPrice(asset: any): number | null {
@@ -22,17 +34,25 @@ export function totalPrice(asset: any): number | null {
 }
 
 export function averageSharePrice(asset: any): number {
-    let averagePrice = 0;
-    let numberOfShares = 0;
+    return invested(asset) / numberOfShares(asset);
+}
 
-    for (let order of asset.orders) {
-        if (order.type === OrderType.Buy) {
-            averagePrice = (averagePrice * numberOfShares + order.price * order.amount) / (numberOfShares + order.amount);
-            numberOfShares += order.amount;
-        } else {
-            numberOfShares -= order.amount;
-        }
-    }
+export function dividendYieldPerShare(asset: any): number {
+    return asset.assetStatistics.currentPrice * asset.assetStatistics.dividendYield / 100;
+}
 
-    return averagePrice;
+export function unrealizedPL(asset: any): number | null {
+    let total = totalPrice(asset);
+    if (total === null)
+        return null;
+
+    return total - invested(asset);
+}
+
+export function unrealizedPLInPercentage(asset: any): number | null {
+    let unrealized = unrealizedPL(asset);
+    if (unrealized === null)
+        return null;
+
+    return unrealized * 100 / invested(asset);
 }

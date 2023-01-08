@@ -6,7 +6,7 @@ import { takeUntil } from 'rxjs/operators';
 import { StockAsset } from 'src/app/api/models/Assets/asset-type';
 import { AssetResponse } from 'src/app/api/models/Categories/asset-response';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
-import { numberOfShares, invested, totalPrice, averageSharePrice } from 'src/app/shared/helpers/asset-calculation.helper';
+import { numberOfShares, invested, totalPrice, averageSharePrice, dividendYieldPerShare, unrealizedPL, unrealizedPLInPercentage } from 'src/app/shared/helpers/asset-calculation.helper';
 import { sortArray } from 'src/app/shared/helpers/sorting.helper';
 import { CategoryOrchestratorService } from '../../services/category-orchestrator.service';
 
@@ -23,14 +23,24 @@ export class AssetComparisonComponent implements OnInit, OnDestroy {
     isEmpty = false;
     isShown = false;
 
-    numberOfShares = numberOfShares;
-    invested = invested;
-    totalPrice = totalPrice;
-    averageSharePrice = averageSharePrice;
-
-    assetsDisplayedColumns: string[] = ['symbol', 'name', 'allocation', 'allocationInPercentage', 'expectedAllocationInPercentage', 'assetStatistics.marketCapitalization',
-    'assetStatistics.priceToEarningsValue', 'assetStatistics.priceToSalesValue', 'assetStatistics.priceToBookValue', 'assetStatistics.dividendYield', 'assetStatistics.beta',
-    'numberOfShares', 'averageSharePrice', 'invested', 'totalPrice'];
+    assetsDisplayedColumns: string[] = [
+        'symbol',
+        'numberOfShares',
+        'assetStatistics.currentPrice',
+        'averageSharePrice',
+        'allocation',
+        'allocationInPercentage',
+        'expectedAllocationInPercentage',
+        'invested',
+        'unrealizedPL',
+        'unrealizedPLInPercentage',
+        'assetStatistics.dividendYield',
+        'dividendYieldPerShare',
+        'assetStatistics.marketCapitalization',
+        'assetStatistics.priceToEarningsValue',
+        'assetStatistics.priceToSalesValue',
+        'assetStatistics.priceToBookValue',
+        'assetStatistics.beta'];
 
     private readonly unsubscribe: Subject<void> = new Subject();
 
@@ -52,6 +62,8 @@ export class AssetComparisonComponent implements OnInit, OnDestroy {
         });
 
         this.assets = this.getAssets(this.category).sort((a, b) => b.allocation - a.allocation);
+
+        this.assets.forEach(this.calculateStatistics);
 
         this.isEmpty = this.isEmptyCategory();
         this.isShown = this.isShownCategory();
@@ -97,5 +109,16 @@ export class AssetComparisonComponent implements OnInit, OnDestroy {
     getAssets(category: CategoryResponse): AssetResponse[] {
         return category.assets?.filter(asset =>
             asset.type == StockAsset && (asset.allocation || asset.expectedAllocationInPercentage)) ?? [];
+    }
+
+    calculateStatistics(asset: AssetResponse) {
+        asset.numberOfShares = numberOfShares(asset);
+
+        asset.invested = invested(asset);
+        asset.averageSharePrice = averageSharePrice(asset);
+        asset.dividendYieldPerShare = dividendYieldPerShare(asset);
+
+        asset.unrealizedPL = unrealizedPL(asset);
+        asset.unrealizedPLInPercentage = unrealizedPLInPercentage(asset);
     }
 }
