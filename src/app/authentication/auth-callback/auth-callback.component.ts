@@ -8,19 +8,12 @@ import { ActivatedRoute, Router } from '@angular/router';
     styleUrls: ['./auth-callback.component.scss']
 })
 export class AuthCallbackComponent implements OnInit {
-
-    error: boolean = false;
-
     constructor(private authService: AuthService, private router: Router, private route: ActivatedRoute) { }
 
     async ngOnInit() {
-        let fragment = this.route.snapshot.fragment;
-        if (fragment != null && fragment.indexOf('error') >= 0) {
-            this.error = true;
-            return;
-        }
+        if (this.route.snapshot.queryParams?.error == null)
+            await this.authService.completeAuthentication();
 
-        await this.authService.completeAuthentication();
         this.router.navigate(['/home']);
     }
 }
