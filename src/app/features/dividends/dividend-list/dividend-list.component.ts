@@ -103,6 +103,10 @@ export class DividendListComponent implements OnInit {
     }
 
     private fillSummary(dividends: AccountDividendResponse[]) {
-        this.totalDividends = dividends.reduce((sum, current) => sum + current.amount, 0);
+        this.totalDividends = dividends.reduce((sum, current) => sum + this.roundDividends(current.amount), 0);
+    }
+
+    private roundDividends(value: number) {
+        return -Math.round(-value * 100) / 100;
     }
 }

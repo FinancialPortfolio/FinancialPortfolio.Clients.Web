@@ -22,7 +22,6 @@ import { CategorySelectorComponent } from '../asset-comparison-components/catego
     styleUrls: ['./category-orchestrator.component.scss']
 })
 export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
-    loadedAssetStatistics = false;
     isSaving = false;
     contentBlockWidth = '100%';
 
@@ -120,8 +119,6 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
 
     private AssetsUpdated(assets: AssetResponse[]) {
         this.categoryOrchestratorService.updateAssetStatistics(assets);
-
-        this.loadedAssetStatistics = true;
     }
 
     private loadCategories(): void {

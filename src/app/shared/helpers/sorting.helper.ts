@@ -15,14 +15,15 @@ export function sortArray(array: any[], key: string, asc: boolean): any[] {
 function getValue(item: any, key: string) {
     let result = getValueByPath(item, key);
 
+    let number = Number(result);
+    if (!isNaN(number))
+        return number;
+
     var date = moment(result);
     if (date.isValid())
         return date;
 
-    if (isNaN(result))
-        return result;
-
-    return Number(result);
+    return result;
 }
 
 function getValueByPath(item: any, key: string) {

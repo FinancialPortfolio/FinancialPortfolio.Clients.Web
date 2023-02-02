@@ -18,6 +18,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { TransferCreatedOperation, TransferUpdatedOperation, TransferDeletedOperation } from 'src/app/core/models/operations';
 import { SuccessfulOperation } from 'src/app/core/models/successful-operation';
 import { SignalrService } from 'src/app/core/services/signalr.service';
+import { TransferType } from 'src/app/api/models/Transfers/transfer-type';
 
 @Component({
     selector: 'app-transfer-list',
@@ -28,6 +29,7 @@ export class TransferListComponent implements OnInit {
     transfers: TransferResponse[] = [];
     displayedColumns: string[] = ['amount', 'dateTime', 'type', 'actions'];
     totalSize = 0;
+    totalTransfers = 0;
 
     pageNumber = 0;
     pageSize = 10;
@@ -83,6 +85,8 @@ export class TransferListComponent implements OnInit {
         this.transfersService.getAll(this.selectedAccount.id, request).pipe(takeUntil(this.unsubscribe)).subscribe(result => {
             this.totalSize = result.totalCount;
             this.transfers = result.response;
+
+            this.fillSummary(result.response);
         });
     }
 
@@ -122,5 +126,14 @@ export class TransferListComponent implements OnInit {
         this.sortOrder = sort.direction == "asc" ? SortOrder.Asc : SortOrder.Desc;
 
         this.loadTransfers();
+    }
+
+    private fillSummary(transfers: TransferResponse[]) {
+        this.totalTransfers = transfers.reduce((sum, current) => {
+            if (current.type == TransferType.Deposit)
+                return sum + current.amount;
+            else
+                return sum - current.amount;
+        }, 0);
     }
 }

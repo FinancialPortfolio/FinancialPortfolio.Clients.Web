@@ -53,7 +53,7 @@
 
                 <ng-container matColumnDef="dividendPerShare">
                     <th mat-header-cell mat-sort-header *matHeaderCellDef> Dividend per share </th>
-                    <td mat-cell *matCellDef="let element"> {{element.dividendPerShare | number: '1.0-2' }} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.dividendPerShare | number: '1.0-3' }} </td>
                     <td mat-footer-cell *matFooterCellDef></td>
                 </ng-container>
 
@@ -65,7 +65,7 @@
 
                 <ng-container matColumnDef="amount">
                     <th mat-header-cell mat-sort-header *matHeaderCellDef> Amount </th>
-                    <td mat-cell *matCellDef="let element"> {{element.amount | number: '1.0-2' }} </td>
+                    <td mat-cell *matCellDef="let element"> {{element.amount | number: '1.0-3' }} </td>
                     <td mat-footer-cell *matFooterCellDef class="bold"> {{ totalDividends | number: '1.0-2' }} </td>
                 </ng-container>
 

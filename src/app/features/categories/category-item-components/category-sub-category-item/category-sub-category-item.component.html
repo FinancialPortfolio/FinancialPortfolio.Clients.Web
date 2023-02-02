@@ -17,7 +17,9 @@
 
         <ng-container matColumnDef="allocationInPercentage">
             <th mat-header-cell mat-sort-header *matHeaderCellDef> Allocation % </th>
-            <td mat-cell *matCellDef="let element"> {{element.allocationInPercentage | number: '1.0-2'}}%</td>
+            <td mat-cell *matCellDef="let element">
+                <span *ngIf="element.allocationInPercentage">{{element.allocationInPercentage | number: '1.0-2'}}%</span>
+            </td>
         </ng-container>
 
         <ng-container matColumnDef="expectedAllocationInPercentage" *ngIf="!isUncategorizedCategory">

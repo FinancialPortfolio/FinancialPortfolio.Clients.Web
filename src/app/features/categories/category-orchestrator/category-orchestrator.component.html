@@ -14,7 +14,7 @@
     <div class="categories-details mat-elevation-z4" *ngIf="!showComparision">
         <app-category-tree [categoryItem]="category" (categoryTreeWidthSet)="setCategoryTreeWidth($event)"></app-category-tree>
 
-        <div class="category-item-details" *ngIf="loadedAssetStatistics" [ngStyle]="{'width': contentBlockWidth}">
+        <div class="category-item-details" [ngStyle]="{'width': contentBlockWidth}">
             <app-category-item></app-category-item>
         </div>
     </div>

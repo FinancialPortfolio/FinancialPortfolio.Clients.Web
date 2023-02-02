@@ -25,10 +25,10 @@ export class CategoryChartsComponent implements OnInit, OnDestroy {
     category!: CategoryResponse;
 
     allocationsChart: { name: string, value: number }[] = [];
-    isAllocationChartExist: boolean = true;
+    isAllocationChartExist: boolean = false;
 
     expectedAllocationsChart: { name: string, value: number }[] = [];
-    isExpectedllocationChartExist: boolean = true;
+    isExpectedllocationChartExist: boolean = false;
 
     pieOptions = {
         gradient: true,
@@ -76,7 +76,7 @@ export class CategoryChartsComponent implements OnInit, OnDestroy {
         this.allocationsChart = pieData.map(category => ({ name: category.name, value: category.allocationInPercentage }));
         this.expectedAllocationsChart = pieData.map(category => ({ name: category.name, value: category.expectedAllocationInPercentage }));
 
-        this.isAllocationChartExist = this.allocationsChart.filter(item => item.value != 0).length > 0;
+        this.isAllocationChartExist = this.allocationsChart.filter(item => item.value != null && item.value != 0).length > 0;
         this.isExpectedllocationChartExist = this.expectedAllocationsChart.filter(item => item.value != 0).length > 0;
     }
 

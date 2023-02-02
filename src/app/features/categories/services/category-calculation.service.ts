@@ -4,7 +4,6 @@ import { BehaviorSubject } from 'rxjs';
 import { AssetResponse } from 'src/app/api/models/Assets/asset-response';
 import { AssetResponse as CategoryAssetResponse } from 'src/app/api/models/Categories/asset-response';
 import { CategoryResponse } from 'src/app/api/models/Categories/category-response';
-import { OrderType } from 'src/app/api/models/Orders/order-type';
 import { numberOfShares } from 'src/app/shared/helpers/asset-calculation.helper';
 
 @Injectable({
@@ -117,8 +116,10 @@ export class CategoryCalculationService {
                 asset.assetStatistics = payloadAsset.assetStatistics;
         }
 
-        if (this.globalCategory)
+        if (this.globalCategory) {
             this.calculateAllocations(this.globalCategory);
+            this.calculateAllocationsInPercentage(this.globalCategory);
+        }
     }
 
     protected retrieveAssets(category: CategoryResponse): CategoryAssetResponse[] {
@@ -154,13 +155,35 @@ export class CategoryCalculationService {
 
         category.allocation = category.assets?.reduce((sum, current) => sum + current.allocation, 0) ?? 0;
         category.allocation += category.subCategories?.reduce((sum, current) => sum + current.allocation, 0) ?? 0;
+    }
+
+    protected calculateAllocationsInPercentage(category: CategoryResponse) {
+        let secondLevelCategory = this.getSecondLevelCategory(category);
+        for (let subCategory of category.subCategories ?? []) {
+            this.calculateAllocationsInPercentage(subCategory);
+        }
 
         for (let asset of category.assets ?? []) {
-            asset.allocationInPercentage = category.allocation ? asset.allocation / category.allocation * 100 : 0;
+            asset.allocationInPercentage = secondLevelCategory.allocation ? asset.allocation / secondLevelCategory.allocation * 100 : 0;
         }
 
         for (let subCategory of category.subCategories ?? []) {
-            subCategory.allocationInPercentage = category.allocation ? subCategory.allocation / category.allocation * 100 : 0;
+            subCategory.allocationInPercentage = secondLevelCategory.allocation ? subCategory.allocation / secondLevelCategory.allocation * 100 : 0;
         }
+    }
+
+    private getSecondLevelCategory(childCategory: CategoryResponse) {
+        if (childCategory == this.globalCategory)
+            return childCategory;
+
+        let current = childCategory;
+        let parent = this.getParentCategory(childCategory);
+        while (parent != null && parent != this.globalCategory) {
+            current = parent;
+
+            parent = this.getParentCategory(current);
+        }
+
+        return current;
     }
 }
