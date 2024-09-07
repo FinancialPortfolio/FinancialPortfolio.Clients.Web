@@ -23,6 +23,7 @@ import { CategorySelectorComponent } from '../asset-comparison-components/catego
 })
 export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
     isSaving = false;
+    isTreeLoaded = false;
     contentBlockWidth = '100%';
 
     get category(): CategoryResponse | null {
@@ -81,6 +82,7 @@ export class CategoryOrchestratorComponent implements OnInit, OnDestroy {
 
     setCategoryTreeWidth(width: number): void {
         this.contentBlockWidth = `calc(100% - ${width}px)`;
+        this.isTreeLoaded = true;
     }
 
     onSave() {

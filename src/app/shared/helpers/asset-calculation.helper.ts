@@ -37,7 +37,10 @@ export function averageSharePrice(asset: any): number {
     return invested(asset) / numberOfShares(asset);
 }
 
-export function dividendYieldPerShare(asset: any): number {
+export function dividendYieldPerShare(asset: any): number | null {
+    if (!asset.assetStatistics)
+        return null;
+
     return asset.assetStatistics.currentPrice * asset.assetStatistics.dividendYield / 100;
 }
 
